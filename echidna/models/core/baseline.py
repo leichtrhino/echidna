@@ -139,6 +139,9 @@ class BaselineDecoder(torch.nn.Module):
     def reverse_length(self, l_out : int) -> int:
         return self.istft.reverse_length(l_out)
 
+    def forward_feature_size(self) -> int:
+        return self.out_channel
+
     def parameter_list(self, base_lr):
         return [
             {'params': self.mask_module.parameters()},

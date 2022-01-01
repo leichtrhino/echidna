@@ -529,6 +529,9 @@ class WaveUNetDecoder(torch.nn.Module):
         l_in = l_in - self.decoder_kernel_size + 1
         return l_in
 
+    def forward_feature_size(self) -> int:
+        return self.decoder_channel_out
+
     def reverse_length(self, l_out : int) -> int:
         """
         Parameter
