@@ -1,9 +1,33 @@
 
 import typing as tp
 import torch
-import librosa
 
 from bisect import bisect
+
+def _split(x : torch.Tensor,
+           top_db,
+           frame_length,
+           hop_length):
+
+    powerspecgram = torch.stft(
+        x,
+        n_fft=frame_length,
+        hop_length=hop_length,
+        window=torch.ones(frame_length).to(x.device),
+        return_complex=True,
+    ).abs() ** 2
+    rms = torch.sqrt(torch.mean(powerspecgram, dim=-2))
+    db = 20 * torch.log10(rms)
+    nosilent_frame = db > -top_db
+
+    nosilent_frame = torch.cat((torch.zeros(1, dtype=bool),
+                                nosilent_frame,
+                                torch.zeros(1, dtype=bool)), dim=-1)
+    nosilent_samples = torch.nonzero(torch.diff(nosilent_frame, 1)) \
+        * hop_length
+    nosilent_samples = nosilent_samples.clamp(max=x.shape[-1])
+    return nosilent_samples.reshape(-1, 2)
+
 
 def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
                      x : torch.Tensor,
@@ -13,10 +37,7 @@ def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
                      hop_length : int=512) -> tp.List[tp.Tuple[int, int, str]]:
     # initial state of activation_list is [(0, length, [])]
     # calculate activation from silence
-    activations = librosa.effects.split(x.cpu().numpy(),
-                                        top_db=top_db,
-                                        frame_length=frame_length,
-                                        hop_length=hop_length)
+    activations = _split(x, top_db, frame_length, hop_length)
 
     if base_list[-1][1] is None:
         base_list[-1] = (base_list[-1][0], x.shape[-1], base_list[-1][2])
