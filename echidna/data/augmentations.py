@@ -14,7 +14,7 @@ import numpy
 import librosa
 
 from .utils import merge_activation
-from .transforms import build_transform
+from .transforms import build_transform, Crop
 from .samples import Sample
 from .mixtures import MixAlgorithm
 
@@ -361,6 +361,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
                  n_fft : int=2048,
                  hop_length : int=512,
                  win_length : int=2048,
+                 device : str='cpu',
                  ):
 
         assert 0.0 <= separation_difficulty <= 1.0
@@ -382,6 +383,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
         self.n_fft = n_fft
         self.hop_length = hop_length
         self.win_length = win_length
+        self.device = device
 
     def to_dict_args(self):
         return {
@@ -402,6 +404,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
             'n_fft': self.n_fft,
             'hop_length': self.hop_length,
             'win_length': self.win_length,
+            'device': self.device,
         }
 
     @classmethod
@@ -424,6 +427,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
             n_fft=d.get('n_fft', 2048),
             hop_length=d.get('hop_length', 512),
             win_length=d.get('win_length', 2048),
+            device=d.get('device', 'cpu'),
         )
 
     def augmentation_params(self,
@@ -433,6 +437,10 @@ class EntropyAugmentation(AugmentationAlgorithm):
                             ) -> tp.List[tp.Dict[str, object]]:
         # calculate mix index from data and metadata
         # using self.algorithm
+        data = dict(
+            (k, v.to(self.device) if type(v) == torch.Tensor else v)
+            for k, v in data.items()
+        )
         mixture_algorithm = self.mixture_algorithm
         mix_indices, _ = mixture_algorithm.mix_index(data=data,
                                                      metadata=metadata,
@@ -932,7 +940,7 @@ def _make_param_set(data : tp.Dict[str, torch.Tensor],
             'offset': None,
         }
 
-        tf = build_transform(**common_params, **params)
+        tf = build_transform(**common_params, **params).to(wave.device)
         transformed_wave = tf(wave)
         transformed_waves.append(transformed_wave)
 
@@ -945,6 +953,7 @@ def _make_param_set(data : tp.Dict[str, torch.Tensor],
         channel_activations.append(activation)
 
     # get offset
+    result_waves = []
     for track, wave, param, activations in \
         zip(metadata.tracks, transformed_waves, channel_params, channel_activations):
         if 'offset' in track_param.get(track, dict()):
@@ -967,6 +976,7 @@ def _make_param_set(data : tp.Dict[str, torch.Tensor],
                 track_param[track]['offset'] = offset
 
         param['offset'] = offset
+        result_waves.append(Crop(waveform_length, offset).to(wave.device)(wave))
 
     common_params['waveform_length'] = waveform_length
     augment_param = dict(

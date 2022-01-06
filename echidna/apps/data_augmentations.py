@@ -19,7 +19,12 @@ def attach_parser(parser):
             'journal_path': {'type': 'string'},
             'log_path': {'type': 'string'},
             'log_level': {'type': 'string'},
-            'jobs': {'type': 'integer'},
+            'jobs': {
+                'Or': [
+                    {'type': 'integer'},
+                    {'type': 'null'},
+                ]
+            },
         },
         'additionalProperties': False,
     }

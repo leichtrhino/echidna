@@ -13,7 +13,7 @@ def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
                      hop_length : int=512) -> tp.List[tp.Tuple[int, int, str]]:
     # initial state of activation_list is [(0, length, [])]
     # calculate activation from silence
-    activations = librosa.effects.split(x.numpy(),
+    activations = librosa.effects.split(x.cpu().numpy(),
                                         top_db=top_db,
                                         frame_length=frame_length,
                                         hop_length=hop_length)
