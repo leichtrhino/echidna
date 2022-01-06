@@ -16,7 +16,7 @@ class Compose(torch.nn.Module):
             x = t(x)
         return x
 
-class Resample(torchaudio.transforms.Resample):
+class Resample(torch.nn.Module):
     """
     Resample
     """
@@ -26,8 +26,7 @@ class Resample(torchaudio.transforms.Resample):
         Parameters
         ----------
         """
-
-        super(Resample, self).__init__(orig_freq, new_freq)
+        super().__init__()
         self.orig_freq = orig_freq
         self.new_freq = new_freq
 
@@ -39,12 +38,9 @@ class Resample(torchaudio.transforms.Resample):
         Returns
         -------
         """
-        """
-        return torch.Tensor(resampy.resample(
-            x.cpu().numpy(), self.orig_freq, self.new_freq, axis=-1
-        )).to(x.device)
-        """
-        return super().forward(x)
+        return torch.from_numpy(
+            resampy.resample(x.cpu().numpy(), self.orig_freq, self.new_freq)
+        ).to(x.device)
 
 class TimeStretch(torch.nn.Module):
     """
