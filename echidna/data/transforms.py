@@ -6,16 +6,17 @@ import resampy
 import torch
 import torchaudio
 
-class Compose(object):
+class Compose(torch.nn.Module):
     def __init__(self, transforms):
-        self.transforms = transforms
+        super().__init__()
+        self.transforms = torch.nn.ModuleList(transforms)
 
-    def __call__(self, x):
+    def forward(self, x):
         for t in self.transforms:
             x = t(x)
         return x
 
-class Resample(torch.nn.Module):
+class Resample(torchaudio.transforms.Resample):
     """
     Resample
     """
@@ -26,7 +27,7 @@ class Resample(torch.nn.Module):
         ----------
         """
 
-        super(Resample, self).__init__()
+        super(Resample, self).__init__(orig_freq, new_freq)
         self.orig_freq = orig_freq
         self.new_freq = new_freq
 
@@ -38,8 +39,12 @@ class Resample(torch.nn.Module):
         Returns
         -------
         """
+        """
         return torch.Tensor(resampy.resample(
-            x.numpy(), self.orig_freq, self.new_freq, axis=-1))
+            x.cpu().numpy(), self.orig_freq, self.new_freq, axis=-1
+        )).to(x.device)
+        """
+        return super().forward(x)
 
 class TimeStretch(torch.nn.Module):
     """
@@ -57,14 +62,18 @@ class TimeStretch(torch.nn.Module):
         """
 
         super(TimeStretch, self).__init__()
+        self.window = torch.nn.parameter.Parameter(
+            torch.hann_window(win_length),
+            requires_grad=False
+        )
         self.stft = lambda x: torch.stft(
             x, n_fft, hop_length=hop_length,
-            window=torch.hann_window(win_length),
+            window=self.window,
             return_complex=True,
         )
         self.istft = lambda x: torch.istft(
             x, n_fft, hop_length=hop_length,
-            window=torch.hann_window(win_length),
+            window=self.window,
         )
         self.time_stretch = torchaudio.transforms.TimeStretch(
             hop_length=hop_length,
@@ -99,14 +108,18 @@ class PitchShift(torch.nn.Module):
         """
 
         super(PitchShift, self).__init__()
+        self.window = torch.nn.parameter.Parameter(
+            torch.hann_window(win_length),
+            requires_grad=False
+        )
         self.stft = lambda x: torch.stft(
             x, n_fft, hop_length=hop_length,
-            window=torch.hann_window(win_length),
+            window=self.window,
             return_complex=True,
         )
         self.istft = lambda x: torch.istft(
             x, n_fft, hop_length=hop_length,
-            window=torch.hann_window(win_length),
+            window=self.window,
         )
         self.time_stretch = torchaudio.transforms.TimeStretch(
             hop_length=hop_length,
@@ -150,14 +163,18 @@ class TimeStretchAndPitchShift(torch.nn.Module):
         """
 
         super(TimeStretchAndPitchShift, self).__init__()
+        self.window = torch.nn.parameter.Parameter(
+            torch.hann_window(win_length),
+            requires_grad=False
+        )
         self.stft = lambda x: torch.stft(
             x, n_fft, hop_length=hop_length,
-            window=torch.hann_window(win_length),
+            window=self.window,
             return_complex=True,
         )
         self.istft = lambda x: torch.istft(
             x, n_fft, hop_length=hop_length,
-            window=torch.hann_window(win_length),
+            window=self.window,
         )
         self.time_stretch = torchaudio.transforms.TimeStretch(
             hop_length=hop_length,
@@ -242,7 +259,7 @@ class MultiPointScale(torch.nn.Module):
 
         if len(self.scales) > 1:
             scale_rate = torch.cat([
-                torch.linspace(s, t, l)
+                torch.linspace(s, t, l, device=x.device)
                 for s, t, l in zip(self.scales[:-1],
                                    self.scales[1:],
                                    transition_length)
@@ -253,7 +270,7 @@ class MultiPointScale(torch.nn.Module):
         if self.normalize:
             x /= torch.max(
                 torch.max(x.abs(), dim=-1, keepdims=True)[0],
-                torch.ones(*x.shape[:-1], 1) * 0.1
+                torch.ones(*x.shape[:-1], 1, device=x.device) * 0.1
             )
         return scale_rate * x
 
