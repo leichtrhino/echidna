@@ -444,7 +444,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
             random_.randrange(2**32)
             for _ in range(self.trials_per_augmentation)
         ]
-        parameters = [
+        parameters, waves = list(zip(*[
             _make_param_set(
                 data=data,
                 metadata=metadata,
@@ -462,40 +462,14 @@ class EntropyAugmentation(AugmentationAlgorithm):
                 win_length=self.win_length
             )
             for seed_ in seeds
-        ]
+        ]))
 
         # calculate spectrogram for each source in data
         # evaluate difficulty for each augmentation param. set
         evaluation_scores = []
-        for param in parameters:
-
-            transforms = [
-                build_transform(
-                    normalize=param['normalize'],
-                    source_sample_rate=param['source_sample_rate'],
-                    target_sample_rate=param['target_sample_rate'],
-                    time_stretch_rate=tsr,
-                    pitch_shift_rate=psr,
-                    scale_amounts=sa,
-                    scale_fractions=sf,
-                    offset=of,
-                    waveform_length=param['waveform_length'],
-                    n_fft=param['n_fft'],
-                    hop_length=param['hop_length'],
-                    win_length=param['win_length'],
-                )
-                for of, tsr, psr, sa, sf in zip(
-                        param['offsets'],
-                        param['time_stretch_rates'],
-                        param['pitch_shift_rates'],
-                        param['scale_amount_list'],
-                        param['scale_fraction_list'],
-                )
-            ]
+        for param, wave in zip(parameters, waves):
             specgrams = torch.stft(
-                torch.stack([
-                    tf(w) for tf, w in zip(transforms, data['waves'])
-                ], dim=0),
+                wave,
                 n_fft=self.n_fft,
                 hop_length=self.hop_length,
                 win_length=self.win_length,
@@ -515,7 +489,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
                 ) / total_sg.numel()
                 subscore.append(score.item())
 
-            evaluation_scores.append(sum(subscore) / len(subscore))
+            evaluation_scores.append(sorted(subscore)[len(subscore) // 2])
 
         # find most appropriate param. set
         sorted_scores = sorted(enumerate(evaluation_scores),
@@ -638,7 +612,7 @@ class FrequencyAugmentation(AugmentationAlgorithm):
             random_.randrange(2**32)
             for _ in range(self.trials_per_augmentation)
         ]
-        parameters = [
+        parameters, wave_list = list(zip(*[
             _make_param_set(
                 data=data,
                 metadata=metadata,
@@ -656,41 +630,13 @@ class FrequencyAugmentation(AugmentationAlgorithm):
                 win_length=self.win_length
             )
             for seed_ in seeds
-        ]
+        ]))
 
         # calculate spectrogram for each source in data
         # evaluate difficulty for each augmentation param. set
         evaluation_scores = []
-        for param in parameters:
-
-            transforms = [
-                build_transform(
-                    normalize=param['normalize'],
-                    source_sample_rate=param['source_sample_rate'],
-                    target_sample_rate=param['target_sample_rate'],
-                    time_stretch_rate=tsr,
-                    pitch_shift_rate=psr,
-                    scale_amounts=sa,
-                    scale_fractions=sf,
-                    offset=of,
-                    waveform_length=param['waveform_length'],
-                    n_fft=param['n_fft'],
-                    hop_length=param['hop_length'],
-                    win_length=param['win_length'],
-                )
-                for of, tsr, psr, sa, sf in zip(
-                        param['offsets'],
-                        param['time_stretch_rates'],
-                        param['pitch_shift_rates'],
-                        param['scale_amount_list'],
-                        param['scale_fraction_list'],
-                )
-            ]
-
-            waves = torch.stack([
-                tf(w) for tf, w in zip(transforms, data['waves'])
-            ], dim=0).numpy()
-
+        for param, waves in zip(parameters, wave_list):
+            waves = waves.numpy()
             subscore = []
             for mix_index in mix_indices:
                 mix_waves = numpy.stack([
@@ -780,7 +726,7 @@ def _save_augmentation(spec : AugmentationSpec):
     args = [
         (
             sample_i,
-            augment_i,
+            spec.augmentation_per_sample, # augment_n
             algorithm,
             os.path.join(
                 os.path.dirname(spec.sample_metadata_path),
@@ -790,7 +736,6 @@ def _save_augmentation(spec : AugmentationSpec):
             random_.randrange(2**32), #seed,
         )
         for sample_i, metadata in enumerate(metadata_list)
-        for augment_i in range(spec.augmentation_per_sample)
     ]
 
     # map func
@@ -814,17 +759,18 @@ def _save_augmentation(spec : AugmentationSpec):
     # iterate over dataset and find mixtures
     augmentation_list = []
     journal_list = []
-    for augmentation, journal in map_fn(_make_single_augmentation, args):
-        augmentation_list.append(augmentation)
-        journal_list.append(journal)
+    for augmentations, journals in map_fn(_make_augmentations_for_sample, args):
+        augmentation_list.extend(augmentations)
+        journal_list.extend(journals)
         if logger:
-            logger.info(json.dumps({
-                'type': 'made_augmentation',
-                'timestamp': datetime.now().isoformat(),
-                'augmentation_algorithm': algorithm_name,
-                'sample_index': augmentation.sample_index,
-                'augmentation_index': augmentation.augmentation_index,
-            }))
+            for augmentation in augmentations:
+                logger.info(json.dumps({
+                    'type': 'made_augmentation',
+                    'timestamp': datetime.now().isoformat(),
+                    'augmentation_algorithm': algorithm_name,
+                    'sample_index': augmentation.sample_index,
+                    'augmentation_index': augmentation.augmentation_index,
+                }))
 
     # close map function
     if spec.jobs is not None:
@@ -888,25 +834,28 @@ def _save_augmentation(spec : AugmentationSpec):
             logger.removeHandler(handler)
             handler.close()
 
-
-def _make_single_augmentation(args):
-    sample_i, augment_i, algorithm, data_path, metadata, seed \
+def _make_augmentations_for_sample(args):
+    sample_i, augment_n, algorithm, data_path, metadata, seed \
         = args
     data = torch.load(data_path)
 
-    transform_param, aux_out = algorithm.augmentation_params(data,
-                                                             metadata,
-                                                             seed)
-    augmentation = Augmentation(sample_index=sample_i,
-                                augmentation_index=augment_i,
-                                **transform_param)
-    journal = AugmentationJournal(augmentation=augmentation,
-                                  created_at=datetime.now(),
-                                  seed=seed,
-                                  algorithm_out=aux_out)
+    augmentations = []
+    journals = []
+    for augment_i in range(augment_n):
+        transform_param, aux_out = algorithm.augmentation_params(data,
+                                                                 metadata,
+                                                                 seed)
+        augmentation = Augmentation(sample_index=sample_i,
+                                    augmentation_index=augment_i,
+                                    **transform_param)
+        journal = AugmentationJournal(augmentation=augmentation,
+                                      created_at=datetime.now(),
+                                      seed=seed,
+                                      algorithm_out=aux_out)
+        augmentations.append(augmentation)
+        journals.append(journal)
 
-    return augmentation, journal
-
+    return augmentations, journals
 
 def _make_param_set(data : tp.Dict[str, torch.Tensor],
                     metadata : tp.List[tp.Dict[str, object]],
@@ -1035,5 +984,6 @@ def _make_param_set(data : tp.Dict[str, torch.Tensor],
                 p['scale_fractions'] for p in channel_params],
         }
     )
-    return augment_param
+
+    return augment_param, torch.stack(result_waves, dim=0)
 
