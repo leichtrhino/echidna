@@ -8,6 +8,12 @@ import torch
 from .nest import (
     BaselineEncDecModel,
     BaselineChimeraNet,
+    WaveUNetEncDecModel,
+    WaveUNetChimeraNet,
+    ConvTasNetEncDecModel,
+    ConvTasNetChimeraNet,
+    DemucsEncDecModel,
+    DemucsChimeraNet,
 )
 from . import checkpoints
 
@@ -23,6 +29,12 @@ def get_model_class(name : str):
 if len(_model_classes) == 0:
     register_model_class('baseline_encdec', BaselineEncDecModel)
     register_model_class('baseline_chimera', BaselineChimeraNet)
+    register_model_class('waveunet_encdec', WaveUNetEncDecModel)
+    register_model_class('waveunet_chimera', WaveUNetChimeraNet)
+    register_model_class('convtasnet_encdec', ConvTasNetEncDecModel)
+    register_model_class('convtasnet_chimera', ConvTasNetChimeraNet)
+    register_model_class('demucs_encdec', DemucsEncDecModel)
+    register_model_class('demucs_chimera', DemucsChimeraNet)
 
 
 class Model(object):
