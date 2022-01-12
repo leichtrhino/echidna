@@ -86,6 +86,7 @@ sample_size: 16
 source_per_category: 2
 sample_rate: 48000
 duration: 1.0
+target_db: {target_db}
 seed: 01410343
 metadata_path: {metadata_path}
 data_dir: {data_dir}
@@ -102,18 +103,22 @@ for samples_name, params in [
         ('notrack_training', {
             'datasources': datasources_dir / 'datasource_notrack.csv',
             'folds': '  - \'01\'\n  - \'02\'',
+            'target_db': '-0.5',
         }),
         ('notrack_validation', {
             'datasources': datasources_dir / 'datasource_notrack.csv',
             'folds': '  - \'03\'',
+            'target_db': '-0.5',
         }),
         ('track_training', {
             'datasources': datasources_dir / 'datasource_track.csv',
             'folds': '  - \'01\'\n  - \'02\'',
+            'target_db': '-0.1',
         }),
         ('track_validation', {
             'datasources': datasources_dir / 'datasource_track.csv',
             'folds': '  - \'03\'',
+            'target_db': '-0.1',
         }),
 ]:
     yaml_path = samples_conf_dir / f'{samples_name}.yaml'
