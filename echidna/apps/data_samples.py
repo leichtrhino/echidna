@@ -18,6 +18,7 @@ def attach_parser(parser):
             'source_by_category': {'type': 'object'},
             'sample_rate': {'type': 'integer'},
             'duration': {'type': 'number'},
+            'target_db': {'type': 'number'},
             'seed': {'type': 'integer'},
             'metadata_path': {'type': 'string'},
             'data_dir': {'type': 'string'},
@@ -44,6 +45,7 @@ def attach_parser(parser):
     group.add_argument('--source-by-category', action=LoadJSONAction)
     group.add_argument('--sample-rate')
     group.add_argument('--duration')
+    group.add_argument('--target-db', type=float)
     group.add_argument('--seed')
 
     group = parser.add_argument_group(title='output parameters')
@@ -65,6 +67,7 @@ def main(args):
         source_by_category=args.source_by_category,
         sample_rate=args.sample_rate,
         duration=args.duration,
+        target_db=args.target_db,
         seed=args.seed,
         metadata_path=args.metadata_path,
         data_dir=args.data_dir,

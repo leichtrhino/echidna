@@ -12,7 +12,7 @@ import torch
 import torchaudio
 import numpy
 
-from .transforms import Resample
+from .transforms import Resample, MultiPointScale
 from .utils import merge_activation
 
 class Datasource(object):
@@ -124,6 +124,7 @@ class SampleSpec(object):
                  source_by_category : dict,
                  sample_rate : int,
                  duration : float,
+                 target_db : float,
                  seed : int,
                  metadata_path : str,
                  data_dir : str,
@@ -139,6 +140,7 @@ class SampleSpec(object):
         self.source_by_category = source_by_category
         self.sample_rate = sample_rate
         self.duration = duration
+        self.target_db = target_db
         self.seed = seed
         self.metadata_path = metadata_path
         self.data_dir = data_dir
@@ -157,6 +159,7 @@ class SampleSpec(object):
             source_by_category=d.get('source_by_category'),
             sample_rate=d['sample_rate'],
             duration=d['duration'],
+            target_db=d.get('target_db'),
             seed=d['seed'],
             metadata_path=d['metadata_path'],
             data_dir=d['data_dir'],
@@ -175,6 +178,7 @@ class SampleSpec(object):
             'source_by_category': self.source_by_category,
             'sample_rate': self.sample_rate,
             'duration': self.duration,
+            'target_db': self.target_db,
             'seed': self.seed,
             'metadata_path': str(self.metadata_path) if self.metadata_path else None,
             'data_dir': str(self.data_dir) if self.data_dir else None,
@@ -330,6 +334,7 @@ def _save_sample(spec : SampleSpec):
         spec.source_by_category,
         spec.sample_rate,
         spec.duration,
+        spec.target_db,
         spec.metadata_path,
         os.path.join(spec.data_dir, rel_path),
         random_.randrange(2**32), # seed
@@ -435,13 +440,14 @@ def _save_single_sample(args):
     source_by_category : dict,
     sample_rate : int,
     duration : float,
+    target_db : float,
     metadata_path : str,
     data_path : str,
     rel_path : str,
     seed : int
     """
     datasources, source_per_category, source_by_category, \
-        sample_rate, duration, \
+        sample_rate, duration, target_db, \
         metadata_path, data_path, seed = args
     wavelength = int(sample_rate * duration)
 
@@ -499,6 +505,12 @@ def _save_single_sample(args):
                 w, orig_sr = torchaudio.load(ds.wave_path)
                 w = w.mean(dim=0)
                 w = Resample(orig_sr, sample_rate)(w)
+                if target_db is not None:
+                    w = MultiPointScale(
+                        scales=[10 ** (target_db / 20)],
+                        fractions=[],
+                        normalize=True
+                    )(w)
                 wave = w if wave is None else torch.cat((wave, w), dim=-1)
                 # load midi
                 if ds.sheet_path:
