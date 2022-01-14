@@ -85,3 +85,13 @@ class DatasourceAction(argparse.Action):
         datasource = [Datasource.from_dict(d) for d in datasource]
         setattr(namespace, self.dest, datasource)
 
+class LoadJSONAction(argparse.Action):
+    def __call__(self,
+                 parser : argparse.ArgumentParser,
+                 namespace : argparse.Namespace,
+                 values,
+                 option_string=None):
+        if type(values) == str:
+            values = json.loads(values)
+        setattr(namespace, self.dest, values)
+

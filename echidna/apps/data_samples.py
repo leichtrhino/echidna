@@ -2,7 +2,7 @@
 import argparse
 
 from ..data.samples import SampleSpec
-from .utils import make_config_action, DatasourceAction
+from .utils import make_config_action, DatasourceAction, LoadJSONAction
 
 def attach_parser(parser):
     config_schema = {
@@ -15,6 +15,7 @@ def attach_parser(parser):
             },
             'sample_size': {'type': 'integer'},
             'source_per_category': {'type': 'integer'},
+            'source_by_category': {'type': 'object'},
             'sample_rate': {'type': 'integer'},
             'duration': {'type': 'number'},
             'seed': {'type': 'integer'},
@@ -40,6 +41,7 @@ def attach_parser(parser):
     group = parser.add_argument_group(title='sample parameters')
     group.add_argument('--sample-size')
     group.add_argument('--source-per-category')
+    group.add_argument('--source-by-category', action=LoadJSONAction)
     group.add_argument('--sample-rate')
     group.add_argument('--duration')
     group.add_argument('--seed')
@@ -60,6 +62,7 @@ def main(args):
         fold=args.fold,
         sample_size=args.sample_size,
         source_per_category=args.source_per_category,
+        source_by_category=args.source_by_category,
         sample_rate=args.sample_rate,
         duration=args.duration,
         seed=args.seed,
