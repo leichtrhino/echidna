@@ -121,6 +121,7 @@ class SampleSpec(object):
                  fold : str,
                  sample_size : int,
                  source_per_category : int,
+                 source_by_category : dict,
                  sample_rate : int,
                  duration : float,
                  seed : int,
@@ -135,6 +136,7 @@ class SampleSpec(object):
         self.fold = fold
         self.sample_size = sample_size
         self.source_per_category = source_per_category
+        self.source_by_category = source_by_category
         self.sample_rate = sample_rate
         self.duration = duration
         self.seed = seed
@@ -152,6 +154,7 @@ class SampleSpec(object):
             fold=d['fold'],
             sample_size=d['sample_size'],
             source_per_category=d['source_per_category'],
+            source_by_category=d.get('source_by_category'),
             sample_rate=d['sample_rate'],
             duration=d['duration'],
             seed=d['seed'],
@@ -169,6 +172,7 @@ class SampleSpec(object):
             'fold': self.fold,
             'sample_size': self.sample_size,
             'source_per_category': self.source_per_category,
+            'source_by_category': self.source_by_category,
             'sample_rate': self.sample_rate,
             'duration': self.duration,
             'seed': self.seed,
@@ -323,6 +327,7 @@ def _save_sample(spec : SampleSpec):
     args = [(
         datasources,
         spec.source_per_category,
+        spec.source_by_category,
         spec.sample_rate,
         spec.duration,
         spec.metadata_path,
@@ -343,6 +348,7 @@ def _save_sample(spec : SampleSpec):
             'timestamp': datetime.now().isoformat(),
             'sample_size': spec.sample_size,
             'source_per_category': spec.source_per_category,
+            'source_by_category': spec.source_by_category,
             'sample_rate': spec.sample_rate,
             'duration': spec.duration,
             'seed': spec.seed,
@@ -426,6 +432,7 @@ def _save_single_sample(args):
     ----------
     datasources : tp.List[Datasource],
     source_per_category : int,
+    source_by_category : dict,
     sample_rate : int,
     duration : float,
     metadata_path : str,
@@ -433,7 +440,8 @@ def _save_single_sample(args):
     rel_path : str,
     seed : int
     """
-    datasources, source_per_category, sample_rate, duration, \
+    datasources, source_per_category, source_by_category, \
+        sample_rate, duration, \
         metadata_path, data_path, seed = args
     wavelength = int(sample_rate * duration)
 
@@ -468,11 +476,16 @@ def _save_single_sample(args):
     sheets = []
     datasources = []
     for category, ds_list in categories.items():
+        if type(source_by_category) == dict and \
+           source_by_category.get(category, 0) > 0:
+            max_category_num = source_by_category[category]
+        else:
+            max_category_num = source_per_category
         source_i = 0
         source_num = 0
         # NOTE: Lagging could be occur if tracked and no-tracked waves
         # are in single category
-        while source_num < source_per_category \
+        while source_num < max_category_num \
               and source_i < len(ds_list):
             wave = None
             sheet = None
