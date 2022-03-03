@@ -175,3 +175,128 @@ class ValidationJournal(object):
         )
 
 
+def _validate(spec : ValidationSpec):
+    """
+    """
+
+    process_start = datetime.now()
+
+    # prepare logs
+    logger = None
+    if spec.log_pattern:
+        pattern_dict = {
+            # from specification
+            'model': spec.model.get_class(),
+            'model_epoch': spec.model.get_epoch(),
+            # from epoch journal
+            'process_start': process_start,
+        }
+
+        logger = logging.getLogger(__name__)
+        log_path = spec.log_pattern.format(**pattern_dict)
+        logger.setLevel(spec.log_level)
+        handler = logging.FileHandler(log_path)
+        handler.setFormatter(
+            logging.Formatter('[%(levelname)s] %(message)s'))
+        logger.addHandler(handler)
+
+    # prepare validation loop
+    if logger:
+        logger.info(json.dumps({
+            'type': 'start_validation',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.model.get_class(),
+            'model_epoch': spec.model.get_epoch(),
+        }))
+
+    validation_loader = utils.build_dataloader(
+        spec.validation_dataset,
+        spec.validation_sample_size,
+        spec.batch_size,
+        spec.jobs,
+        shuffle=False,
+        seed=None)
+    validation_step_journals = []
+
+    # move model to device
+    spec.model.get_torch_model().eval()
+    spec.model.get_torch_model().to(spec.device)
+
+    # validation loop
+    if logger:
+        logger.info(json.dumps({
+            'type': 'start_validation_steps',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.model.get_class(),
+            'model_epoch': spec.model.get_epoch(),
+        }))
+
+    for step, (data, metadata) in enumerate(validation_loader, 1):
+        with torch.no_grad():
+            step_journal = utils.process_batch(
+                spec, None, step, data, metadata, logger)
+            step_journal.sample_indices = metadata['index']
+        validation_step_journals.append(step_journal)
+
+    validation_loss = sum(j.batch_loss for j in validation_step_journals) \
+        / sum(len(j.sample_losses) for j in validation_step_journals)
+
+    if logger:
+        logger.info(json.dumps({
+            'type': 'end_validation_steps',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.model.get_class(),
+            'model_epoch': spec.model.get_epoch(),
+            'validation_loss': validation_loss,
+        }))
+
+    # move model back to cpu
+    spec.model.get_torch_model().to('cpu')
+
+    process_end = datetime.now()
+
+    pattern_dict = {
+        # from specification
+        'model': spec.model.get_class(),
+        'model_epoch': spec.model.get_epoch(),
+        # from epoch journal
+        'process_start': process_start,
+        'process_end': process_end,
+        'validation_loss': validation_loss,
+    }
+
+    # save journal
+    if spec.journal_pattern:
+        journal_path = spec.journal_pattern.format(**pattern_dict)
+        journal = ValidationJournal(
+            process_start=process_start,
+            process_end=process_end,
+            validation_loss=validation_loss,
+            validation_step_journals=validation_step_journals,
+            log_path=log_path,
+            spec=spec,
+        )
+        with open(journal_path, 'w') as fp:
+            json.dump(journal.to_dict(), fp)
+
+        logger.info(json.dumps({
+            'type': 'save_journal',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.model.get_class(),
+            'model_epoch': spec.model.get_epoch(),
+            'journal_path': journal_path,
+        }))
+
+    # finish epoch and close log handler
+    if logger:
+        logger.info(json.dumps({
+            'type': 'end_validation',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.model.get_class(),
+            'model_epoch': spec.model.get_epoch(),
+        }))
+        handlers = logger.handlers[:]
+        for handler in handlers:
+            logger.removeHandler(handler)
+            handler.close()
+
