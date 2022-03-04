@@ -132,3 +132,46 @@ class ValidationSpec(object):
         _validate(self)
 
 
+class ValidationJournal(object):
+    def __init__(self,
+                 process_start : datetime,
+                 process_end : datetime,
+                 validation_loss : float,
+                 validation_step_journals : list,
+                 log_path : str,
+                 spec : ValidationSpec):
+
+        self.process_start = process_start
+        self.process_end = process_end
+        self.validation_loss = validation_loss
+        self.validation_step_journals = validation_step_journals
+        self.log_path = log_path
+        self.spec = spec
+
+    def to_dict(self):
+        return {
+            'process_start': self.process_start.isoformat(),
+            'process_end': self.process_end.isoformat(),
+            'validation_loss': self.validation_loss,
+            'validation_step_journals': [
+                e.to_dict() for e in self.validation_step_journals
+            ],
+            'log_path': self.log_path,
+            'spec': self.spec.to_dict()
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            process_start=datetime.fromisoformat(d['process_start']),
+            process_end=datetime.fromisoformat(d['process_end']),
+            validation_loss=d['validation_loss'],
+            validation_step_journals=[
+                utils.StepJournal.from_dict(e)
+                for e in d.get('validation_step_journals')
+            ],
+            log_path=d['log_path'],
+            spec=ValidationSpec.from_dict(d['spec']),
+        )
+
+
