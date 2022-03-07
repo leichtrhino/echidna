@@ -234,4 +234,242 @@ class EpochJournal(object):
             spec=TrainingSpec.from_dict(d['spec']),
         )
 
+def _train(spec : TrainingSpec):
+    for training_epoch in range(1, spec.training_epochs+1):
+        _train_epoch(spec, training_epoch)
+
+def _train_epoch(spec : TrainingSpec, training_epoch):
+    """
+    """
+
+    process_start = datetime.now()
+
+    # get log path and initialize log handler
+    logger = None
+    if spec.log_pattern:
+        pattern_dict ={
+            # from specification
+            'model': spec.checkpoint.get_model_class(),
+            'model_epoch': spec.checkpoint.get_epoch(),
+            'optimizer': spec.checkpoint.get_optimizer_class(),
+            'lr': spec.checkpoint.get_torch_optimizer().defaults['lr'],
+            'scheduler': spec.checkpoint.get_scheduler_class(),
+            # from epoch journal
+            'process_start': datetime.now(),
+            'training_epoch': training_epoch,
+        }
+
+        logger = logging.getLogger(__name__)
+        log_path = spec.log_pattern.format(**pattern_dict)
+        logger.setLevel(spec.log_level)
+        handler = logging.FileHandler(log_path)
+        handler.setFormatter(
+            logging.Formatter('[%(levelname)s] %(message)s'))
+        logger.addHandler(handler)
+
+    # generate seed for dataloader
+    random.seed(spec.seed)
+    dataloader_seed = [
+        random.randrange(2**32)
+        for _ in range(spec.checkpoint.get_epoch()+1)
+    ][-1]
+
+    if logger:
+        logger.info(json.dumps({
+            'type': 'start_epoch',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.checkpoint.get_model_class(),
+            'model_epoch': spec.checkpoint.get_epoch(),
+            'training_epoch': training_epoch,
+        }))
+
+    # training loop
+    if logger:
+        logger.info(json.dumps({
+            'type': 'start_training_steps',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.checkpoint.get_model_class(),
+            'model_epoch': spec.checkpoint.get_epoch(),
+            'training_epoch': training_epoch,
+        }))
+
+
+    training_loader = utils.build_dataloader(
+        spec.training_dataset,
+        spec.training_sample_size,
+        spec.batch_size,
+        spec.jobs,
+        shuffle=True,
+        seed=dataloader_seed)
+    training_step_journals = []
+
+    # prepare model and optimizer
+    spec.checkpoint.get_torch_model().train()
+    spec.checkpoint.get_torch_model().to(spec.device)
+    for state in spec.checkpoint.get_torch_optimizer().state.values():
+        for k, v in state.items():
+            if type(v) == torch.Tensor:
+                state[k] = v.to(spec.device)
+
+    torch.manual_seed(dataloader_seed)
+    for step, (data, metadata) in enumerate(training_loader, 1):
+        step_journal = utils.process_batch(
+            spec, training_epoch, step, data, metadata, logger)
+        step_journal.sample_indices = metadata['index']
+        training_step_journals.append(step_journal)
+
+    training_loss = sum(j.batch_loss for j in training_step_journals) \
+        / sum(len(j.sample_losses) for j in training_step_journals)
+
+    if logger:
+        logger.info(json.dumps({
+            'type': 'end_training_steps',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.checkpoint.get_model_class(),
+            'model_epoch': spec.checkpoint.get_epoch(),
+            'training_epoch': training_epoch,
+            'training_loss': training_loss,
+        }))
+
+    # validation loop (if available)
+    validation_step_journals = None
+    validation_loss = None
+    if spec.validation_dataset:
+        if logger:
+            logger.info(json.dumps({
+                'type': 'start_validation_steps',
+                'timestamp': datetime.now().isoformat(),
+                'model_class': spec.checkpoint.get_model_class(),
+                'model_epoch': spec.checkpoint.get_epoch(),
+                'training_epoch': training_epoch,
+            }))
+
+        validation_loader = utils.build_dataloader(
+            spec.validation_dataset,
+            spec.validation_sample_size,
+            spec.batch_size,
+            spec.jobs,
+            shuffle=False,
+            seed=dataloader_seed)
+        validation_step_journals = []
+
+        spec.checkpoint.get_torch_model().eval()
+        for step, (data, metadata) in enumerate(validation_loader, 1):
+            with torch.no_grad():
+                step_journal = utils.process_batch(
+                    spec, training_epoch, step, data, metadata, logger)
+            step_journal.sample_indices = metadata['index']
+            validation_step_journals.append(step_journal)
+
+        validation_loss = sum(j.batch_loss for j in validation_step_journals)\
+            / sum(len(j.sample_losses) for j in validation_step_journals)
+
+        if logger:
+            logger.info(json.dumps({
+                'type': 'end_validation_steps',
+                'timestamp': datetime.now().isoformat(),
+                'model_class': spec.checkpoint.get_model_class(),
+                'model_epoch': spec.checkpoint.get_epoch(),
+                'training_epoch': training_epoch,
+                'validation_loss': validation_loss,
+            }))
+
+    # move checkpoint back to cpu
+    spec.checkpoint.get_torch_model().to('cpu')
+    for state in spec.checkpoint.get_torch_optimizer().state.values():
+        for k, v in state.items():
+            if type(v) == torch.Tensor:
+                state[k] = v.to('cpu')
+
+    # step scheduler
+    scheduler = spec.checkpoint.get_torch_scheduler()
+    if 'metrics' in inspect.signature(scheduler.step).parameters:
+        # for ReduceLROnPlateau
+        metric = validation_loss if validation_loss is not None \
+            else training_loss
+        scheduler.step(metrics=metric)
+    else:
+        scheduler.step()
+
+    logger.info(json.dumps({
+        'type': 'step_scheduler',
+        'timestamp': datetime.now().isoformat(),
+        'model_class': spec.checkpoint.get_model_class(),
+        'model_epoch': spec.checkpoint.get_epoch(),
+        'training_epoch': training_epoch,
+    }))
+
+    # finish epoch
+    process_end = datetime.now()
+
+    # get dict for formatting checkpoint and journal file
+    pattern_dict = {
+        # from specification
+        'model': spec.checkpoint.get_model_class(),
+        'model_epoch': spec.checkpoint.get_epoch(),
+        'optimizer': spec.checkpoint.get_optimizer_class(),
+        'lr': spec.checkpoint.get_torch_optimizer().defaults['lr'],
+        'scheduler': spec.checkpoint.get_scheduler_class(),
+        # from epoch journal
+        'process_start': process_start,
+        'process_end': process_end,
+        'training_epoch': training_epoch,
+        'training_loss': training_loss,
+        'validation_loss': validation_loss,
+    }
+
+    # save checkpoint
+    checkpoint_path = spec.checkpoint_pattern.format(**pattern_dict)
+    spec.checkpoint.save_torch_checkpoint(checkpoint_path)
+
+    logger.info(json.dumps({
+        'type': 'save_checkpoint',
+        'timestamp': datetime.now().isoformat(),
+        'model_class': spec.checkpoint.get_model_class(),
+        'model_epoch': spec.checkpoint.get_epoch(),
+        'training_epoch': training_epoch,
+        'checkpoint_path': checkpoint_path,
+    }))
+
+    # save journal
+    if spec.journal_pattern:
+        journal_path = spec.journal_pattern.format(**pattern_dict)
+        journal = EpochJournal(
+            process_start=process_start,
+            process_end=process_end,
+            model_epoch=spec.checkpoint.get_epoch(),
+            training_epoch=training_epoch,
+            training_loss=training_loss,
+            training_step_journals=training_step_journals,
+            validation_loss=validation_loss,
+            validation_step_journals=validation_step_journals,
+            checkpoint_path=checkpoint_path,
+            log_path=log_path,
+            spec=spec,
+        )
+        with open(journal_path, 'w') as fp:
+            json.dump(journal.to_dict(), fp)
+
+        logger.info(json.dumps({
+            'type': 'save_journal',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.checkpoint.get_model_class(),
+            'model_epoch': spec.checkpoint.get_epoch(),
+            'training_epoch': training_epoch,
+            'journal_path': journal_path,
+        }))
+
+    # finish epoch and close log handler
+    if logger:
+        logger.info(json.dumps({
+            'type': 'end_epoch',
+            'timestamp': datetime.now().isoformat(),
+            'model_class': spec.checkpoint.get_model_class(),
+            'model_epoch': spec.checkpoint.get_epoch(),
+            'training_epoch': training_epoch,
+        }))
+        handlers = logger.handlers[:]
+        for handler in handlers:
+            logger.removeHandler(handler)
+            handler.close()
 
