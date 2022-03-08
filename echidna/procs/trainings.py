@@ -167,4 +167,71 @@ class TrainingSpec(object):
     def train(self):
         _train(self)
 
+class EpochJournal(object):
+    def __init__(self,
+                 process_start : datetime,
+                 process_end : datetime,
+                 model_epoch : int,
+                 training_epoch : int,
+                 training_loss : float,
+                 training_step_journals : list,
+                 validation_loss : float,
+                 validation_step_journals : list,
+                 checkpoint_path : str,
+                 log_path : str,
+                 spec : TrainingSpec):
+
+        self.process_start = process_start
+        self.process_end = process_end
+        self.model_epoch = model_epoch
+        self.training_epoch = training_epoch
+        self.training_loss = training_loss
+        self.training_step_journals = training_step_journals
+        self.validation_loss = validation_loss
+        self.validation_step_journals = validation_step_journals
+        self.checkpoint_path = checkpoint_path
+        self.log_path = log_path
+        self.spec = spec
+
+    def to_dict(self):
+        return {
+            'process_start': self.process_start.isoformat(),
+            'process_end': self.process_end.isoformat(),
+            'model_epoch': self.model_epoch,
+            'training_epoch': self.training_epoch,
+            'training_loss': self.training_loss,
+            'training_step_journals': [
+                e.to_dict() for e in self.training_step_journals
+            ],
+            'validation_loss': self.validation_loss,
+            'validation_step_journals': [
+                e.to_dict() for e in self.validation_step_journals
+            ] if self.validation_step_journals else None,
+            'checkpoint_path': self.checkpoint_path,
+            'log_path': self.log_path,
+            'spec': self.spec.to_dict()
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            process_start=datetime.fromisoformat(d['process_start']),
+            process_end=datetime.fromisoformat(d['process_end']),
+            model_epoch=d['model_epoch'],
+            training_epoch=d['training_epoch'],
+            training_loss=d['training_loss'],
+            training_step_journals=[
+                utils.StepJournal.from_dict(e)
+                for e in d['training_step_journals']
+            ],
+            validation_loss=d.get('validation_loss'),
+            validation_step_journals=[
+                utils.StepJournal.from_dict(e)
+                for e in d.get('validation_step_journals')
+            ] if d.get('validation_step_journals') is not None else None,
+            checkpoint_path=d['checkpoint_path'],
+            log_path=d['log_path'],
+            spec=TrainingSpec.from_dict(d['spec']),
+        )
+
 
