@@ -56,4 +56,41 @@ def build_dataloader(dataset,
     return loader
 
 
+class StepJournal(object):
+    def __init__(self,
+                 process_at : datetime,
+                 step,
+                 sample_losses : list,
+                 batch_loss : float,
+                 total_grad : float=None,
+                 sample_indices : list=None):
+        self.process_at = process_at
+        self.step = step
+        self.sample_losses = sample_losses
+        self.batch_loss = batch_loss
+        self.total_grad = total_grad
+        self.sample_indices = sample_indices
+
+    def to_dict(self):
+        return {
+            'process_at': self.process_at.isoformat(),
+            'step': self.step,
+            'sample_losses': self.sample_losses,
+            'sample_indices': self.sample_indices,
+            'batch_loss': self.batch_loss,
+            'total_grad': self.total_grad
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            process_at=datetime.fromisoformat(d['process_at']),
+            step=d['step'],
+            sample_losses=d['sample_losses'],
+            sample_indices=d.get('sample_indices'),
+            batch_loss=d['batch_loss'],
+            total_grad=d.get('total_grad'),
+        )
+
+
 
