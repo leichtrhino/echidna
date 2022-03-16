@@ -129,6 +129,6 @@ class ChimeraNet(torch.nn.Module):
     def parameter_list(self, base_lr):
         return self.encoder.parameter_list(base_lr) \
             + self.decoder.parameter_list(base_lr) \
-            + [{'params': self.conv.parameters()}]
+            + [{'params': self.embedding_head.parameters()}]
 
 
