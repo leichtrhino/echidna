@@ -72,7 +72,7 @@ class Checkpoint(object):
         # move everything to cpu
         device = next(self.get_torch_model().parameters()).device
         self.get_torch_model().to('cpu')
-        for stae in self.get_torch_optimizer().state.values():
+        for state in self.get_torch_optimizer().state.values():
             for k, v in state.items():
                 if type(v) == torch.Tensor:
                     state[k] = v.to('cpu')
