@@ -180,7 +180,7 @@ class SavedModel(Model):
 
 class CheckpointModel(Model):
     def __init__(self,
-                 checkpoint : checkpoints.Checkpoint):
+                 checkpoint):
         self.checkpoint = checkpoint
         self.model = None
 
