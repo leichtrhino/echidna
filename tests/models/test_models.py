@@ -31,7 +31,7 @@ class TestInitialModel(unittest.TestCase):
             m.get_hyperparameters(),
             {
                 'base': {
-                    'in_channel': 2,
+                    'in_channel': 1,
                     'out_channel': 3,
                     'n_lstm': 2,
                     'lstm_channel': 60,
@@ -57,7 +57,7 @@ class TestInitialModel(unittest.TestCase):
                     'class': 'baseline_encdec',
                     'hyperparameters': {
                         'base': {
-                            'in_channel': 2,
+                            'in_channel': 1,
                             'out_channel': 3,
                             'n_lstm': 2,
                             'lstm_channel': 60,
@@ -158,7 +158,7 @@ class TestCheckpointModel(unittest.TestCase):
                                     'class': 'baseline_encdec',
                                     'hyperparameters': {
                                         'base': {
-                                            'in_channel': 2,
+                                            'in_channel': 1,
                                             'out_channel': 3,
                                             'n_lstm': 2,
                                             'lstm_channel': 60,

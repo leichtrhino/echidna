@@ -60,7 +60,7 @@ class TestInitialCheckpoint(unittest.TestCase):
                             'class': 'baseline_encdec',
                             'hyperparameters': {
                                 'base': {
-                                    'in_channel': 2,
+                                    'in_channel': 1,
                                     'out_channel': 3,
                                     'n_lstm': 2,
                                     'lstm_channel': 60,
