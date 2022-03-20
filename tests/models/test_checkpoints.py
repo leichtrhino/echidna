@@ -94,7 +94,7 @@ class TestInitialCheckpoint(unittest.TestCase):
             d = torch.load(tmpfile.name)
             self.assertEqual(
                 set(d.keys()),
-                {'class', 'hyperparameters', 'state',
+                {'class', 'hyperparameters', 'epoch', 'state',
                  'optimizer', 'scheduler'}
             )
             self.assertEqual(
@@ -110,6 +110,7 @@ class TestSavedCheckpoint(unittest.TestCase):
     def setUp(self):
         self.tmpfile = tempfile.NamedTemporaryFile()
         self.init_c = get_initial_checkpoint()
+        self.init_c.get_torch_scheduler().step(metrics=0.0)
         self.init_c.save_torch_checkpoint(self.tmpfile.name)
 
     def tearDown(self):
@@ -138,6 +139,8 @@ class TestSavedCheckpoint(unittest.TestCase):
                          self.init_c.get_model_class())
         self.assertEqual(saved_checkpoint.get_model_hyperparameters(),
                          self.init_c.get_model_hyperparameters())
+        self.assertEqual(saved_checkpoint.get_epoch(),
+                         self.init_c.get_epoch())
         self.assertEqual(saved_checkpoint.get_optimizer_class(),
                          self.init_c.get_optimizer_class())
         self.assertEqual(saved_checkpoint.get_optimizer_hyperparameters(),
