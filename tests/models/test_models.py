@@ -1,4 +1,5 @@
 
+import inspect
 import unittest
 import tempfile
 import torch
@@ -83,7 +84,7 @@ class TestInitialModel(unittest.TestCase):
             d = torch.load(tmpfile.name)
             self.assertEqual(
                 set(d.keys()),
-                {'class', 'hyperparameters', 'state'}
+                {'class', 'hyperparameters', 'epoch', 'state'}
             )
 
 class TestSavedModel(unittest.TestCase):
@@ -123,7 +124,14 @@ class TestSavedModel(unittest.TestCase):
 
 class TestCheckpointModel(unittest.TestCase):
     def test_init_model(self):
-        checkpoint_model = CheckpointModel(get_initial_checkpoint())
+        checkpoint = get_initial_checkpoint()
+        if 'metrics' in inspect.signature(
+                checkpoint.get_torch_scheduler().step).parameters:
+            checkpoint.get_torch_scheduler().step(metrics=0)
+        else:
+            checkpoint.get_torch_scheduler().step()
+
+        checkpoint_model = CheckpointModel(checkpoint)
         checkpoint_torch_model = checkpoint_model.get_torch_model()
         torch_model = get_initial_model().get_torch_model()
         self.assertEqual(type(checkpoint_torch_model), type(torch_model))
@@ -131,6 +139,7 @@ class TestCheckpointModel(unittest.TestCase):
                          get_initial_model().get_class())
         self.assertEqual(checkpoint_model.get_hyperparameters(),
                          get_initial_model().get_hyperparameters())
+        self.assertEqual(checkpoint_model.get_epoch(), 1)
 
     def test_serialize_model(self):
         checkpoint_model = CheckpointModel(get_initial_checkpoint())
