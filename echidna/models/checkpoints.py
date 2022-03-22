@@ -42,6 +42,9 @@ class Checkpoint(object):
     def get_model_hyperparameters(self):
         return self.get_model().get_hyperparameters()
 
+    def get_epoch(self):
+        return self.get_torch_scheduler().last_epoch
+
     def get_torch_optimizer(self):
         raise NotImplementedError()
 
@@ -78,6 +81,7 @@ class Checkpoint(object):
         checkpoint_dict = {
             'class': self.get_model().get_class(),
             'hyperparameters': self.get_model().get_hyperparameters(),
+            'epoch': self.get_torch_scheduler().last_epoch,
             'state': self.get_model().get_torch_model().state_dict(),
             'optimizer': {
                 'class': self.get_optimizer_class(),
@@ -210,6 +214,7 @@ class SavedCheckpoint(Checkpoint):
         self.model.hyperparameters = checkpoint_dict['hyperparameters']
         self.model.torch_model = models.get_model_class \
                 (self.model.klass)(self.model.hyperparameters)
+        self.model.epoch = checkpoint_dict['epoch']
         self.model.torch_model.load_state_dict(checkpoint_dict['state'])
         # load optimizer
         self.optimizer_class = checkpoint_dict['optimizer']['class']
