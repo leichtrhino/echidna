@@ -44,6 +44,12 @@ class Model(object):
         """
         raise NotImplementedError()
 
+    def get_epoch(self) -> int:
+        """
+        get epoch of model
+        """
+        return 0
+
     def save_torch_model(self, path):
         """
         Save model
@@ -57,6 +63,7 @@ class Model(object):
         model_dict = {
             'class': self.get_class(),
             'hyperparameters': self.get_hyperparameters(),
+            'epoch': self.get_epoch(),
             'state': self.get_torch_model().state_dict(),
         }
         torch.save(model_dict, path)
@@ -128,6 +135,7 @@ class SavedModel(Model):
         self.path = path
         self.klass = None
         self.hyperparameters = None
+        self.epoch = None
         self.torch_model = None
 
     def _load(self):
@@ -136,6 +144,7 @@ class SavedModel(Model):
         self.hyperparameters = model_dict['hyperparameters']
         self.torch_model = get_model_class \
                 (self.klass)(self.hyperparameters)
+        self.epoch = model_dict['epoch']
         self.torch_model.load_state_dict(model_dict['state'])
 
     def get_class(self):
@@ -147,6 +156,11 @@ class SavedModel(Model):
         if self.hyperparameters is None:
             self._load()
         return self.hyperparameters
+
+    def get_epoch(self):
+        if self.epoch is None:
+            self._load()
+        return self.epoch
 
     def get_torch_model(self):
         if self.torch_model is None:
@@ -185,6 +199,12 @@ class CheckpointModel(Model):
         if self.model is None:
             self.model = self.checkpoint.get_model()
         return self.model.get_hyperparameters()
+
+    def get_epoch(self) -> int:
+        """
+        get epoch of the model
+        """
+        return self.checkpoint.get_torch_scheduler().last_epoch
 
     def get_torch_model(self) -> torch.nn.Module:
         """
