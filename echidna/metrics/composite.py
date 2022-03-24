@@ -41,6 +41,11 @@ _loss_map = {
 }
 _reverse_loss_map = dict((v, k) for k, v in _loss_map.items())
 
+def get_loss_name(loss : Loss):
+    if type(loss) not in _reverse_loss_map:
+        raise ValueError(f'{type(loss)} is unknown loss type')
+    return _reverse_loss_map[type(loss)]
+
 class CompositeLoss(Loss):
     """
     NOTE: reduction attribute of each loss is ignored
