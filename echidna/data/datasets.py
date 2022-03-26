@@ -104,6 +104,7 @@ class Dataset(torch.utils.data.Dataset):
 
         return mixed_data, \
             {
+                'index': idx,
                 'sample': sample_metadata,
                 'augmentation': augmentation_metadata,
                 'mixture': mixture_metadata
