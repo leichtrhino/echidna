@@ -45,6 +45,21 @@ class Dataset(torch.utils.data.Dataset):
                 for ni, n in enumerate(m.mixture_indices):
                     self.indices.append((a.sample_index, ai, mi, ni))
 
+    def to_dict(self):
+        return {
+            'samplesPath': self.samples_metadata_path,
+            'augmentationsPath': self.augmentations_metadata_path,
+            'mixturesPath': self.mixtures_metadata_path,
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            samples_metadata_path=d['samplesPath'],
+            augmentations_metadata_path=d['augmentationsPath'],
+            mixtures_metadata_path=d['mixturesPath'],
+        )
+
     def __len__(self):
         return len(self.indices)
 
