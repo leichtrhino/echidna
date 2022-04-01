@@ -233,7 +233,7 @@ class TestAugmentations(unittest.TestCase):
                     ],
                     'include_other': False,
                 },
-                'trials_per_augmentation': 10,
+                'trials_per_augmentation': 5,
                 'separation_difficulty': 0.0,
 
             },
@@ -298,7 +298,7 @@ class TestAugmentations(unittest.TestCase):
                     ],
                     'include_other': False,
                 },
-                'trials_per_augmentation': 10,
+                'trials_per_augmentation': 5,
                 'separation_difficulty': 1.0,
 
             },
