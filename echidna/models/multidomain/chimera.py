@@ -2,7 +2,7 @@
 import typing as tp
 import torch
 
-from .utils import init_conv_weight, init_module
+from ..utils import init_conv_weight, init_module
 
 class EmbeddingHead(torch.nn.Module):
     """
@@ -54,21 +54,22 @@ class ChimeraNet(torch.nn.Module):
     def __init__(self,
                  encoder_class : tp.Type[torch.nn.Module],
                  decoder_class : tp.Type[torch.nn.Module],
-                 base_hyperparameters : tp.Dict[str, object],
-                 embd_feature : int,
-                 embd_dim : int,
+                 hyperparameters : tp.Dict[str, object],
                  ):
         """
         """
 
         super().__init__()
+        base_hyperparameters = hyperparameters['base']
+        embd_hyperparameters = hyperparameters['embd']
+
         self.encoder = init_module(encoder_class, base_hyperparameters)
         self.decoder = init_module(decoder_class, base_hyperparameters)
 
         self.embedding_head = EmbeddingHead(
             self.encoder.forward_feature_size(),
-            embd_feature,
-            embd_dim
+            embd_hyperparameters['embd_feature'],
+            embd_hyperparameters['embd_dim'],
         )
 
     def forward(self, x):

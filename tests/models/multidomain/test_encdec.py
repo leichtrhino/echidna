@@ -2,17 +2,19 @@
 import unittest
 import torch
 
-from echidna.models.torch.encoderdecoder import EncoderDecoderModel
+from echidna.models.multidomain.encdec import EncDecModel
 from .utils import ToyEncoder, ToyDecoder
 
-class TestEncoderDecoder(unittest.TestCase):
+class TestEncDec(unittest.TestCase):
     def test_encoderdecoder(self):
-        m = EncoderDecoderModel(
+        m = EncDecModel(
             encoder_class=ToyEncoder,
             decoder_class=ToyDecoder,
-            base_hyperparameters=dict(
-                out_channel=2
-            )
+            hyperparameters={
+                'base': {
+                    'out_channel': 2,
+                }
+            }
         )
         target_length = 1000
         input_length = m.reverse_wave_length(target_length)

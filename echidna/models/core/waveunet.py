@@ -3,7 +3,7 @@ import typing as tp
 from math import log2, ceil
 import torch
 
-from .utils import init_conv_weight, match_length
+from ..utils import init_conv_weight, match_length
 
 class DownsamplingBlock(torch.nn.Module):
     """

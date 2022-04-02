@@ -3,7 +3,7 @@ import typing as tp
 from math import ceil
 import torch
 
-from .utils import init_conv_weight, match_length
+from ..utils import init_conv_weight, match_length
 from .commonlayers import (
     STFTLayer,
     ISTFTLayer,

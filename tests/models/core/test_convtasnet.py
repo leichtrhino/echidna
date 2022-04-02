@@ -2,9 +2,9 @@
 import unittest
 import torch
 
-from echidna.models.torch import convtasnet as ctn
-from echidna.models.torch.utils import match_length
-from echidna.models.torch.encoderdecoder import EncoderDecoderModel
+from echidna.models.core import convtasnet as ctn
+from echidna.models.multidomain.encdec import EncDecModel
+from echidna.models.utils import match_length
 
 class TestConvTasNetModels(unittest.TestCase):
     def test_conv_block(self):
@@ -152,20 +152,22 @@ class TestConvTasNetModels(unittest.TestCase):
         )
 
     def test_convtasnet(self):
-        convtasnet = EncoderDecoderModel(
+        convtasnet = EncDecModel(
             encoder_class=ctn.ConvTasNetEncoder,
             decoder_class=ctn.ConvTasNetDecoder,
-            base_hyperparameters=dict(
-                encoder_in_channel=1,
-                decoder_out_channel=2,
-                feature_channel=128,
-                block_channel=14,
-                bottleneck_channel=12,
-                skipconnection_channel=16,
-                kernel_size=9,
-                depth=3,
-                repeats=2
-            ),
+            hyperparameters={
+                'base': dict(
+                    encoder_in_channel=1,
+                    decoder_out_channel=2,
+                    feature_channel=128,
+                    block_channel=14,
+                    bottleneck_channel=12,
+                    skipconnection_channel=16,
+                    kernel_size=9,
+                    depth=3,
+                    repeats=2,
+                )
+            }
         )
 
         target_length = 1000

@@ -2,7 +2,7 @@
 import typing as tp
 import torch
 
-from .utils import init_conv_weight
+from ..utils import init_conv_weight
 from .commonlayers import (
     STFTLayer,
     ISTFTLayer,

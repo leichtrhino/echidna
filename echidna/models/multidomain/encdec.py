@@ -2,21 +2,22 @@
 import typing as tp
 import torch
 
-from .utils import init_module
+from ..utils import init_module
 
-class EncoderDecoderModel(torch.nn.Module):
+class EncDecModel(torch.nn.Module):
     """
     """
 
     def __init__(self,
                  encoder_class : tp.Type[torch.nn.Module],
                  decoder_class : tp.Type[torch.nn.Module],
-                 base_hyperparameters : tp.Dict[str, object],
+                 hyperparameters : tp.Dict[str, object],
                  ):
         """
         """
 
         super().__init__()
+        base_hyperparameters = hyperparameters['base']
         self.encoder = init_module(encoder_class, base_hyperparameters)
         self.decoder = init_module(decoder_class, base_hyperparameters)
 

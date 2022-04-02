@@ -2,9 +2,9 @@
 import unittest
 import torch
 
-from echidna.models.torch import demucs as dmx
-from echidna.models.torch.utils import match_length
-from echidna.models.torch.encoderdecoder import EncoderDecoderModel
+from echidna.models.core import demucs as dmx
+from echidna.models.multidomain.encdec import EncDecModel
+from echidna.models.utils import match_length
 
 class TestDemucsModels(unittest.TestCase):
     def test_restricted_blstm(self):
@@ -335,23 +335,25 @@ class TestDemucsModels(unittest.TestCase):
         )
 
     def test_demucs(self):
-        demucs = EncoderDecoderModel(
+        demucs = EncDecModel(
             encoder_class=dmx.DemucsEncoder,
             decoder_class=dmx.DemucsDecoder,
-            base_hyperparameters=dict(
-                # architecture parameters
-                in_channel=2,
-                out_channel=3,
-                mid_channels=[48, 96, 144, 192],
-                # conv parameters
-                kernel_size=8,
-                stride=4,
-                inner_kernel_size=4,
-                inner_stride=2,
-                # misc. architecture parameters
-                embedding_layers=1,
-                attention_layers=2,
-            ),
+            hyperparameters={
+                'base': dict(
+                    # architecture parameters
+                    in_channel=2,
+                    out_channel=3,
+                    mid_channels=[48, 96, 144, 192],
+                    # conv parameters
+                    kernel_size=8,
+                    stride=4,
+                    inner_kernel_size=4,
+                    inner_stride=2,
+                    # misc. architecture parameters
+                    embedding_layers=1,
+                    attention_layers=2,
+                ),
+            }
         )
 
         target_length = 16000
@@ -362,23 +364,25 @@ class TestDemucsModels(unittest.TestCase):
         self.assertEqual(y['waves'].shape, (8, 3, 2, output_length))
 
     def test_demucs_custom_kernel_size(self):
-        demucs = EncoderDecoderModel(
+        demucs = EncDecModel(
             encoder_class=dmx.DemucsEncoder,
             decoder_class=dmx.DemucsDecoder,
-            base_hyperparameters=dict(
-                # architecture parameters
-                in_channel=2,
-                out_channel=3,
-                mid_channels=[48, 96, 144, 192],
-                # conv parameters
-                kernel_size=[8, 8, 4],
-                stride=[4, 4, 2],
-                inner_kernel_size=4,
-                inner_stride=2,
-                # misc. architecture parameters
-                embedding_layers=1,
-                attention_layers=2,
-            ),
+            hyperparameters={
+                'base': dict(
+                    # architecture parameters
+                    in_channel=2,
+                    out_channel=3,
+                    mid_channels=[48, 96, 144, 192],
+                    # conv parameters
+                    kernel_size=[8, 8, 4],
+                    stride=[4, 4, 2],
+                    inner_kernel_size=4,
+                    inner_stride=2,
+                    # misc. architecture parameters
+                    embedding_layers=1,
+                    attention_layers=2,
+                )
+            }
         )
 
         target_length = 16000

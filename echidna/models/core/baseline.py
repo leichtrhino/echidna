@@ -2,7 +2,7 @@
 import typing as tp
 import torch
 
-from .utils import init_lstm_weight
+from ..utils import init_lstm_weight
 from .commonlayers import (
     STFTLayer,
     ISTFTLayer,
@@ -11,7 +11,6 @@ from .commonlayers import (
     CodebookMask,
     SigmoidMask,
 )
-from .encoderdecoder import EncoderDecoderModel
 
 class BaselineEncoder(torch.nn.Module):
     def __init__(self,

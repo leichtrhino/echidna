@@ -4,9 +4,9 @@ import math
 import itertools
 import torch
 
-from echidna.models.torch import waveunet as wu
-from echidna.models.torch.utils import match_length
-from echidna.models.torch.encoderdecoder import EncoderDecoderModel
+from echidna.models.core import waveunet as wu
+from echidna.models.multidomain.encdec import EncDecModel
+from echidna.models.utils import match_length
 
 class TestWaveUNetModels(unittest.TestCase):
     def test_interpolate_shape(self):
@@ -243,26 +243,28 @@ class TestWaveUNetModels(unittest.TestCase):
         )
 
     def test_waveunet(self):
-        m = EncoderDecoderModel(
+        m = EncDecModel(
             encoder_class=wu.WaveUNetEncoder,
             decoder_class=wu.WaveUNetDecoder,
-            base_hyperparameters=dict(
-                channel_in=2,
-                downsampling_channel_out=[24, 48, 72],
-                downsampling_kernel_size=15,
-                downsampling_rate=2,
-                encoder_channel_out=[96],
-                encoder_kernel_size=15,
-                upsampling_channel_in=96,
-                upsampling_channel_out=[72, 48, 24],
-                upsampling_kernel_size=5,
-                upsampling_rate=2,
-                upsampling_mode='nearest',
-                upsampling_residual_channel=[72, 48, 24],
-                decoder_channel_out=3,
-                decoder_kernel_size=5,
-                decoder_residual_channel=2
-            )
+            hyperparameters={
+                'base': dict(
+                    channel_in=2,
+                    downsampling_channel_out=[24, 48, 72],
+                    downsampling_kernel_size=15,
+                    downsampling_rate=2,
+                    encoder_channel_out=[96],
+                    encoder_kernel_size=15,
+                    upsampling_channel_in=96,
+                    upsampling_channel_out=[72, 48, 24],
+                    upsampling_kernel_size=5,
+                    upsampling_rate=2,
+                    upsampling_mode='nearest',
+                    upsampling_residual_channel=[72, 48, 24],
+                    decoder_channel_out=3,
+                    decoder_kernel_size=5,
+                    decoder_residual_channel=2
+                )
+            }
         )
         target_length = 1000
         input_length = m.reverse_wave_length(target_length)

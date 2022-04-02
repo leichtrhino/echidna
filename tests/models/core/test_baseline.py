@@ -2,7 +2,7 @@
 import unittest
 import torch
 
-from echidna.models.torch import baseline as bl
+from echidna.models.core import baseline as bl
 
 class TestBaselineModels(unittest.TestCase):
     def test_baseline_encoder(self):

@@ -2,7 +2,7 @@
 from math import pi, ceil, sqrt, cos, sin
 import torch
 
-from .utils import init_conv_weight, generate_dft_matrix
+from ..utils import init_conv_weight, generate_dft_matrix
 
 class TrainableSTFTLayer(torch.nn.Module):
     """
