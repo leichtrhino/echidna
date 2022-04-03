@@ -2,9 +2,9 @@
 import unittest
 import torch
 
-from echidna.models import demucs as dmx
-from echidna.models.utils import match_length
-from echidna.models.encoderdecoder import EncoderDecoderModel
+from echidna.models.torch import demucs as dmx
+from echidna.models.torch.utils import match_length
+from echidna.models.torch.encoderdecoder import EncoderDecoderModel
 
 class TestDemucsModels(unittest.TestCase):
     def test_restricted_blstm(self):
@@ -359,7 +359,7 @@ class TestDemucsModels(unittest.TestCase):
         output_length = demucs.forward_wave_length(input_length)
         x = torch.rand(8, 2, input_length)
         y = demucs(x)
-        self.assertEqual(y.shape, (8, 3, 2, output_length))
+        self.assertEqual(y['waves'].shape, (8, 3, 2, output_length))
 
     def test_demucs_custom_kernel_size(self):
         demucs = EncoderDecoderModel(
@@ -386,7 +386,7 @@ class TestDemucsModels(unittest.TestCase):
         output_length = demucs.forward_wave_length(input_length)
         x = torch.rand(8, 2, input_length)
         y = demucs(x)
-        self.assertEqual(y.shape, (8, 3, 2, output_length))
+        self.assertEqual(y['waves'].shape, (8, 3, 2, output_length))
         self.assertEqual(demucs.encoder.stft.hop_length, 4*4*2)
         # the first factor is constant, second and third are from strides
         # last one is from kernel_size[-1]

@@ -4,9 +4,9 @@ import math
 import itertools
 import torch
 
-from echidna.models import waveunet as wu
-from echidna.models.utils import match_length
-from echidna.models.encoderdecoder import EncoderDecoderModel
+from echidna.models.torch import waveunet as wu
+from echidna.models.torch.utils import match_length
+from echidna.models.torch.encoderdecoder import EncoderDecoderModel
 
 class TestWaveUNetModels(unittest.TestCase):
     def test_interpolate_shape(self):
@@ -268,5 +268,5 @@ class TestWaveUNetModels(unittest.TestCase):
         input_length = m.reverse_wave_length(target_length)
         output_length = m.forward_wave_length(input_length)
         x = torch.zeros((8, 2, input_length))
-        self.assertEqual(m(x).shape, (8, 3, 2, output_length))
+        self.assertEqual(m(x)['waves'].shape, (8, 3, 2, output_length))
 

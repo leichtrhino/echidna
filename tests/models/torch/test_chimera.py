@@ -2,8 +2,8 @@
 import unittest
 import torch
 
-from echidna.models import baseline as bl
-from echidna.models.chimera import ChimeraNet
+from echidna.models.torch import baseline as bl
+from echidna.models.torch.chimera import ChimeraNet
 
 class TestChimeraNetModels(unittest.TestCase):
     def test_baseline(self):
@@ -25,12 +25,12 @@ class TestChimeraNetModels(unittest.TestCase):
                              embd_dim=16)
 
         x = torch.rand(8, 1, 16000)
-        y, embd = chimera(x)
+        y = chimera(x)
         self.assertEqual(
-            y.shape,
+            y['waves'].shape,
             (8, 2, chimera.forward_length(16000))
         )
         self.assertEqual(
-            embd.shape,
+            y['embd'].shape,
             (8, 64, chimera.forward_embd_length(16000), 16)
         )

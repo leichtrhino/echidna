@@ -11,6 +11,7 @@ from .commonlayers import (
     CodebookMask,
     SigmoidMask,
 )
+from .encoderdecoder import EncoderDecoderModel
 
 class BaselineEncoder(torch.nn.Module):
     def __init__(self,
@@ -144,3 +145,4 @@ class BaselineDecoder(torch.nn.Module):
             {'params': self.mask_module.parameters()},
             {'params': self.istft.parameters(), 'lr': base_lr * 1e-3},
         ]
+

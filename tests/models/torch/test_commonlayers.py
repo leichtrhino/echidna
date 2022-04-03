@@ -2,7 +2,7 @@
 import unittest
 import torch
 
-from echidna.models import commonlayers
+from echidna.models.torch import commonlayers
 
 class TestCommonLayers(unittest.TestCase):
     def test_encoder(self):

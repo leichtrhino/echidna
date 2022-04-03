@@ -2,9 +2,9 @@
 import unittest
 import torch
 
-from echidna.models import convtasnet as ctn
-from echidna.models.utils import match_length
-from echidna.models.encoderdecoder import EncoderDecoderModel
+from echidna.models.torch import convtasnet as ctn
+from echidna.models.torch.utils import match_length
+from echidna.models.torch.encoderdecoder import EncoderDecoderModel
 
 class TestConvTasNetModels(unittest.TestCase):
     def test_conv_block(self):
@@ -174,5 +174,5 @@ class TestConvTasNetModels(unittest.TestCase):
 
         x = torch.rand(8, 1, input_length)
         y = convtasnet(x)
-        self.assertEqual(y.shape, (8, 2, output_length))
+        self.assertEqual(y['waves'].shape, (8, 2, output_length))
 

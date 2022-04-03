@@ -93,7 +93,10 @@ class ChimeraNet(torch.nn.Module):
 
         embd_head = self.embedding_head(embd)
 
-        return waveform, embd_head
+        return {
+            'waves': waveform,
+            'embd': embd_head,
+        }
 
     def forward_length(self, l_in : int) -> int:
         """

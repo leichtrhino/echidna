@@ -33,7 +33,7 @@ class EncoderDecoderModel(torch.nn.Module):
             dec_out = self.decoder(**enc_out)
         else:
             dec_out = self.decoder(enc_out)
-        return dec_out
+        return {'waves': dec_out}
 
     def forward_wave_length(self, l_in : int) -> int:
         """

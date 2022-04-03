@@ -2,7 +2,7 @@
 import unittest
 import torch
 
-from echidna.models.encoderdecoder import EncoderDecoderModel
+from echidna.models.torch.encoderdecoder import EncoderDecoderModel
 from .utils import ToyEncoder, ToyDecoder
 
 class TestEncoderDecoder(unittest.TestCase):
@@ -18,5 +18,5 @@ class TestEncoderDecoder(unittest.TestCase):
         input_length = m.reverse_wave_length(target_length)
         output_length = m.forward_wave_length(input_length)
         x = torch.zeros((8, 2, input_length))
-        self.assertEqual(m(x).shape, (8, 2, output_length))
+        self.assertEqual(m(x)['waves'].shape, (8, 2, output_length))
 
