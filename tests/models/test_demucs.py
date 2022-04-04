@@ -3,6 +3,7 @@ import unittest
 import torch
 
 from echidna.models import demucs as dmx
+from echidna.models.utils import match_length
 from echidna.models.encoderdecoder import EncoderDecoderModel
 
 class TestDemucsModels(unittest.TestCase):
@@ -221,7 +222,7 @@ class TestDemucsModels(unittest.TestCase):
         )
 
         x = torch.rand(8, 2, 16000)
-        embd, t_encs, z_encs = demucs(x)
+        embd, t_encs, z_encs, x_ = demucs(x)
         self.assertEqual(demucs.forward_feature_size(), 192)
         self.assertEqual(
             embd.shape,
@@ -231,6 +232,7 @@ class TestDemucsModels(unittest.TestCase):
                 demucs.forward_length(16000)
             )
         )
+        self.assertTrue(torch.all(x == x_))
 
         self.assertEqual(len(t_encs), len([48, 96, 144]))
         for t_enc, c in zip(t_encs, [48, 96, 144]):
@@ -263,8 +265,8 @@ class TestDemucsModels(unittest.TestCase):
         decoder = dmx.DemucsDecoder(**kwargs)
 
         x = torch.rand(8, 2, 16000)
-        embd, t_encs, z_encs = encoder(x)
-        y = decoder(embd, t_encs, z_encs)
+        embd, t_encs, z_encs, x_ = encoder(x)
+        y = decoder(embd, t_encs, z_encs, x_)
 
         self.assertEqual(
             y.shape[-1],
@@ -279,6 +281,57 @@ class TestDemucsModels(unittest.TestCase):
         self.assertEqual(
             decoder.reverse_length(y.shape[-1]),
             embd.shape[-1]
+        )
+
+    def test_demucs_decoder_residual(self):
+        encoder = dmx.DemucsEncoder(
+            # architecture parameters
+            in_channel=2,
+            out_channel=3,
+            mid_channels=[48, 96, 144, 192],
+            # conv parameters
+            kernel_size=8,
+            stride=4,
+            inner_kernel_size=4,
+            inner_stride=2,
+        )
+        decoder = dmx.DemucsDecoder(
+            # architecture parameters
+            in_channel=2,
+            out_channel=3,
+            mid_channels=[48, 96, 144, 192],
+            # conv parameters
+            kernel_size=8,
+            stride=4,
+            inner_kernel_size=4,
+            inner_stride=2,
+            output_residual=True
+        )
+
+        x = torch.rand(8, 2, 16000)
+        embd, t_encs, z_encs, x_ = encoder(x)
+        y = decoder(embd, t_encs, z_encs, x_)
+
+        self.assertEqual(
+            y.shape[-1],
+            decoder.forward_length(embd.shape[-1])
+        )
+
+        self.assertEqual(
+            y.shape,
+            (8, 3, 2, decoder.forward_length(embd.shape[-1]))
+        )
+
+        self.assertEqual(
+            decoder.reverse_length(y.shape[-1]),
+            embd.shape[-1]
+        )
+
+        self.assertLess(
+            torch.max(torch.abs(
+                match_length(x, y.shape[-1]) - torch.sum(y, dim=1)
+            )),
+            1e-3
         )
 
     def test_demucs(self):
