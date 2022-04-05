@@ -164,6 +164,7 @@ class ConvTasNetDecoder(torch.nn.Module):
                  skipconnection_channel : int,
                  magbook_size : int=1,
                  phasebook_size : int=1,
+                 output_residual : bool=False,
                  hop_length=None
                  ) -> None:
 
@@ -175,11 +176,14 @@ class ConvTasNetDecoder(torch.nn.Module):
         self.encoder_in_channel = encoder_in_channel
         self.decoder_out_channel = decoder_out_channel
         self.skipconnection_channel = skipconnection_channel
+        self.output_residual = output_residual
 
         self.out_prelu = torch.nn.PReLU()
 
         # initialize mask module
-        mask_num = encoder_in_channel * decoder_out_channel
+        mask_num = encoder_in_channel \
+            * (decoder_out_channel - 1 if output_residual
+               else decoder_out_channel)
         if magbook_size > 1 and phasebook_size > 1:
             self.mask_module = CodebookMask(
                 skipconnection_channel,
@@ -204,15 +208,26 @@ class ConvTasNetDecoder(torch.nn.Module):
         masks = self.mask_module(self.out_prelu(embd))
 
         # decode from masks
-        base_feature = base_feature.unsqueeze(-5)
         masks = masks.unflatten(
-            -4, (self.decoder_out_channel, self.encoder_in_channel))
+            -4,
+            (self.decoder_out_channel - 1 if self.output_residual
+             else self.decoder_out_channel,
+             self.encoder_in_channel)
+        )
         m_re, m_im = [m.squeeze(-3) for m in masks.split(1, dim=-3)]
-        b_re, b_im = [m.squeeze(-3) for m in base_feature.split(1, dim=-3)]
+        b_re, b_im = [m.squeeze(-3) for m in base_feature.unsqueeze(-5).split(1, dim=-3)]
         masked_features = torch.stack((
             m_re * b_re - m_im * b_im,
             m_re * b_im + m_im * b_re,
         ), dim=-3)
+
+        if self.output_residual:
+            other_feature = base_feature \
+                - torch.sum(masked_features, dim=-5)
+            masked_features = torch.cat((
+                masked_features,
+                other_feature.unsqueeze(-5)
+            ), dim=-5)
 
         signals = self.istft(masked_features)
         signals = signals.squeeze(-3).squeeze(-2)

@@ -3,6 +3,7 @@ import unittest
 import torch
 
 from echidna.models import convtasnet as ctn
+from echidna.models.utils import match_length
 from echidna.models.encoderdecoder import EncoderDecoderModel
 
 class TestConvTasNetModels(unittest.TestCase):
@@ -115,6 +116,40 @@ class TestConvTasNetModels(unittest.TestCase):
         y = decoder(embd, X)
         self.assertEqual(y.shape, (8, 3, 2, output_length))
 
+    def test_convtasnetdecoder_residual(self):
+        encoder = ctn.ConvTasNetEncoder(encoder_in_channel=1,
+                                        feature_channel=128,
+                                        block_channel=14,
+                                        bottleneck_channel=12,
+                                        skipconnection_channel=16,
+                                        kernel_size=9,
+                                        depth=3,
+                                        repeats=2)
+        decoder = ctn.ConvTasNetDecoder(encoder_in_channel=1,
+                                        decoder_out_channel=2,
+                                        feature_channel=128,
+                                        skipconnection_channel=16,
+                                        output_residual=True)
+
+        target_length = 1000
+        input_length = encoder.reverse_length(
+            decoder.reverse_length(target_length))
+        output_length = decoder.forward_length(
+            encoder.forward_length(input_length))
+
+        x = torch.rand(8, input_length)
+        y = decoder(*encoder(x))
+
+        self.assertEqual(y.shape, (8, 2, output_length))
+        # check residual output
+        length = min(x.shape[-1], y.shape[-1])
+        self.assertLess(
+            torch.max(torch.abs(
+                match_length(x, length)
+                - match_length(torch.sum(y, dim=-2), length)
+            )).detach().item(),
+            1
+        )
 
     def test_convtasnet(self):
         convtasnet = EncoderDecoderModel(
