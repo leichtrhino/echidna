@@ -410,6 +410,7 @@ class WaveUNetDecoder(torch.nn.Module):
     Encoder module for wave u net
     """
     def __init__(self,
+                 channel_in : int,
                  upsampling_channel_in : int,
                  upsampling_channel_out : tp.List[int],
                  upsampling_kernel_size : int,
@@ -418,10 +419,12 @@ class WaveUNetDecoder(torch.nn.Module):
                  upsampling_residual_channel : tp.List[int],
                  decoder_channel_out : int,
                  decoder_kernel_size : int,
-                 decoder_residual_channel : int) -> None:
+                 decoder_residual_channel : int,
+                 output_residual : bool=False) -> None:
         """
         Parameter
         ---------
+        channel_in : int
         upsampling_channel_in : int
         upsampling_channel_out : List[int]
         upsampling_kernel_size : int
@@ -431,14 +434,18 @@ class WaveUNetDecoder(torch.nn.Module):
         decoder_channel_out : int,
         decoder_kernel_size : int,
         decoder_residual_channel : int
+        output_residual : bool
         """
 
         super().__init__()
         assert upsampling_residual_channel \
             and len(upsampling_residual_channel) == len(upsampling_channel_out)
 
+        self.channel_in = channel_in
         self.upsampling_kernel_size = upsampling_kernel_size
+        self.decoder_channel_out = decoder_channel_out
         self.decoder_kernel_size = decoder_kernel_size
+        self.output_residual = output_residual
 
         self.upsampling_layers = torch.nn.ModuleList()
         c_in = upsampling_channel_in
@@ -456,7 +463,9 @@ class WaveUNetDecoder(torch.nn.Module):
 
         self.decoder_layer = torch.nn.Conv1d(
             c_in + decoder_residual_channel,
-            decoder_channel_out,
+            (decoder_channel_out - 1 if self.output_residual
+             else decoder_channel_out)
+            * channel_in,
             decoder_kernel_size
         )
 
@@ -496,6 +505,12 @@ class WaveUNetDecoder(torch.nn.Module):
             )
         )
 
+        if self.output_residual:
+            other = match_length(decoder_residual, out.shape[-1]) \
+                - torch.sum(out, dim=-3)
+            out = torch.cat((out, other.unsqueeze(-3)), dim=-3)
+
+        out = out.squeeze(-3).squeeze(-2)
         return out
 
     def forward_length(self, l_in : int) -> int:
