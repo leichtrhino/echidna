@@ -486,6 +486,16 @@ class WaveUNetDecoder(torch.nn.Module):
         out = self.decoder_layer(torch.cat((
             out, match_length(decoder_residual, out.shape[-1])
         ), dim=1))
+
+        out = out.unflatten(
+            -2,
+            (
+                self.decoder_channel_out - 1 if self.output_residual
+                else self.decoder_channel_out,
+                self.channel_in
+            )
+        )
+
         return out
 
     def forward_length(self, l_in : int) -> int:
