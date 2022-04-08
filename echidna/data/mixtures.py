@@ -313,7 +313,7 @@ def _save_mixture(spec : MixtureSpec):
     args = [
         (
             sample_i,
-            mix_i,
+            spec.mix_per_sample, # mix_n
             algorithm,
             os.path.join(
                 os.path.dirname(spec.sample_metadata_path),
@@ -323,7 +323,6 @@ def _save_mixture(spec : MixtureSpec):
             random_.randrange(2**32), #seed,
         )
         for sample_i, metadata in enumerate(metadata_list)
-        for mix_i in range(spec.mix_per_sample)
     ]
 
     # map func
@@ -347,18 +346,19 @@ def _save_mixture(spec : MixtureSpec):
     # iterate over dataset and find mixtures
     mixture_list = []
     journal_list = []
-    for mixture, journal in map_fn(_make_single_mixture, args):
-        mixture_list.append(mixture)
-        journal_list.append(journal)
+    for mixtures, journals in map_fn(_make_mixtures_for_sample, args):
+        mixture_list.extend(mixtures)
+        journal_list.extend(journals)
         if logger:
-            logger.info(json.dumps({
-                'type': 'made_mixture',
-                'timestamp': datetime.now().isoformat(),
-                'mix_algorithm': algorithm_name,
-                'sample_index': mixture.sample_index,
-                'mixture_index': mixture.mixture_index,
-                'mixture_size': len(mixture.mixture_indices),
-            }))
+            for mixture in mixtures:
+                logger.info(json.dumps({
+                    'type': 'made_mixture',
+                    'timestamp': datetime.now().isoformat(),
+                    'mix_algorithm': algorithm_name,
+                    'sample_index': mixture.sample_index,
+                    'mixture_index': mixture.mixture_index,
+                    'mixture_size': len(mixture.mixture_indices),
+                }))
 
     # close map function
     if spec.jobs is not None:
@@ -424,20 +424,25 @@ def _save_mixture(spec : MixtureSpec):
             logger.removeHandler(handler)
             handler.close()
 
-def _make_single_mixture(args):
-    sample_i, mix_i, algorithm, data_path, metadata, seed = args
+def _make_mixtures_for_sample(args):
+    sample_i, mix_n, algorithm, data_path, metadata, seed = args
     data = torch.load(data_path)
 
-    mixture_indices, aux_out = algorithm.mix_index(data,
-                                               metadata,
-                                               seed)
-    mixture = Mixture(sample_index=sample_i,
-                      mixture_index=mix_i,
-                      mixture_indices=mixture_indices)
-    journal = MixtureJournal(mixture=mixture,
-                             created_at=datetime.now(),
-                             seed=seed,
-                             algorithm_out=aux_out)
+    mixtures = []
+    journals = []
+    for mix_i in range(mix_n):
+        mixture_indices, aux_out = algorithm.mix_index(data,
+                                                   metadata,
+                                                   seed)
+        mixture = Mixture(sample_index=sample_i,
+                          mixture_index=mix_i,
+                          mixture_indices=mixture_indices)
+        journal = MixtureJournal(mixture=mixture,
+                                 created_at=datetime.now(),
+                                 seed=seed,
+                                 algorithm_out=aux_out)
+        mixtures.append(mixture)
+        journals.append(journal)
 
-    return mixture, journal
+    return mixtures, journals
 

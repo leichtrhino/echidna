@@ -323,7 +323,7 @@ class RandomAugmentation(AugmentationAlgorithm):
                             metadata : tp.List[tp.Dict[str, object]],
                             seed : int,
                             ) -> tp.List[tp.Dict[str, object]]:
-        augmentation_params = _make_param_set(
+        augmentation_params, _ = _make_param_set(
             data=data,
             metadata=metadata,
             seed=seed,
