@@ -27,7 +27,7 @@ class TestBaselineModels(unittest.TestCase):
                                      hop_length=32,
                                      magbook_size=1,
                                      phasebook_size=1,
-                                     mask_each=True,)
+                                     output_residual=False)
 
         embd = torch.rand(8, 60, 128)
         X = torch.rand(8, 1, 2, 128 // 2, 128)
@@ -44,7 +44,7 @@ class TestBaselineModels(unittest.TestCase):
                                      hop_length=32,
                                      magbook_size=1,
                                      phasebook_size=1,
-                                     mask_each=False)
+                                     output_residual=True)
 
         embd = torch.rand(8, 60, 128)
         X = torch.rand(8, 1, 2, 128 // 2, 128)
@@ -61,7 +61,7 @@ class TestBaselineModels(unittest.TestCase):
                                      hop_length=32,
                                      magbook_size=1,
                                      phasebook_size=1,
-                                     mask_each=True)
+                                     output_residual=False)
 
         embd = torch.rand(8, 60, 128)
         X = torch.rand(8, 1, 2, 128 // 2, 128)
@@ -78,7 +78,7 @@ class TestBaselineModels(unittest.TestCase):
                                      hop_length=32,
                                      magbook_size=1,
                                      phasebook_size=1,
-                                     mask_each=False)
+                                     output_residual=True)
 
         embd = torch.rand(8, 60, 128)
         X = torch.rand(8, 1, 2, 128 // 2, 128)

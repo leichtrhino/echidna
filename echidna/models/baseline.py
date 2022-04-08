@@ -68,7 +68,7 @@ class BaselineDecoder(torch.nn.Module):
                  n_fft : int,
                  magbook_size : int=1,
                  phasebook_size : int=1,
-                 mask_each : bool=True,
+                 output_residual : bool=False,
                  hop_length=None) -> None:
         super().__init__()
 
@@ -78,7 +78,7 @@ class BaselineDecoder(torch.nn.Module):
         self.istft = TrainableISTFTLayer(n_fft, hop_length)
 
         mask_num = in_channel \
-            * (out_channel if mask_each else out_channel - 1)
+            * (out_channel - 1 if output_residual else out_channel)
         if magbook_size > 1 and phasebook_size > 1:
             self.mask_module = CodebookMask(
                 lstm_channel,
@@ -97,7 +97,7 @@ class BaselineDecoder(torch.nn.Module):
         self.in_channel = in_channel
         self.out_channel = out_channel
         self.lstm_channel = lstm_channel
-        self.mask_each = mask_each
+        self.output_residual = output_residual
 
     def forward(self, lstm_out : torch.Tensor, X : torch.Tensor) \
         -> torch.Tensor:
@@ -109,7 +109,7 @@ class BaselineDecoder(torch.nn.Module):
         X = X.unsqueeze(-5)
         masks = masks.unflatten(
             -4,
-            (self.out_channel if self.mask_each else self.out_channel - 1,
+            (self.out_channel - 1 if self.output_residual else self.out_channel,
              self.in_channel)
 
         )
@@ -121,7 +121,7 @@ class BaselineDecoder(torch.nn.Module):
         ), dim=-3)
 
         # decode
-        if not self.mask_each:
+        if self.output_residual:
             other_feature = X.squeeze(-5) \
                 - torch.sum(masked_features, dim=-5)
             masked_features = torch.cat((
