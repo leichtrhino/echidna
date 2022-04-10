@@ -284,7 +284,8 @@ class TestDemucsModels(unittest.TestCase):
     def test_demucs(self):
         demucs = EncoderDecoderModel(
             encoder_class=dmx.DemucsEncoder,
-            encoder_params=dict(
+            decoder_class=dmx.DemucsDecoder,
+            base_hyperparameters=dict(
                 # architecture parameters
                 in_channel=2,
                 out_channel=3,
@@ -297,18 +298,6 @@ class TestDemucsModels(unittest.TestCase):
                 # misc. architecture parameters
                 embedding_layers=1,
                 attention_layers=2,
-            ),
-            decoder_class=dmx.DemucsDecoder,
-            decoder_params=dict(
-                # architecture parameters
-                in_channel=2,
-                out_channel=3,
-                mid_channels=[48, 96, 144, 192],
-                # conv parameters
-                kernel_size=8,
-                stride=4,
-                inner_kernel_size=4,
-                inner_stride=2,
             ),
         )
 
@@ -322,7 +311,8 @@ class TestDemucsModels(unittest.TestCase):
     def test_demucs_custom_kernel_size(self):
         demucs = EncoderDecoderModel(
             encoder_class=dmx.DemucsEncoder,
-            encoder_params=dict(
+            decoder_class=dmx.DemucsDecoder,
+            base_hyperparameters=dict(
                 # architecture parameters
                 in_channel=2,
                 out_channel=3,
@@ -335,18 +325,6 @@ class TestDemucsModels(unittest.TestCase):
                 # misc. architecture parameters
                 embedding_layers=1,
                 attention_layers=2,
-            ),
-            decoder_class=dmx.DemucsDecoder,
-            decoder_params=dict(
-                # architecture parameters
-                in_channel=2,
-                out_channel=3,
-                mid_channels=[48, 96, 144, 192],
-                # conv parameters
-                kernel_size=[8, 8, 4],
-                stride=[4, 4, 2],
-                inner_kernel_size=4,
-                inner_stride=2,
             ),
         )
 

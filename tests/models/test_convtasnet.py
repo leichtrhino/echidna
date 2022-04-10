@@ -119,8 +119,10 @@ class TestConvTasNetModels(unittest.TestCase):
     def test_convtasnet(self):
         convtasnet = EncoderDecoderModel(
             encoder_class=ctn.ConvTasNetEncoder,
-            encoder_params=dict(
+            decoder_class=ctn.ConvTasNetDecoder,
+            base_hyperparameters=dict(
                 encoder_in_channel=1,
+                decoder_out_channel=2,
                 feature_channel=128,
                 block_channel=14,
                 bottleneck_channel=12,
@@ -128,13 +130,6 @@ class TestConvTasNetModels(unittest.TestCase):
                 kernel_size=9,
                 depth=3,
                 repeats=2
-            ),
-            decoder_class=ctn.ConvTasNetDecoder,
-            decoder_params=dict(
-                encoder_in_channel=1,
-                decoder_out_channel=2,
-                feature_channel=128,
-                skipconnection_channel=16
             ),
         )
 

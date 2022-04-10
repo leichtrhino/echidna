@@ -181,16 +181,14 @@ class TestWaveUNetModels(unittest.TestCase):
     def test_waveunet(self):
         m = EncoderDecoderModel(
             encoder_class=wu.WaveUNetEncoder,
-            encoder_params=dict(
+            decoder_class=wu.WaveUNetDecoder,
+            base_hyperparameters=dict(
                 channel_in=2,
                 downsampling_channel_out=[24, 48, 72],
                 downsampling_kernel_size=15,
                 downsampling_rate=2,
                 encoder_channel_out=[96],
-                encoder_kernel_size=15
-            ),
-            decoder_class=wu.WaveUNetDecoder,
-            decoder_params=dict(
+                encoder_kernel_size=15,
                 upsampling_channel_in=96,
                 upsampling_channel_out=[72, 48, 24],
                 upsampling_kernel_size=5,
