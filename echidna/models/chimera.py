@@ -1,24 +1,8 @@
 
 import typing as tp
-import inspect
 import torch
 
-from .utils import init_conv_weight
-
-def _init_module(module_class : tp.Type[torch.nn.Module],
-                 hyperparameters : tp.Dict[str, object],
-                 ) -> torch.nn.Module:
-    init_params = inspect.signature(module_class).parameters
-    if any(p.kind == inspect.Parameter.VAR_KEYWORD
-           for p in init_params.values()):
-        module = module_class(**hyperparameters)
-    else:
-        init_params_sub = dict(
-            (k, v) for k, v in hyperparameters.items()
-            if k in init_params
-        )
-        module = module_class(**init_params_sub)
-    return module
+from .utils import init_conv_weight, init_module
 
 class EmbeddingHead(torch.nn.Module):
     """
@@ -78,8 +62,8 @@ class ChimeraNet(torch.nn.Module):
         """
 
         super().__init__()
-        self.encoder = _init_module(encoder_class, base_hyperparameters)
-        self.decoder = _init_module(decoder_class, base_hyperparameters)
+        self.encoder = init_module(encoder_class, base_hyperparameters)
+        self.decoder = init_module(decoder_class, base_hyperparameters)
 
         self.embedding_head = EmbeddingHead(
             self.encoder.forward_feature_size(),
