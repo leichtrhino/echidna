@@ -1,4 +1,6 @@
 
+import inspect
+import typing as tp
 from math import pi, sqrt, cos, sin
 import torch
 
@@ -56,4 +58,20 @@ def match_length(t : torch.Tensor, size) -> torch.Tensor:
             return torch.cat((left, t), dim=-1)
     else:
         return t
+
+
+def init_module(module_class : tp.Type[torch.nn.Module],
+                 hyperparameters : tp.Dict[str, object],
+                 ) -> torch.nn.Module:
+    init_params = inspect.signature(module_class).parameters
+    if any(p.kind == inspect.Parameter.VAR_KEYWORD
+           for p in init_params.values()):
+        module = module_class(**hyperparameters)
+    else:
+        init_params_sub = dict(
+            (k, v) for k, v in hyperparameters.items()
+            if k in init_params
+        )
+        module = module_class(**init_params_sub)
+    return module
 
