@@ -3,7 +3,7 @@ import typing as tp
 from math import ceil
 import torch
 
-from .utils import init_conv_weight
+from .utils import init_conv_weight, match_length
 from .commonlayers import (
     STFTLayer,
     ISTFTLayer,
@@ -720,20 +720,6 @@ class DemucsEncoder(torch.nn.Module):
         )
 
     def forward(self, x, return_embd=False):
-        def align_length(y, size):
-            if y.shape[-1] > size:
-                lp = (y.shape[-1] - size) // 2
-                y = y[..., lp:lp+size]
-            elif y.shape[-1] < size:
-                lp = (size - y.shape[-1]) // 2
-                rp = size - y.shape[-1] - lp
-                y = torch.cat((
-                    torch.zeros(*y.shape[:-1], lp, device=y.device),
-                    y,
-                    torch.zeros(*y.shape[:-1], rp, device=y.device),
-                ), dim=-1)
-            return y
-
         if len(x.shape) == 1:
             x = x.unsqueeze(0)
         if len(x.shape) == 2:
@@ -758,8 +744,8 @@ class DemucsEncoder(torch.nn.Module):
         # fuse encodings
         enc_size = min(t_encs[-1].shape[-1], z_encs[-1].shape[-1])
         enc = self.encoder(
-            align_length(t_encs[-1], enc_size)
-            + align_length(z_encs[-1].squeeze(dim=2), enc_size)
+            match_length(t_encs[-1], enc_size)
+            + match_length(z_encs[-1].squeeze(dim=2), enc_size)
         )
 
         return enc, t_encs, z_encs
@@ -898,20 +884,6 @@ class DemucsDecoder(torch.nn.Module):
             freq_dim *= stride[ei]
 
     def forward(self, enc, t_encs, z_encs, return_embd=False):
-        def align_length(y, size):
-            if y.shape[-1] > size:
-                lp = (y.shape[-1] - size) // 2
-                y = y[..., lp:lp+size]
-            elif y.shape[-1] < size:
-                lp = (size - y.shape[-1]) // 2
-                rp = size - y.shape[-1] - lp
-                y = torch.cat((
-                    torch.zeros(*y.shape[:-1], lp, device=y.device),
-                    y,
-                    torch.zeros(*y.shape[:-1], rp, device=y.device),
-                ), dim=-1)
-            return y
-
         # decode
         dec = self.decoder(enc)
 
@@ -921,7 +893,7 @@ class DemucsDecoder(torch.nn.Module):
         for d, skip in zip(self.tdecoder, t_encs[::-1]):
             #dec_size = min(t_dec.shape[-1], skip.shape[-1])
             dec_size = t_dec.shape[-1]
-            t_dec = d(align_length(t_dec, dec_size) + align_length(skip, dec_size))
+            t_dec = d(match_length(t_dec, dec_size) + match_length(skip, dec_size))
         t_dec = t_dec.view(enc.shape[0],
                            self.out_channel,
                            self.in_channel,
@@ -933,7 +905,7 @@ class DemucsDecoder(torch.nn.Module):
         for d, skip in zip(self.zdecoder, z_encs[::-1]):
             #dec_size = min(z_dec.shape[-1], skip.shape[-1])
             dec_size = z_dec.shape[-1]
-            z_dec = d(align_length(z_dec, dec_size) + align_length(skip, dec_size))
+            z_dec = d(match_length(z_dec, dec_size) + match_length(skip, dec_size))
         z_dec = self.istft(z_dec.unflatten(1, (-1, 2)))
         z_dec = z_dec.view(enc.shape[0],
                            self.out_channel,
@@ -942,8 +914,8 @@ class DemucsDecoder(torch.nn.Module):
 
         # fuse waveforms
         x_length = min(t_dec.shape[-1], z_dec.shape[-1])
-        waveform = align_length(t_dec, x_length) \
-            + align_length(z_dec, x_length)
+        waveform = match_length(t_dec, x_length) \
+            + match_length(z_dec, x_length)
         waveform = waveform.squeeze(-3).squeeze(-2)
 
         return waveform
