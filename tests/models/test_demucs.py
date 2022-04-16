@@ -3,6 +3,7 @@ import unittest
 import torch
 
 from echidna.models import demucs as dmx
+from echidna.models.encoderdecoder import EncoderDecoderModel
 
 class TestDemucsModels(unittest.TestCase):
     def test_restricted_blstm(self):
@@ -203,84 +204,84 @@ class TestDemucsModels(unittest.TestCase):
         self.assertEqual(encoder.reverse_length(y.shape[-1]), 120)
 
     def test_demucs(self):
-        demucs = dmx.DemucsV3(
-            # architecture parameters
-            in_channel=2,
-            out_channel=3,
-            mid_channels=[48, 96, 144, 192],
-            # conv parameters
-            kernel_size=8,
-            stride=4,
-            inner_kernel_size=4,
-            inner_stride=2,
-            # misc. architecture parameters
-            infer_each=True,
-            embedding_layers=1,
-            attention_layers=2,
+        demucs = EncoderDecoderModel(
+            encoder_class=dmx.DemucsEncoder,
+            encoder_params=dict(
+                # architecture parameters
+                in_channel=2,
+                out_channel=3,
+                mid_channels=[48, 96, 144, 192],
+                # conv parameters
+                kernel_size=8,
+                stride=4,
+                inner_kernel_size=4,
+                inner_stride=2,
+                # misc. architecture parameters
+                embedding_layers=1,
+                attention_layers=2,
+            ),
+            decoder_class=dmx.DemucsDecoder,
+            decoder_params=dict(
+                # architecture parameters
+                in_channel=2,
+                out_channel=3,
+                mid_channels=[48, 96, 144, 192],
+                # conv parameters
+                kernel_size=8,
+                stride=4,
+                inner_kernel_size=4,
+                inner_stride=2,
+            ),
         )
 
-        x = torch.rand(8, 2, 16000)
-        signals = demucs(x)
-        self.assertEqual(signals.shape, (8, 3, 2, 16000))
-
-        signals, embd = demucs(x, return_embd=True)
-        self.assertEqual(signals.shape, (8, 3, 2, 16000))
-        self.assertEqual(
-            embd.shape,
-            (
-                8,
-                demucs.forward_embd_feature(),
-                demucs.forward_embd_length(16000)
-            )
-        )
-
-    def test_demucs_shared_inference(self):
-        # shared inference
-        demucs = dmx.DemucsV3(
-            # architecture parameters
-            in_channel=1,
-            out_channel=2,
-            mid_channels=[48, 96, 144, 192],
-            # conv parameters
-            kernel_size=8,
-            stride=4,
-            inner_kernel_size=4,
-            inner_stride=2,
-            # misc. architecture parameters
-            infer_each=False,
-            embedding_layers=1,
-            attention_layers=2,
-        )
-
-        x = torch.rand(8, 16000)
-        signals = demucs(x)
-        self.assertEqual(signals.shape, (8, 2, 16000))
+        target_length = 16000
+        input_length = demucs.reverse_wave_length(target_length)
+        output_length = demucs.forward_wave_length(input_length)
+        x = torch.rand(8, 2, input_length)
+        y = demucs(x)
+        self.assertEqual(y.shape, (8, 3, 2, output_length))
 
     def test_demucs_custom_kernel_size(self):
-        # custom stride/kernel size
-        demucs = dmx.DemucsV3(
-            # architecture parameters
-            in_channel=2,
-            out_channel=3,
-            mid_channels=[48, 96, 144, 192],
-            # conv parameters
-            kernel_size=[8, 8, 4],
-            stride=[4, 4, 2],
-            inner_kernel_size=4,
-            inner_stride=2,
-            # misc. architecture parameters
-            infer_each=True,
-            embedding_layers=1,
-            attention_layers=2,
+        demucs = EncoderDecoderModel(
+            encoder_class=dmx.DemucsEncoder,
+            encoder_params=dict(
+                # architecture parameters
+                in_channel=2,
+                out_channel=3,
+                mid_channels=[48, 96, 144, 192],
+                # conv parameters
+                kernel_size=[8, 8, 4],
+                stride=[4, 4, 2],
+                inner_kernel_size=4,
+                inner_stride=2,
+                # misc. architecture parameters
+                embedding_layers=1,
+                attention_layers=2,
+            ),
+            decoder_class=dmx.DemucsDecoder,
+            decoder_params=dict(
+                # architecture parameters
+                in_channel=2,
+                out_channel=3,
+                mid_channels=[48, 96, 144, 192],
+                # conv parameters
+                kernel_size=[8, 8, 4],
+                stride=[4, 4, 2],
+                inner_kernel_size=4,
+                inner_stride=2,
+            ),
         )
 
-        x = torch.rand(8, 2, 16000)
-        signals = demucs(x)
-        self.assertEqual(signals.shape, (8, 3, 2, 16000))
-        self.assertEqual(demucs.stft.hop_length, 4*4*2)
+        target_length = 16000
+        input_length = demucs.reverse_wave_length(target_length)
+        output_length = demucs.forward_wave_length(input_length)
+        x = torch.rand(8, 2, input_length)
+        y = demucs(x)
+        self.assertEqual(y.shape, (8, 3, 2, output_length))
+        self.assertEqual(demucs.encoder.stft.hop_length, 4*4*2)
         # the first factor is constant, second and third are from strides
         # last one is from kernel_size[-1]
-        self.assertEqual(demucs.stft.n_fft, 2 * 4*4 * 4)
+        self.assertEqual(demucs.encoder.stft.n_fft, 2 * 4*4 * 4)
 
     def test_demucs_encoder(self):
         demucs = dmx.DemucsEncoder(
@@ -358,7 +359,6 @@ class TestDemucsModels(unittest.TestCase):
             decoder.reverse_length(y.shape[-1]),
             embd.shape[-1]
         )
-
 
     def test_chimera_demucs(self):
         cdemucs = dmx.ChimeraDemucs(
