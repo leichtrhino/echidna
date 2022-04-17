@@ -1064,7 +1064,6 @@ class DemucsEncoder(torch.nn.Module):
                  inner_kernel_size : int,
                  inner_stride : int,
                  # misc. architecture parameters
-                 infer_each : bool=True,
                  embedding_layers : int=1,
                  attention_layers : int=2,
                  groupnorm_layers : int=2,
@@ -1090,7 +1089,6 @@ class DemucsEncoder(torch.nn.Module):
         self.in_channel = in_channel
         self.out_channel = out_channel
         self.embd_channel = mid_channels[-1]
-        self.infer_each = infer_each
 
         if type(kernel_size) == list:
             assert len(kernel_size) == len(mid_channels) - 1
@@ -1304,33 +1302,15 @@ class DemucsDecoder(torch.nn.Module):
                  inner_kernel_size : int,
                  inner_stride : int,
                  # misc. architecture parameters
-                 infer_each : bool=True,
-                 embedding_layers : int=1,
-                 attention_layers : int=2,
                  groupnorm_layers : int=2,
                  groupnorm_groups : int=4,
-                 trainable_stft : bool=False,
-                 # compress parameters
-                 compress_layers : int=2,
-                 compress_channel_scale : int=4, # C_out // 4 for each block
-                 compress_kernel_size : int=3,
-                 compress_dilation_multiply : int=2,
-                 # lstm parameters
-                 compress_lstm_layers : int=2,
-                 compress_lstm_span : int=200,
-                 compress_lstm_stride : int=100,
-                 # local attention parameters
-                 compress_attention_heads : int=4,
-                 compress_attention_penalize : int=4,
-                 # scale parameters
-                 compress_init_scale : float=1e-3) -> None:
+                 trainable_stft : bool=False) -> None:
 
         super().__init__()
 
         self.in_channel = in_channel
         self.out_channel = out_channel
         self.embd_channel = mid_channels[-1]
-        self.infer_each = infer_each
 
         if type(kernel_size) == list:
             assert len(kernel_size) == len(mid_channels) - 1
@@ -1376,7 +1356,7 @@ class DemucsDecoder(torch.nn.Module):
         for ei in range(len(mid_channels)-2, -1, -1):
             c_in = mid_channels[ei]
             if ei == 0:
-                c_out = (out_channel if infer_each else 1) * in_channel
+                c_out = out_channel * in_channel
             else:
                 c_out = mid_channels[ei-1]
             norm_groups = 0 if ei < len(mid_channels) - groupnorm_layers \
@@ -1395,7 +1375,7 @@ class DemucsDecoder(torch.nn.Module):
         for ei in range(len(mid_channels)-2, -1, -1):
             c_in = mid_channels[ei]
             if ei == 0:
-                c_out = 2 * (out_channel if infer_each else 1) * in_channel
+                c_out = 2 * out_channel * in_channel
             else:
                 c_out = mid_channels[ei-1]
             norm_groups = 0 if ei < len(mid_channels) - groupnorm_layers \
@@ -1436,7 +1416,7 @@ class DemucsDecoder(torch.nn.Module):
             dec_size = t_dec.shape[-1]
             t_dec = d(align_length(t_dec, dec_size) + align_length(skip, dec_size))
         t_dec = t_dec.view(enc.shape[0],
-                           self.out_channel if self.infer_each else 1,
+                           self.out_channel,
                            self.in_channel,
                            -1)
 
@@ -1449,7 +1429,7 @@ class DemucsDecoder(torch.nn.Module):
             z_dec = d(align_length(z_dec, dec_size) + align_length(skip, dec_size))
         z_dec = self.istft(z_dec.unflatten(1, (-1, 2)))
         z_dec = z_dec.view(enc.shape[0],
-                           self.out_channel if self.infer_each else 1,
+                           self.out_channel,
                            self.in_channel,
                            -1)
 
@@ -1457,8 +1437,6 @@ class DemucsDecoder(torch.nn.Module):
         x_length = min(t_dec.shape[-1], z_dec.shape[-1])
         waveform = align_length(t_dec, x_length) \
             + align_length(z_dec, x_length)
-        if not self.infer_each:
-            waveform = torch.cat((waveform, x.unsqueeze(1) - waveform), dim=1)
         waveform = waveform.squeeze(-3).squeeze(-2)
 
         return waveform

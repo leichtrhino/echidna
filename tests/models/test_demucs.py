@@ -294,7 +294,6 @@ class TestDemucsModels(unittest.TestCase):
             inner_kernel_size=4,
             inner_stride=2,
             # misc. architecture parameters
-            infer_each=True,
             embedding_layers=1,
             attention_layers=2,
         )
@@ -336,10 +335,6 @@ class TestDemucsModels(unittest.TestCase):
             stride=4,
             inner_kernel_size=4,
             inner_stride=2,
-            # misc. architecture parameters
-            infer_each=True,
-            embedding_layers=1,
-            attention_layers=2,
         )
 
         encoder = dmx.DemucsEncoder(**kwargs)
