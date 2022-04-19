@@ -3,6 +3,7 @@ import unittest
 import torch
 
 from echidna.models import convtasnet as ctn
+from echidna.models.encoderdecoder import EncoderDecoderModel
 
 class TestConvTasNetModels(unittest.TestCase):
     def test_conv_block(self):
@@ -78,7 +79,7 @@ class TestConvTasNetModels(unittest.TestCase):
                                         feature_channel=128,
                                         skipconnection_channel=16)
 
-        target_length = 80
+        target_length = 1000
         input_length = encoder.reverse_length(
             decoder.reverse_length(target_length))
         output_length = decoder.forward_length(
@@ -103,7 +104,7 @@ class TestConvTasNetModels(unittest.TestCase):
                                         feature_channel=128,
                                         skipconnection_channel=16)
 
-        target_length = 80
+        target_length = 1000
         input_length = encoder.reverse_length(
             decoder.reverse_length(target_length))
         output_length = decoder.forward_length(
@@ -113,4 +114,35 @@ class TestConvTasNetModels(unittest.TestCase):
         embd, X = encoder(x)
         y = decoder(embd, X)
         self.assertEqual(y.shape, (8, 3, 2, output_length))
+
+
+    def test_convtasnet(self):
+        convtasnet = EncoderDecoderModel(
+            encoder_class=ctn.ConvTasNetEncoder,
+            encoder_params=dict(
+                encoder_in_channel=1,
+                feature_channel=128,
+                block_channel=14,
+                bottleneck_channel=12,
+                skipconnection_channel=16,
+                kernel_size=9,
+                depth=3,
+                repeats=2
+            ),
+            decoder_class=ctn.ConvTasNetDecoder,
+            decoder_params=dict(
+                encoder_in_channel=1,
+                decoder_out_channel=2,
+                feature_channel=128,
+                skipconnection_channel=16
+            ),
+        )
+
+        target_length = 1000
+        input_length = convtasnet.reverse_wave_length(target_length)
+        output_length = convtasnet.forward_wave_length(input_length)
+
+        x = torch.rand(8, 1, input_length)
+        y = convtasnet(x)
+        self.assertEqual(y.shape, (8, 2, output_length))
 
