@@ -8,7 +8,7 @@ from echidna.models import waveunet as wu
 from echidna.models.encoderdecoder import EncoderDecoderModel
 
 class TestWaveUNetModels(unittest.TestCase):
-    def test_interpolate(self):
+    def test_interpolate_shape(self):
         # check shape validity
         self.assertEqual(
             wu.Interpolation(2).forward_length(201), (201-1)*2+1)
@@ -27,6 +27,7 @@ class TestWaveUNetModels(unittest.TestCase):
         y = wu.Interpolation(2, mode='trainable', channel=18)(x)
         self.assertEqual(y.shape, torch.Size((3, 18, (201-1)*2+1)))
 
+    def test_interpolate_numeric(self):
         # check numerical validity
         x = torch.zeros(1, 2, 2)
         x[..., 1] = 1 * 10
@@ -48,6 +49,7 @@ class TestWaveUNetModels(unittest.TestCase):
             self.assertTrue(torch.all(y[..., i] == i / 8 * 10))
         self.assertTrue(y.requires_grad)
 
+    def test_interpolate_length(self):
         # check reverse length
         for r in (2, 4, 8):
             i = wu.Interpolation(r)
@@ -64,7 +66,7 @@ class TestWaveUNetModels(unittest.TestCase):
                 self.assertGreaterEqual(l_out_pred, l_out)
                 self.assertEqual(i.forward_length(l_in_pred), l_out_pred)
 
-    def test_downsamplingblock(self):
+    def test_downsamplingblock_shape(self):
         # test shape validity
         x = torch.zeros(8, 13, 201)
         ds = wu.DownsamplingBlock(channel_in=13,
@@ -79,6 +81,7 @@ class TestWaveUNetModels(unittest.TestCase):
         self.assertEqual(y.shape, torch.Size((8, 26, math.ceil((201-5+1)/4))))
         self.assertEqual(e.shape, torch.Size((8, 26, 201-5+1)))
 
+    def test_downsamplingblock_length(self):
         # check reverse length
         for r, k in itertools.product((2, 4, 8), (3, 5, 7)):
             b = wu.DownsamplingBlock(1, 1, k, r)
@@ -95,7 +98,7 @@ class TestWaveUNetModels(unittest.TestCase):
                 self.assertGreaterEqual(l_out_pred, l_out)
                 self.assertEqual(b.forward_length(l_in_pred), l_out_pred)
 
-    def test_upsamplingblock(self):
+    def test_upsamplingblock_shape(self):
         # test shape validity
         x = torch.zeros(8, 13, 201)
         e = torch.zeros(8, 13, 201*4)
@@ -111,6 +114,7 @@ class TestWaveUNetModels(unittest.TestCase):
         y = us(x, e)
         self.assertEqual(y.shape, torch.Size((8, 26, (201-1)*4+1-5+1)))
 
+    def test_upsamplingblock_length(self):
         # check reverse length
         for r, k in itertools.product((2, 4, 8), (3, 5, 7)):
             b = wu.UpsamplingBlock(1, 1, 1, k, r)
