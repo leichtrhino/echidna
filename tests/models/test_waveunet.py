@@ -130,6 +130,81 @@ class TestWaveUNetModels(unittest.TestCase):
                 self.assertGreaterEqual(l_out_pred, l_out)
                 self.assertEqual(b.forward_length(l_in_pred), l_out_pred)
 
+    def test_waveunetencoder(self):
+        e = wu.WaveUNetEncoder(channel_in=2,
+                               downsampling_channel_out=[24, 48, 72],
+                               downsampling_kernel_size=15,
+                               downsampling_rate=2,
+                               encoder_channel_out=[96],
+                               encoder_kernel_size=15)
+
+        l_in = e.reverse_length(125)
+        x = torch.zeros((8, 2, l_in))
+        y, ys, x_ = e(x)
+        self.assertEqual(x_.shape, x.shape)
+        self.assertEqual(y.shape, torch.Size((8, 96, 125)))
+        self.assertEqual(e.forward_length(l_in), y.shape[-1])
+
+        for c, y in zip((24, 48, 72), ys):
+            self.assertEqual(y.shape[:-1], torch.Size((8, c)))
+
+    def test_waveunetdecoder(self):
+        e = wu.WaveUNetEncoder(channel_in=2,
+                               downsampling_channel_out=[24, 48, 72],
+                               downsampling_kernel_size=15,
+                               downsampling_rate=2,
+                               encoder_channel_out=[96],
+                               encoder_kernel_size=15)
+        d = wu.WaveUNetDecoder(upsampling_channel_in=96,
+                               upsampling_channel_out=[72, 48, 24],
+                               upsampling_kernel_size=5,
+                               upsampling_rate=2,
+                               upsampling_mode='nearest',
+                               upsampling_residual_channel=[72, 48, 24],
+                               decoder_channel_out=3,
+                               decoder_kernel_size=5,
+                               decoder_residual_channel=2)
+
+        target_length = 125
+        input_length = e.reverse_length(d.reverse_length(target_length))
+        output_length = d.forward_length(e.forward_length(input_length))
+        x = torch.zeros((8, 2, input_length))
+        y, ys, x_ = e(x)
+        y = d(y, ys, x_)
+
+        self.assertEqual(y.shape, torch.Size((8, 3, output_length)))
+
+    def test_waveunet_(self):
+        m = EncoderDecoderModel(
+            encoder_class=wu.WaveUNetEncoder,
+            encoder_params=dict(
+                channel_in=2,
+                downsampling_channel_out=[24, 48, 72],
+                downsampling_kernel_size=15,
+                downsampling_rate=2,
+                encoder_channel_out=[96],
+                encoder_kernel_size=15
+            ),
+            decoder_class=wu.WaveUNetDecoder,
+            decoder_params=dict(
+                upsampling_channel_in=96,
+                upsampling_channel_out=[72, 48, 24],
+                upsampling_kernel_size=5,
+                upsampling_rate=2,
+                upsampling_mode='nearest',
+                upsampling_residual_channel=[72, 48, 24],
+                decoder_channel_out=3,
+                decoder_kernel_size=5,
+                decoder_residual_channel=2
+            )
+        )
+        target_length = 1000
+        input_length = m.reverse_wave_length(target_length)
+        output_length = m.forward_wave_length(input_length)
+        x = torch.zeros((8, 2, input_length))
+        self.assertEqual(m(x).shape, (8, 3, output_length))
+
+
     def test_encoder(self):
         e = wu.Encoder(channel_in=2,
                        channel_out=[24, 48, 72],
