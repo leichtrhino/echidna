@@ -1,9 +1,11 @@
+
 import unittest
 import math
 import itertools
 import torch
 
 from echidna.models import waveunet as wu
+from echidna.models.encoderdecoder import EncoderDecoderModel
 
 class TestWaveUNetModels(unittest.TestCase):
     def test_interpolate(self):
@@ -73,29 +75,32 @@ class TestWaveUNetModels(unittest.TestCase):
         self.assertEqual(ds.reverse_length(math.ceil((201-5+1)/4)), 201)
         self.assertEqual(ds.forward_length(201), math.ceil((201-5+1)/4))
 
-        y = ds(x)
+        y, e = ds(x)
         self.assertEqual(y.shape, torch.Size((8, 26, math.ceil((201-5+1)/4))))
+        self.assertEqual(e.shape, torch.Size((8, 26, 201-5+1)))
 
         # check reverse length
         for r, k in itertools.product((2, 4, 8), (3, 5, 7)):
             b = wu.DownsamplingBlock(1, 1, k, r)
             for l_in in range(100, 301, 17):
-                l_out = b(torch.zeros((1, 1, l_in))).shape[-1]
+                l_out = b(torch.zeros((1, 1, l_in)))[0].shape[-1]
                 l_in_pred = b.reverse_length(l_out)
-                l_out_pred = b(torch.zeros(1, 1, l_in_pred)).shape[-1]
+                l_out_pred = b(torch.zeros(1, 1, l_in_pred))[0].shape[-1]
                 self.assertLessEqual(l_in_pred, l_in)
                 self.assertEqual(l_out_pred, l_out)
                 self.assertEqual(b.forward_length(l_in), l_out)
             for l_out in range(100, 301, 17):
                 l_in_pred = b.reverse_length(l_out)
-                l_out_pred = b(torch.zeros(1, 1, l_in_pred)).shape[-1]
+                l_out_pred = b(torch.zeros(1, 1, l_in_pred))[0].shape[-1]
                 self.assertGreaterEqual(l_out_pred, l_out)
                 self.assertEqual(b.forward_length(l_in_pred), l_out_pred)
 
     def test_upsamplingblock(self):
         # test shape validity
         x = torch.zeros(8, 13, 201)
+        e = torch.zeros(8, 13, 201*4)
         us = wu.UpsamplingBlock(channel_in=13,
+                                channel_residual=13,
                                 channel_out=26,
                                 kernel_size=5,
                                 upsample_rate=4)
@@ -103,22 +108,25 @@ class TestWaveUNetModels(unittest.TestCase):
         self.assertEqual(us.reverse_length((201-1)*4+1-5+1), 201)
         self.assertEqual(us.forward_length(201), (201-1)*4+1-5+1)
 
-        y = us(x)
+        y = us(x, e)
         self.assertEqual(y.shape, torch.Size((8, 26, (201-1)*4+1-5+1)))
 
         # check reverse length
         for r, k in itertools.product((2, 4, 8), (3, 5, 7)):
-            b = wu.UpsamplingBlock(1, 1, k, r)
+            b = wu.UpsamplingBlock(1, 1, 1, k, r)
             for l_in in range(100, 301, 17):
-                l_out = b(torch.zeros((1, 1, l_in))).shape[-1]
+                l_out = b(torch.zeros((1, 1, l_in)),
+                          torch.zeros((1, 1, l_in*r))).shape[-1]
                 l_in_pred = b.reverse_length(l_out)
-                l_out_pred = b(torch.zeros(1, 1, l_in_pred)).shape[-1]
+                l_out_pred = b(torch.zeros(1, 1, l_in_pred),
+                               torch.zeros(1, 1, l_in_pred*r)).shape[-1]
                 self.assertLessEqual(l_in_pred, l_in)
                 self.assertEqual(l_out_pred, l_out)
                 self.assertEqual(b.forward_length(l_in), l_out)
             for l_out in range(100, 301, 17):
                 l_in_pred = b.reverse_length(l_out)
-                l_out_pred = b(torch.zeros(1, 1, l_in_pred)).shape[-1]
+                l_out_pred = b(torch.zeros(1, 1, l_in_pred),
+                               torch.zeros(1, 1, l_in_pred*r)).shape[-1]
                 self.assertGreaterEqual(l_out_pred, l_out)
                 self.assertEqual(b.forward_length(l_in_pred), l_out_pred)
 
