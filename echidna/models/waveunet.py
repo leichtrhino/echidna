@@ -265,6 +265,271 @@ class Interpolation(torch.nn.Module):
         """
         return ceil((l_out - 1) / self.upsample_rate) + 1
 
+
+class WaveUNetEncoder(torch.nn.Module):
+    """
+    Encoder module for wave u net
+    """
+    def __init__(self,
+                 channel_in : int,
+                 downsampling_channel_out : tp.List[int],
+                 downsampling_kernel_size : int,
+                 downsampling_rate : int,
+                 encoder_channel_out : tp.List[int],
+                 encoder_kernel_size : int,
+                 ) -> None:
+        """
+        Parameter
+        ---------
+        channel_in : int
+        downsampling_channel_out : List[int]
+        downsampling_kernel_size : int
+        downsampling_rate : int
+        encoder_channel_out : List[int]
+        encoder_kernel_size : int
+        """
+
+        super().__init__()
+        self.channel_in = channel_in
+        self.downsampling_channel_out = downsampling_channel_out
+        self.downsampling_kernel_size = downsampling_kernel_size
+        self.downsampling_rate = downsampling_rate
+        self.encoder_channel_out = encoder_channel_out
+        self.encoder_kernel_size = encoder_kernel_size
+
+        self.downsampling_layers = torch.nn.ModuleList()
+        c_in = channel_in
+        for c_out in downsampling_channel_out:
+            self.downsampling_layers.append(
+                DownsamplingBlock(c_in,
+                                  c_out,
+                                  downsampling_kernel_size,
+                                  downsampling_rate)
+            )
+            c_in = c_out
+
+        self.encoder_layers = torch.nn.ModuleList()
+        for c_out in encoder_channel_out:
+            encoder_layer = torch.nn.Conv1d(c_in,
+                                            c_out,
+                                            encoder_kernel_size)
+            init_conv_weight(encoder_layer)
+            self.encoder_layers.append(encoder_layer)
+            c_in = c_out
+
+
+    def forward(self, x : torch.Tensor) \
+        -> tp.Tuple[torch.Tensor, tp.List[torch.Tensor]]:
+        """
+        Perform encoding
+
+        Parameter
+        ---------
+        x : torch.Tensor
+        returns_each : bool
+
+        Returns
+        -------
+        torch.Tensor
+        List[torch.Tensor]
+        """
+
+        if len(x.shape) == 1:
+            x = x.unsqueeze(0)
+        if len(x.shape) == 2:
+            x = x.unsqueeze(1)
+
+        residual_out = []
+        ds_out = x
+        for l in self.downsampling_layers:
+            ds_out, residual = l(ds_out)
+            residual_out.append(residual)
+
+        enc_out = ds_out
+        for l in self.encoder_layers:
+            enc_out = l(enc_out)
+
+        return enc_out, residual_out, x
+
+    def forward_length(self, l_in : int) -> int:
+        """
+        Parameter
+        ---------
+        l_in : int
+
+        Returns
+        -------
+        int
+        """
+        #for b in self.layers[:-1]:
+        for b in self.downsampling_layers:
+            l_in = b.forward_length(l_in)
+        return l_in \
+            - (self.encoder_kernel_size - 1) \
+            * len(self.encoder_layers)
+
+
+    def reverse_length(self, l_out : int) -> int:
+        """
+        Parameter
+        ---------
+        l_out : int
+
+        Returns
+        -------
+        int
+        """
+        l_out = l_out \
+            + (self.encoder_kernel_size - 1) \
+            * len(self.encoder_layers)
+
+        for b in self.downsampling_layers[::-1]:
+            l_out = b.reverse_length(l_out)
+        return l_out
+
+    def forward_feature_size(self) -> int:
+        """
+        Parameter
+        ---------
+
+        Returns
+        -------
+        int
+        """
+        return self.encoder_channel_out[-1]
+
+    def parameter_list(self, base_lr : float):
+        return [
+            {'params': self.downsampling_layers.parameters()},
+            {'params': self.encoder_layers.parameters()},
+        ]
+
+
+class WaveUNetDecoder(torch.nn.Module):
+    """
+    Encoder module for wave u net
+    """
+    def __init__(self,
+                 upsampling_channel_in : int,
+                 upsampling_channel_out : tp.List[int],
+                 upsampling_kernel_size : int,
+                 upsampling_rate : int,
+                 upsampling_mode : str,
+                 upsampling_residual_channel : tp.List[int],
+                 decoder_channel_out : int,
+                 decoder_kernel_size : int,
+                 decoder_residual_channel : int) -> None:
+        """
+        Parameter
+        ---------
+        upsampling_channel_in : int
+        upsampling_channel_out : List[int]
+        upsampling_kernel_size : int
+        upsampling_rate : int
+        upsampling_mode : str
+        upsampling_residual_channel : List[int]
+        decoder_channel_out : int,
+        decoder_kernel_size : int,
+        decoder_residual_channel : int
+        """
+
+        super().__init__()
+        assert upsampling_residual_channel \
+            and len(upsampling_residual_channel) == len(upsampling_channel_out)
+
+        self.upsampling_kernel_size = upsampling_kernel_size
+        self.decoder_kernel_size = decoder_kernel_size
+
+        self.upsampling_layers = torch.nn.ModuleList()
+        c_in = upsampling_channel_in
+        for c_out, c_residual in \
+            zip(upsampling_channel_out, upsampling_residual_channel):
+            self.upsampling_layers.append(
+                UpsamplingBlock(c_in,
+                                c_residual,
+                                c_out,
+                                upsampling_kernel_size,
+                                upsampling_rate,
+                                upsampling_mode)
+            )
+            c_in = c_out
+
+        self.decoder_layer = torch.nn.Conv1d(
+            c_in + decoder_residual_channel,
+            decoder_channel_out,
+            decoder_kernel_size
+        )
+
+
+    def forward(self,
+                x : torch.Tensor,
+                upsampling_residual : tp.List[torch.Tensor],
+                decoder_residual) -> torch.Tensor:
+        """
+        Perform decoding
+
+        Parameter
+        ---------
+        xesidual : torch.Tensor
+        upsampling_residual : tp.List[torch.Tensor]
+        decoder_residual : tp.List[torch.Tensor
+
+        Returns
+        -------
+        torch.Tensor : returns_each=False
+        List[torch.Tensor] : returns_each=True
+        """
+
+        out = x
+        for l, s in zip(self.upsampling_layers, upsampling_residual[::-1]):
+            out = l(out, s)
+        out = self.decoder_layer(torch.cat((
+            out, match_length(decoder_residual, out.shape[-1])
+        ), dim=1))
+        return out
+
+    def forward_length(self, l_in : int) -> int:
+        """
+        Parameter
+        ---------
+        l_in : int
+
+        Returns
+        -------
+        int
+        """
+
+        for l in self.upsampling_layers:
+            l_in = l.forward_length(l_in)
+        l_in = l_in - self.decoder_kernel_size + 1
+        return l_in
+
+    def reverse_length(self, l_out : int) -> int:
+        """
+        Parameter
+        ---------
+        l_out : int
+
+        Returns
+        -------
+        int
+        """
+
+        l_out = l_out + self.decoder_kernel_size - 1
+        for l in self.upsampling_layers[::-1]:
+            l_out = l.reverse_length(l_out)
+        return l_out
+
+    def parameter_list(self, base_lr : float) -> tp.List:
+        return [
+            {'params': self.upsampling_layers.parameters()},
+            {'params': self.decoder_layer.parameters()}
+        ]
+
+
+
+
+
 class Encoder(torch.nn.Module):
     """
     Encoder module for wave u net
