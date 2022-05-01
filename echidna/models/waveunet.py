@@ -13,7 +13,7 @@ class DownsamplingBlock(torch.nn.Module):
                  channel_in : int,
                  channel_out : int,
                  kernel_size : int,
-                 downsample_rate : int=2,) -> None:
+                 downsample_rate : int) -> None:
         """
 
         Parameters
@@ -31,7 +31,7 @@ class DownsamplingBlock(torch.nn.Module):
             channel_in, channel_out, kernel_size)
         init_conv_weight(self.conv)
 
-    def forward(self, x : torch.Tensor) -> torch.Tensor:
+    def forward(self, x : torch.Tensor) -> tp.Tuple[torch.Tensor]:
         """
         Parameters
         ----------
@@ -45,7 +45,7 @@ class DownsamplingBlock(torch.nn.Module):
         """
         c_out = self.conv(x)
         out = c_out[..., ::self.downsample_rate]
-        return out
+        return out, c_out
 
     def forward_length(self, l_in : int) -> int:
         """
@@ -81,9 +81,10 @@ class UpsamplingBlock(torch.nn.Module):
     """
     def __init__(self,
                  channel_in : int,
+                 channel_residual : int,
                  channel_out : int,
                  kernel_size : int,
-                 upsample_rate : int=2,
+                 upsample_rate : int,
                  interpolation_mode : str='nearest'):
         """
 
@@ -104,15 +105,18 @@ class UpsamplingBlock(torch.nn.Module):
         self.upsample = Interpolation(
             upsample_rate, interpolation_mode, channel_in)
         self.conv = torch.nn.Conv1d(
-            channel_in, channel_out, kernel_size)
+            channel_in + channel_residual, channel_out, kernel_size)
         init_conv_weight(self.conv)
 
-    def forward(self, x : torch.Tensor) -> torch.Tensor:
+    def forward(self,
+                x : torch.Tensor,
+                residual : torch.Tensor) -> torch.Tensor:
         """
         Parameter
         ---------
         x : torch.Tensor
             tensor of shape (N, C_in, L)
+        residual : torch.Tensor
 
         Returns
         -------
@@ -120,6 +124,8 @@ class UpsamplingBlock(torch.nn.Module):
             tensor of shape (N, C_out, (L-1)*r+1-k+1)
         """
         us_out = self.upsample(x)
+        us_out = torch.cat(
+            (us_out, match_length(residual, us_out.shape[-1])), dim=1)
         conv_out = self.conv(us_out)
         return conv_out
 
