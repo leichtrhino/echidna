@@ -3,7 +3,7 @@ import typing as tp
 from math import log2, ceil, floor, sqrt
 import torch
 
-from .utils import init_conv_weight
+from .utils import init_conv_weight, match_length
 
 class DownsamplingBlock(torch.nn.Module):
     """
@@ -352,23 +352,6 @@ class Encoder(torch.nn.Module):
             l_out = b.reverse_length(l_out)
         return l_out
 
-def _pad_or_crop(t, size):
-    if t.shape[-1] > size:
-        i_lo = (t.shape[-1]-size) // 2
-        i_hi = size + i_lo
-        return t[..., i_lo:i_hi]
-    elif t.shape[-1] < size:
-        pad_r = (size - t.shape[-1]) // 2
-        pad_l = size - t.shape[-1] - pad_r
-        left = torch.stack([t[..., 0]]*pad_l, dim=-1)
-        if pad_r > 0:
-            right = torch.stack([t[..., -1]]*pad_r, dim=-1)
-            return torch.cat((left, t, right), dim=-1)
-        else:
-            return torch.cat((left, t), dim=-1)
-    else:
-        return t
-
 
 class Decoder(torch.nn.Module):
     """
@@ -447,11 +430,11 @@ class Decoder(torch.nn.Module):
         elif self.residual_mode == 'concat':
             assert len(r) == len(self.layers) - 1
             merge_in = lambda y, s: \
-                torch.cat((y, _pad_or_crop(s, y.shape[-1])), dim=1)
+                torch.cat((y, match_length(s, y.shape[-1])), dim=1)
         elif self.residual_mode == 'add':
             assert len(r) == len(self.layers) - 1
             merge_in = lambda y, s: \
-                y + _pad_or_crop(s, y.shape[-1])
+                y + match_length(s, y.shape[-1])
 
         out = x
         for l, s in zip(self.layers, [None]+r):
@@ -582,9 +565,9 @@ class WaveUNet(torch.nn.Module):
             decoder_in = embd
         elif self.residual_mode == 'concat':
             decoder_in = torch.cat(
-                (embd, _pad_or_crop(encoder_out, embd.shape[-1])), dim=1)
+                (embd, match_length(encoder_out, embd.shape[-1])), dim=1)
         elif self.residual_mode == 'add':
-            decoder_in = embd + _pad_or_crop(encoder_out, embd.shape[-1])
+            decoder_in = embd + match_length(encoder_out, embd.shape[-1])
 
         decoder_out = self.decoder(embd, residual_in)
         decoder_out = self.out_conv(decoder_out)
