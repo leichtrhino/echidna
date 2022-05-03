@@ -40,3 +40,20 @@ def generate_dft_matrix(n_fft):
     basis = torch.arange(n_fft // 2, dtype=torch.float).unsqueeze(-1)
     return torch.cat((torch.cos(phi*basis), torch.sin(phi*basis)))
 
+def match_length(t : torch.Tensor, size) -> torch.Tensor:
+    if t.shape[-1] > size:
+        i_lo = (t.shape[-1]-size) // 2
+        i_hi = size + i_lo
+        return t[..., i_lo:i_hi]
+    elif t.shape[-1] < size:
+        pad_r = (size - t.shape[-1]) // 2
+        pad_l = size - t.shape[-1] - pad_r
+        left = torch.stack([t[..., 0]]*pad_l, dim=-1)
+        if pad_r > 0:
+            right = torch.stack([t[..., -1]]*pad_r, dim=-1)
+            return torch.cat((left, t, right), dim=-1)
+        else:
+            return torch.cat((left, t), dim=-1)
+    else:
+        return t
+
