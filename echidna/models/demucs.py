@@ -1039,3 +1039,453 @@ class ChimeraDemucs(torch.nn.Module):
         return self.demucs.parameter_list(base_lr)\
             + [{'params': self.conv.parameters()}]
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+class DemucsEncoder(torch.nn.Module):
+    def __init__(self,
+                 # architecture parameters
+                 in_channel : int,
+                 out_channel : int,
+                 mid_channels : tp.List[int],
+                 # conv parameters
+                 kernel_size : tp.Union[int, tp.List[int]],
+                 stride : tp.Union[int, tp.List[int]],
+                 inner_kernel_size : int,
+                 inner_stride : int,
+                 # misc. architecture parameters
+                 infer_each : bool=True,
+                 embedding_layers : int=1,
+                 attention_layers : int=2,
+                 groupnorm_layers : int=2,
+                 groupnorm_groups : int=4,
+                 trainable_stft : bool=False,
+                 # compress parameters
+                 compress_layers : int=2,
+                 compress_channel_scale : int=4, # C_out // 4 for each block
+                 compress_kernel_size : int=3,
+                 compress_dilation_multiply : int=2,
+                 # lstm parameters
+                 compress_lstm_layers : int=2,
+                 compress_lstm_span : int=200,
+                 compress_lstm_stride : int=100,
+                 # local attention parameters
+                 compress_attention_heads : int=4,
+                 compress_attention_penalize : int=4,
+                 # scale parameters
+                 compress_init_scale : float=1e-3) -> None:
+
+        super().__init__()
+
+        self.in_channel = in_channel
+        self.out_channel = out_channel
+        self.embd_channel = mid_channels[-1]
+        self.infer_each = infer_each
+
+        if type(kernel_size) == list:
+            assert len(kernel_size) == len(mid_channels) - 1
+        else:
+            kernel_size = [kernel_size] * (len(mid_channels) - 1)
+
+        if type(stride) == list:
+            assert len(stride) == len(mid_channels) - 1
+        else:
+            stride = [stride] * (len(mid_channels) - 1)
+
+        # initialize STFT and ISTFT layer
+        # the number of ZEncoder blocks: len(mid_channels) - 1
+        # total reduction along freq. axis:
+        #     before last ZEncoder block: (stride ** (len(mid_channels) - 2))
+        #     last ZEncoder block: kernel_size
+        #     -> n_fft = 2 * kernel_size * stride ** (len(mid_channels)-2)
+        #     example: 5 ZEncoders with stride=4 and kernel=8, 2 * 8 * 4**4 = 4096
+        n_fft = 2 * kernel_size[-1]
+        for s in stride[:-1]:
+            n_fft *= s
+        # total reduction along time axis: stride ** (len(mid_channels)-1)
+        # example: 5 TEncoder with stride=4 and kernel=8, 4**5 = 1024
+        hop_length = 1
+        for s in stride:
+            hop_length *= s
+        if trainable_stft:
+            self.stft = TrainableSTFTLayer(n_fft, hop_length)
+        else:
+            self.stft = STFTLayer(n_fft, hop_length)
+
+        # initialize encoder and decoder blocks
+        self.tencoder = torch.nn.ModuleList()
+        for ei in range(len(mid_channels)-1):
+            c_in = in_channel if ei == 0 else mid_channels[ei-1]
+            c_out = mid_channels[ei]
+            norm_groups = 0 if ei < len(mid_channels) - groupnorm_layers \
+                else groupnorm_groups
+            opt_params = dict()
+            if ei >= len(mid_channels) - attention_layers:
+                opt_params.update(dict(
+                    compress_lstm_layers=compress_lstm_layers,
+                    compress_lstm_span=compress_lstm_span,
+                    compress_lstm_stride=compress_lstm_stride,
+                    compress_attention_heads=compress_attention_heads,
+                    compress_attention_penalize=compress_attention_penalize,
+                ))
+            self.tencoder.append(TEncoderBlock(
+                in_channel=c_in,
+                out_channel=c_out,
+                kernel_size=kernel_size[ei],
+                stride=stride[ei],
+                norm_groups=norm_groups,
+                compress_layers=compress_layers,
+                compress_channel=c_out // compress_channel_scale,
+                compress_kernel_size=compress_kernel_size,
+                compress_dilation_multiply=compress_dilation_multiply,
+                compress_init_scale=compress_init_scale,
+                **opt_params,
+            ))
+
+        self.zencoder = torch.nn.ModuleList()
+        self.freq_embeddings = torch.nn.ParameterList()
+        freq_dim = (n_fft // 2)
+        for ei in range(len(mid_channels)-1):
+            c_in = 2 * in_channel if ei == 0 else mid_channels[ei-1]
+            c_out = mid_channels[ei]
+            norm_groups = 0 if ei < len(mid_channels) - groupnorm_layers \
+                else groupnorm_groups
+            opt_params = dict()
+            if ei >= len(mid_channels) - attention_layers:
+                opt_params.update(dict(
+                    compress_lstm_layers=compress_lstm_layers,
+                    compress_lstm_span=compress_lstm_span,
+                    compress_lstm_stride=compress_lstm_stride,
+                    compress_attention_heads=compress_attention_heads,
+                    compress_attention_penalize=compress_attention_penalize,
+                ))
+            self.zencoder.append(ZEncoderBlock(
+                in_channel=c_in,
+                out_channel=c_out,
+                freq_dim=freq_dim,
+                kernel_size=kernel_size[ei],
+                stride=stride[ei] if ei < len(mid_channels)-2 else kernel_size[ei],
+                norm_groups=norm_groups,
+                compress_layers=compress_layers,
+                compress_channel=c_out // compress_channel_scale,
+                compress_kernel_size=compress_kernel_size,
+                compress_dilation_multiply=compress_dilation_multiply,
+                compress_init_scale=compress_init_scale,
+                **opt_params,
+            ))
+            if ei > 0 and ei <= embedding_layers:
+                self.freq_embeddings.append(torch.nn.Parameter(
+                    torch.rand(c_in, freq_dim),
+                    requires_grad=True
+                ))
+            freq_dim //= stride[ei]
+
+        # initialize shared last encoder layer
+        opt_params = dict()
+        if attention_layers > 0:
+            opt_params.update(dict(
+                compress_lstm_layers=compress_lstm_layers,
+                compress_lstm_span=compress_lstm_span,
+                compress_lstm_stride=compress_lstm_stride,
+                compress_attention_heads=compress_attention_heads,
+                compress_attention_penalize=compress_attention_penalize,
+            ))
+        self.encoder = TEncoderBlock(
+            in_channel=mid_channels[-2],
+            out_channel=mid_channels[-1],
+            kernel_size=inner_kernel_size,
+            stride=inner_stride,
+            norm_groups=0 if groupnorm_layers <= 0 else groupnorm_groups,
+            compress_layers=compress_layers,
+            compress_channel=mid_channels[-1] // compress_channel_scale,
+            compress_kernel_size=compress_kernel_size,
+            compress_dilation_multiply=compress_dilation_multiply,
+            **opt_params,
+            compress_init_scale=compress_init_scale,
+        )
+
+    def forward(self, x, return_embd=False):
+        def align_length(y, size):
+            if y.shape[-1] > size:
+                lp = (y.shape[-1] - size) // 2
+                y = y[..., lp:lp+size]
+            elif y.shape[-1] < size:
+                lp = (size - y.shape[-1]) // 2
+                rp = size - y.shape[-1] - lp
+                y = torch.cat((
+                    torch.zeros(*y.shape[:-1], lp, device=y.device),
+                    y,
+                    torch.zeros(*y.shape[:-1], rp, device=y.device),
+                ), dim=-1)
+            return y
+
+        if len(x.shape) == 1:
+            x = x.unsqueeze(0)
+        if len(x.shape) == 2:
+            x = x.unsqueeze(1)
+
+        # prepare encodings on time domain
+        t_encs = []
+        for e in self.tencoder:
+            t_encs.append(e(x if len(t_encs) == 0 else t_encs[-1]))
+
+        # prepare encodings on freq. domain
+        X = self.stft(x).flatten(1, 2)
+        z_encs = []
+        freq_embeddings = [None] + list(self.freq_embeddings) \
+            + [None] * (len(self.zencoder)-len(self.freq_embeddings)-1)
+        for fe, e in zip(freq_embeddings, self.zencoder):
+            e_in = X if len(z_encs) == 0 else z_encs[-1]
+            if fe is not None:
+                e_in = e_in + fe[None, :, :, None]
+            z_encs.append(e(e_in))
+
+        # fuse encodings
+        enc_size = min(t_encs[-1].shape[-1], z_encs[-1].shape[-1])
+        enc = self.encoder(
+            align_length(t_encs[-1], enc_size)
+            + align_length(z_encs[-1].squeeze(dim=2), enc_size)
+        )
+
+        return enc, t_encs, z_encs
+
+    def forward_length(self, l_in):
+        l_tenc = l_in
+        for e in self.tencoder:
+            l_tenc = e.forward_length(l_tenc)
+        l_zenc = self.stft.forward_length(l_in)
+        for e in self.zencoder:
+            l_zenc = e.forward_length(l_zenc)
+        return self.encoder.forward_length(min(l_tenc, l_zenc))
+
+    def reverse_length(self, l_out):
+        l_enc = self.encoder.reverse_length(l_out)
+        l_tenc = l_enc
+        for e in self.tencoder[::-1]:
+            l_tenc = e.reverse_length(l_tenc)
+        l_zenc = l_enc
+        for e in self.zencoder[::-1]:
+            l_zenc = e.reverse_length(l_zenc)
+        l_zenc = self.stft.reverse_length(l_zenc)
+        return max(l_tenc, l_zenc)
+
+    def forward_feature_size(self) -> int:
+        return self.embd_channel
+
+    def parameter_list(self, base_lr):
+        return [
+            {'params': self.stft.parameters(), 'lr': base_lr * 1e-3},
+            {'params': self.tencoder.parameters()},
+            {'params': self.zencoder.parameters()},
+            {'params': self.freq_embeddings.parameters()},
+            {'params': self.encoder.parameters()},
+        ]
+
+
+class DemucsDecoder(torch.nn.Module):
+    def __init__(self,
+                 # architecture parameters
+                 in_channel : int,
+                 out_channel : int,
+                 mid_channels : tp.List[int],
+                 # conv parameters
+                 kernel_size : tp.Union[int, tp.List[int]],
+                 stride : tp.Union[int, tp.List[int]],
+                 inner_kernel_size : int,
+                 inner_stride : int,
+                 # misc. architecture parameters
+                 infer_each : bool=True,
+                 embedding_layers : int=1,
+                 attention_layers : int=2,
+                 groupnorm_layers : int=2,
+                 groupnorm_groups : int=4,
+                 trainable_stft : bool=False,
+                 # compress parameters
+                 compress_layers : int=2,
+                 compress_channel_scale : int=4, # C_out // 4 for each block
+                 compress_kernel_size : int=3,
+                 compress_dilation_multiply : int=2,
+                 # lstm parameters
+                 compress_lstm_layers : int=2,
+                 compress_lstm_span : int=200,
+                 compress_lstm_stride : int=100,
+                 # local attention parameters
+                 compress_attention_heads : int=4,
+                 compress_attention_penalize : int=4,
+                 # scale parameters
+                 compress_init_scale : float=1e-3) -> None:
+
+        super().__init__()
+
+        self.in_channel = in_channel
+        self.out_channel = out_channel
+        self.embd_channel = mid_channels[-1]
+        self.infer_each = infer_each
+
+        if type(kernel_size) == list:
+            assert len(kernel_size) == len(mid_channels) - 1
+        else:
+            kernel_size = [kernel_size] * (len(mid_channels) - 1)
+
+        if type(stride) == list:
+            assert len(stride) == len(mid_channels) - 1
+        else:
+            stride = [stride] * (len(mid_channels) - 1)
+
+        # initialize STFT and ISTFT layer
+        # the number of ZEncoder blocks: len(mid_channels) - 1
+        # total reduction along freq. axis:
+        #     before last ZEncoder block: (stride ** (len(mid_channels) - 2))
+        #     last ZEncoder block: kernel_size
+        #     -> n_fft = 2 * kernel_size * stride ** (len(mid_channels)-2)
+        #     example: 5 ZEncoders with stride=4 and kernel=8, 2 * 8 * 4**4 = 4096
+        n_fft = 2 * kernel_size[-1]
+        for s in stride[:-1]:
+            n_fft *= s
+        # total reduction along time axis: stride ** (len(mid_channels)-1)
+        # example: 5 TEncoder with stride=4 and kernel=8, 4**5 = 1024
+        hop_length = 1
+        for s in stride:
+            hop_length *= s
+        if trainable_stft:
+            self.istft = TrainableISTFTLayer(n_fft, hop_length)
+        else:
+            self.istft = ISTFTLayer(n_fft, hop_length)
+
+        # initialize shared first decoder layer
+        self.decoder = TDecoderBlock(
+            in_channel=mid_channels[-1],
+            out_channel=mid_channels[-2],
+            kernel_size=inner_kernel_size,
+            stride=inner_stride,
+            norm_groups=0 if groupnorm_layers <= 0 else groupnorm_groups,
+        )
+
+        # initialize TDecoder
+        self.tdecoder = torch.nn.ModuleList()
+        for ei in range(len(mid_channels)-2, -1, -1):
+            c_in = mid_channels[ei]
+            if ei == 0:
+                c_out = (out_channel if infer_each else 1) * in_channel
+            else:
+                c_out = mid_channels[ei-1]
+            norm_groups = 0 if ei < len(mid_channels) - groupnorm_layers \
+                else groupnorm_groups
+            self.tdecoder.append(TDecoderBlock(
+                in_channel=c_in,
+                out_channel=c_out,
+                kernel_size=kernel_size[ei],
+                stride=stride[ei],
+                norm_groups=norm_groups,
+            ))
+
+        # initialize ZDecoder
+        self.zdecoder = torch.nn.ModuleList()
+        freq_dim = 1
+        for ei in range(len(mid_channels)-2, -1, -1):
+            c_in = mid_channels[ei]
+            if ei == 0:
+                c_out = 2 * (out_channel if infer_each else 1) * in_channel
+            else:
+                c_out = mid_channels[ei-1]
+            norm_groups = 0 if ei < len(mid_channels) - groupnorm_layers \
+                else groupnorm_groups
+            self.zdecoder.append(ZDecoderBlock(
+                in_channel=c_in,
+                out_channel=c_out,
+                freq_dim=freq_dim,
+                kernel_size=kernel_size[ei],
+                stride=stride[ei] if ei < len(mid_channels)-2 else kernel_size[ei],
+                norm_groups=norm_groups,
+            ))
+            freq_dim *= stride[ei]
+
+    def forward(self, enc, t_encs, z_encs, return_embd=False):
+        def align_length(y, size):
+            if y.shape[-1] > size:
+                lp = (y.shape[-1] - size) // 2
+                y = y[..., lp:lp+size]
+            elif y.shape[-1] < size:
+                lp = (size - y.shape[-1]) // 2
+                rp = size - y.shape[-1] - lp
+                y = torch.cat((
+                    torch.zeros(*y.shape[:-1], lp, device=y.device),
+                    y,
+                    torch.zeros(*y.shape[:-1], rp, device=y.device),
+                ), dim=-1)
+            return y
+
+        # decode
+        dec = self.decoder(enc)
+
+        # decode along time axis
+        assert len(t_encs) == len(self.tdecoder)
+        t_dec = dec
+        for d, skip in zip(self.tdecoder, t_encs[::-1]):
+            #dec_size = min(t_dec.shape[-1], skip.shape[-1])
+            dec_size = t_dec.shape[-1]
+            t_dec = d(align_length(t_dec, dec_size) + align_length(skip, dec_size))
+        t_dec = t_dec.view(enc.shape[0],
+                           self.out_channel if self.infer_each else 1,
+                           self.in_channel,
+                           -1)
+
+        # decode along freq. axis
+        assert len(z_encs) == len(self.zdecoder)
+        z_dec = dec.unsqueeze(2)
+        for d, skip in zip(self.zdecoder, z_encs[::-1]):
+            #dec_size = min(z_dec.shape[-1], skip.shape[-1])
+            dec_size = z_dec.shape[-1]
+            z_dec = d(align_length(z_dec, dec_size) + align_length(skip, dec_size))
+        z_dec = self.istft(z_dec.unflatten(1, (-1, 2)))
+        z_dec = z_dec.view(enc.shape[0],
+                           self.out_channel if self.infer_each else 1,
+                           self.in_channel,
+                           -1)
+
+        # fuse waveforms
+        x_length = min(t_dec.shape[-1], z_dec.shape[-1])
+        waveform = align_length(t_dec, x_length) \
+            + align_length(z_dec, x_length)
+        if not self.infer_each:
+            waveform = torch.cat((waveform, x.unsqueeze(1) - waveform), dim=1)
+        waveform = waveform.squeeze(-3).squeeze(-2)
+
+        return waveform
+
+    def forward_length(self, l_in):
+        l_dec = self.decoder.forward_length(l_in)
+        l_tdec = l_dec
+        for d in self.tdecoder:
+            l_tdec = d.forward_length(l_tdec)
+        l_zdec = l_dec
+        for d in self.zdecoder:
+            l_zdec = d.forward_length(l_zdec)
+        return min(l_tdec, self.istft.forward_length(l_zdec))
+
+    def reverse_length(self, l_out):
+        l_tdec = l_out
+        for d in self.tdecoder[::-1]:
+            l_tdec = d.reverse_length(l_tdec)
+        l_zdec = self.istft.reverse_length(l_out)
+        for d in self.zdecoder[::-1]:
+            l_zdec = d.reverse_length(l_zdec)
+        return self.decoder.reverse_length(max(l_tdec, l_zdec))
+
+    def parameter_list(self, base_lr):
+        return [
+            {'params': self.decoder.parameters()},
+            {'params': self.tdecoder.parameters()},
+            {'params': self.zdecoder.parameters()},
+            {'params': self.istft.parameters(), 'lr': base_lr * 1e-3},
+        ]
