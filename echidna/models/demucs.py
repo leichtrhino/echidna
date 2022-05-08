@@ -1,201 +1,15 @@
 
 import typing as tp
-from math import pi, log2, ceil, floor, sqrt, cos, sin
+from math import ceil
 import torch
 
-def _generate_dft_matrix(n_fft):
-    phi = 2*pi*torch.arange(1, n_fft + 1, dtype=torch.float) / n_fft
-    basis = torch.arange(n_fft // 2, dtype=torch.float).unsqueeze(-1)
-    return torch.cat((torch.cos(phi*basis), torch.sin(phi*basis)))
-
-def _init_conv_weight(conv : torch.nn.Conv1d) -> None:
-    torch.nn.init.xavier_normal_(conv.weight)
-    if conv.bias is not None:
-        fan_out, fan_in = \
-            torch.nn.init._calculate_fan_in_and_fan_out(conv.weight)
-        if (fan_in + fan_in) != 0:
-            std = sqrt(2 / (fan_in + fan_out))
-            torch.nn.init.normal_(conv.bias, std=std)
-
-class TrainableStftLayer(torch.nn.Module):
-    """
-    Trainable stft layer
-    """
-    def __init__(self,
-                 n_fft : int,
-                 hop_length : int=None,) -> None:
-        """
-        n_fft : int
-        hop_length : int
-        """
-        super(TrainableStftLayer, self).__init__()
-        if hop_length is None:
-            hop_length = n_fft // 4
-
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-        # XXX: padding amount in Conv1d
-        self.conv = torch.nn.Conv1d(1,
-                                    n_fft,
-                                    n_fft,
-                                    stride=hop_length,
-                                    padding=hop_length * 2,
-                                    padding_mode='reflect',
-                                    bias=False,)
-
-        weight = torch.sqrt(torch.hann_window(n_fft)) \
-            * _generate_dft_matrix(n_fft)
-        with torch.no_grad():
-            self.conv.weight.copy_(weight.unsqueeze(1))
-
-    def forward(self, x):
-        """
-        input: (batch_size, n_channels, waveform_length)
-        output: (batch_size, n_channels, 2, (n_fft//2+1), time)
-        """
-        x_shape = x.shape[:-1]
-        return self.conv(x.flatten(0, -2).unsqueeze(1))\
-                   .unflatten(1, (2, self.n_fft // 2))\
-                   .unflatten(0, x_shape)
-
-    def forward_length(self, l_in : int) -> int:
-        return (l_in + 2 * self.hop_length*2 - self.n_fft) \
-            // self.hop_length + 1
-
-    def reverse_length(self, l_out : int) -> int:
-        return self.hop_length * (l_out - 1) \
-            - 2 * self.hop_length*2 \
-            + self.n_fft
-
-class TrainableIstftLayer(torch.nn.Module):
-    def __init__(self,
-                 n_fft : int,
-                 hop_length : int=None,) -> None:
-        super(TrainableIstftLayer, self).__init__()
-
-        if hop_length is None:
-            hop_length = n_fft // 4
-
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-        # XXX: padding amount in ConvTranspose1d
-        self.conv = torch.nn.ConvTranspose1d(n_fft,
-                                             1,
-                                             n_fft,
-                                             stride=hop_length,
-                                             padding=hop_length * 2,
-                                             bias=False,)
-
-        weight = torch.sqrt(torch.hann_window(n_fft)) \
-            * _generate_dft_matrix(n_fft)
-        with torch.no_grad():
-            self.conv.weight.copy_(weight.unsqueeze(1))
-
-    def forward(self, x):
-        """
-        input: (batch_size, n_channels, 2, (n_fft//2+1), time)
-        output: (batch_size, n_channels, waveform_length)
-        """
-        x_shape = x.shape[:-3]
-        return self.conv(x.flatten(0, -4).flatten(1, 2))\
-                   .squeeze(-2)\
-                   .unflatten(0, x_shape) / self.n_fft
-
-    def forward_length(self, l_in : int) -> int:
-        return self.hop_length * (l_in - 1) - 2 * self.hop_length*2 + self.n_fft
-
-    def reverse_length(self, l_out : int) -> int:
-        return ceil((l_out + 2 * self.hop_length*2 - self.n_fft)
-                    / self.hop_length) + 1
-
-
-class StftLayer(torch.nn.Module):
-    """
-    Not trainable stft layer
-    """
-    def __init__(self,
-                 n_fft : int,
-                 hop_length : int=None,) -> None:
-        """
-        n_fft : int
-        hop_length : int
-        """
-        super(StftLayer, self).__init__()
-        if hop_length is None:
-            hop_length = n_fft // 4
-
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-
-    def forward(self, x):
-        """
-        input: (batch_size, n_channels, waveform_length)
-        output: (batch_size, n_channels, 2, (n_fft//2), time)
-        """
-        window = torch.sqrt(torch.hann_window(self.n_fft, device=x.device))
-        orig_shape = x.shape[:-1]
-
-        return torch.view_as_real(
-            torch.stft(x.flatten(0, -2),
-                       self.n_fft,
-                       self.hop_length,
-                       window=window,
-                       return_complex=True)
-            ).unflatten(0, orig_shape)\
-                    .transpose(-3, -1)\
-                    .transpose(-2, -1)[..., 1:, :]
-
-    def forward_length(self, l_in : int) -> int:
-        return (l_in + 2 * self.hop_length*2 - self.n_fft) \
-            // self.hop_length + 1
-
-    def reverse_length(self, l_out : int) -> int:
-        return self.hop_length * (l_out - 1) \
-            - 2 * self.hop_length*2 \
-            + self.n_fft
-
-class IstftLayer(torch.nn.Module):
-    def __init__(self,
-                 n_fft : int,
-                 hop_length : int=None,) -> None:
-        super(IstftLayer, self).__init__()
-
-        if hop_length is None:
-            hop_length = n_fft // 4
-
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-
-    def forward(self, x):
-        """
-        input: (batch_size, n_channels, 2, (n_fft//2+1), time)
-        output: (batch_size, n_channels, waveform_length)
-        """
-        x_shape = x.shape[:-3]
-        window = torch.sqrt(torch.hann_window(self.n_fft, device=x.device))
-        reshaped = x.transpose(-3, -1).transpose(-3, -2).flatten(0, -4)
-        re, im = torch.split(reshaped, 1, dim=-1)
-        reshaped_comp = torch.squeeze(re + 1j * im, dim=-1)
-        reshaped_comp = torch.cat((
-            torch.zeros(
-                *reshaped_comp.shape[:-2], 1, reshaped_comp.shape[-1],
-                dtype=reshaped_comp.dtype, device=reshaped_comp.device
-            ),
-            reshaped_comp), dim=-2)
-        return torch.istft(
-            reshaped_comp,
-            self.n_fft,
-            self.hop_length,
-            window=window,
-        ).unflatten(0, x_shape)
-
-    def forward_length(self, l_in : int) -> int:
-        return self.hop_length * (l_in - 1) - 2 * self.hop_length*2 + self.n_fft
-
-    def reverse_length(self, l_out : int) -> int:
-        return ceil((l_out + 2 * self.hop_length*2 - self.n_fft)
-                    / self.hop_length) + 1
-
+from .utils import init_conv_weight
+from .commonlayers import (
+    STFTLayer,
+    ISTFTLayer,
+    TrainableSTFTLayer,
+    TrainableISTFTLayer,
+)
 
 class RestrictedBiLSTM(torch.nn.Module):
     """
@@ -219,7 +33,7 @@ class RestrictedBiLSTM(torch.nn.Module):
         self.linear = torch.nn.Conv1d(2 * hidden_size,
                                       output_size * freq_dim,
                                       kernel_size=1)
-        _init_conv_weight(self.linear)
+        init_conv_weight(self.linear)
 
         self.freq_dim = freq_dim
         self.span = span
@@ -316,12 +130,12 @@ class LocalAttention(torch.nn.Module):
                                          embd_dim * freq_dim,
                                          1)
 
-        _init_conv_weight(self.query_conv)
-        _init_conv_weight(self.key_conv)
-        _init_conv_weight(self.value_conv)
-        _init_conv_weight(self.penalize_conv)
+        init_conv_weight(self.query_conv)
+        init_conv_weight(self.key_conv)
+        init_conv_weight(self.value_conv)
+        init_conv_weight(self.penalize_conv)
         self.penalize_conv.weight.data *= 1e-3
-        _init_conv_weight(self.proj_conv)
+        init_conv_weight(self.proj_conv)
 
         self.embd_dim = embd_dim
         self.freq_dim = freq_dim
@@ -424,7 +238,7 @@ class CompressedResidualBlock(torch.nn.Module):
                                    bias=False)
         self.enc_norm = torch.nn.GroupNorm(1, bottleneck_channel)
         self.enc_activation = torch.nn.GELU()
-        _init_conv_weight(self.enc_conv)
+        init_conv_weight(self.enc_conv)
 
         self.with_lstm = lstm_layers is not None
         if self.with_lstm:
@@ -454,7 +268,7 @@ class CompressedResidualBlock(torch.nn.Module):
                                    bias=False)
         self.dec_norm = torch.nn.GroupNorm(1, out_channel * 2)
         self.dec_activation = torch.nn.GLU(dim=1)
-        _init_conv_weight(self.dec_conv)
+        init_conv_weight(self.dec_conv)
 
         self.scale = torch.nn.Parameter(
             torch.full((out_channel,), init_scale),
@@ -536,7 +350,7 @@ class BottleneckBlock(torch.nn.Module):
         if norm_groups > 0:
             self.enc_norm = torch.nn.GroupNorm(norm_groups, out_channel)
         self.enc_activation = torch.nn.GELU()
-        _init_conv_weight(self.enc_conv)
+        init_conv_weight(self.enc_conv)
 
         if compress_layers > 0:
             self.compress_blocks = torch.nn.ModuleList()
@@ -571,7 +385,7 @@ class BottleneckBlock(torch.nn.Module):
         if norm_groups > 0:
             self.dec_norm = torch.nn.GroupNorm(norm_groups, out_channel * 2)
         self.dec_activation = torch.nn.GLU(dim=1)
-        _init_conv_weight(self.dec_conv)
+        init_conv_weight(self.dec_conv)
 
         self.is_transposed = is_transposed
         self.is_temporal = is_temporal
@@ -811,11 +625,11 @@ class DemucsV3(torch.nn.Module):
         for s in stride:
             hop_length *= s
         if trainable_stft:
-            self.stft = TrainableStftLayer(n_fft, hop_length)
-            self.istft = TrainableIstftLayer(n_fft, hop_length)
+            self.stft = TrainableSTFTLayer(n_fft, hop_length)
+            self.istft = TrainableISTFTLayer(n_fft, hop_length)
         else:
-            self.stft = StftLayer(n_fft, hop_length)
-            self.istft = IstftLayer(n_fft, hop_length)
+            self.stft = STFTLayer(n_fft, hop_length)
+            self.istft = ISTFTLayer(n_fft, hop_length)
 
         # initialize encoder and decoder blocks
         self.tencoder = torch.nn.ModuleList()
@@ -1177,7 +991,7 @@ class ChimeraDemucs(torch.nn.Module):
         self.conv = torch.nn.Conv1d(self.demucs.forward_embd_feature(),
                                     dc_embd_feature * dc_embd_dim,
                                     1)
-        _init_conv_weight(self.conv)
+        init_conv_weight(self.conv)
 
         self.embd_feature = dc_embd_feature
         self.embd_dim = dc_embd_dim
