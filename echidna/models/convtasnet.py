@@ -1,108 +1,16 @@
 
 import typing as tp
-from math import pi, log2, ceil, floor, sqrt, cos, sin
 import torch
 
-def _generate_dft_matrix(n_fft):
-    phi = 2*pi*torch.arange(n_fft, dtype=torch.float) / n_fft
-    basis = torch.arange(n_fft // 2 + 1, dtype=torch.float).unsqueeze(-1)
-    return torch.cat((torch.cos(phi*basis), torch.sin(phi*basis)))
-
-def _init_conv_weight(conv : torch.nn.Conv1d) -> None:
-    torch.nn.init.xavier_normal_(conv.weight)
-    if conv.bias is not None:
-        fan_out, fan_in = \
-            torch.nn.init._calculate_fan_in_and_fan_out(conv.weight)
-        if (fan_in + fan_in) != 0:
-            std = sqrt(2 / (fan_in + fan_out))
-            torch.nn.init.normal_(conv.bias, std=std)
-
-class TrainableStftLayer(torch.nn.Module):
-    """
-    Trainable stft layer
-    """
-    def __init__(self,
-                 n_fft : int,
-                 hop_length : int=None,) -> None:
-        """
-        n_fft : int
-        hop_length : int
-        """
-        super(TrainableStftLayer, self).__init__()
-        if hop_length is None:
-            hop_length = n_fft // 4
-
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-        # XXX: padding amount in Conv1d
-        self.conv = torch.nn.Conv1d(1,
-                                    n_fft+2,
-                                    n_fft,
-                                    stride=hop_length,
-                                    padding=hop_length * 2,
-                                    bias=False,)
-
-        weight = torch.sqrt(torch.hann_window(n_fft)) \
-            * _generate_dft_matrix(n_fft)
-        with torch.no_grad():
-            self.conv.weight.copy_(weight.unsqueeze(1))
-
-    def forward(self, x):
-        """
-        input: (batch_size, n_channels, waveform_length)
-        output: (batch_size, n_channels, 2*(n_fft//2+1), time)
-        """
-        x_shape = x.shape[:-1]
-        return self.conv(x.flatten(0, -2).unsqueeze(1))\
-                   .unflatten(0, x_shape)
-
-    def forward_length(self, l_in : int) -> int:
-        return (l_in + 2 * self.hop_length*2 - self.n_fft) \
-            // self.hop_length + 1
-
-    def reverse_length(self, l_out : int) -> int:
-        return self.hop_length * (l_out - 1) - 2 * self.hop_length*2 + self.n_fft
-
-class TrainableIstftLayer(torch.nn.Module):
-    def __init__(self,
-                 n_fft : int,
-                 hop_length : int=None,) -> None:
-        super(TrainableIstftLayer, self).__init__()
-
-        if hop_length is None:
-            hop_length = n_fft // 4
-
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-        # XXX: padding amount in ConvTranspose1d
-        self.conv = torch.nn.ConvTranspose1d(n_fft+2,
-                                             1,
-                                             n_fft,
-                                             bias=False,
-                                             stride=hop_length,
-                                             padding=hop_length * 2,)
-
-        weight = torch.sqrt(torch.hann_window(n_fft)) \
-            * _generate_dft_matrix(n_fft)
-        with torch.no_grad():
-            self.conv.weight.copy_(weight.unsqueeze(1))
-
-    def forward(self, x):
-        """
-        input: (batch_size, n_channels, 2*(n_fft//2+1), time)
-        output: (batch_size, n_channels, waveform_length)
-        """
-        x_shape = x.shape[:-2]
-        return self.conv(x.flatten(0, -3))\
-                   .squeeze(-2)\
-                   .unflatten(0, x_shape) / self.n_fft
-
-    def forward_length(self, l_in : int) -> int:
-        return self.hop_length * (l_in - 1) - 2 * self.hop_length*2 + self.n_fft
-
-    def reverse_length(self, l_out : int) -> int:
-        return ceil((l_out + 2 * self.hop_length*2 - self.n_fft)
-                    / self.hop_length) + 1
+from .utils import init_conv_weight
+from .commonlayers import (
+    STFTLayer,
+    ISTFTLayer,
+    TrainableSTFTLayer,
+    TrainableISTFTLayer,
+    SigmoidMask,
+    CodebookMask,
+)
 
 class ConvBlock(torch.nn.Module):
     def __init__(self,
@@ -137,10 +45,10 @@ class ConvBlock(torch.nn.Module):
                                         out_channel,
                                         1)
 
-        _init_conv_weight(self.in_conv)
-        _init_conv_weight(self.mid_conv)
-        _init_conv_weight(self.skip_conv)
-        _init_conv_weight(self.out_conv)
+        init_conv_weight(self.in_conv)
+        init_conv_weight(self.mid_conv)
+        init_conv_weight(self.skip_conv)
+        init_conv_weight(self.out_conv)
 
     def forward(self, x):
         b_in = self.in_norm(self.in_relu(self.in_conv(x)))
@@ -154,83 +62,6 @@ class ConvBlock(torch.nn.Module):
 
     def reverse_length(self, l_out : int) -> int:
         return l_out
-
-class CodebookMask(torch.nn.Module):
-    def __init__(self,
-                 in_channel : int,
-                 out_channel : int,
-                 mask_num : int,
-                 magbook_size : int=3,
-                 phasebook_size : int=8,
-                 requires_grad : bool=False,):
-        super(CodebookMask, self).__init__()
-
-        self.mag_conv = torch.nn.Conv1d(in_channel,
-                                        mask_num
-                                        * out_channel // 2
-                                        * magbook_size,
-                                        1)
-        self.phase_conv = torch.nn.Conv1d(in_channel,
-                                          mask_num
-                                          * out_channel // 2
-                                          * phasebook_size,
-                                          1)
-        _init_conv_weight(self.mag_conv)
-        _init_conv_weight(self.phase_conv)
-
-        mag_cff = torch.arange(0, magbook_size, dtype=torch.float)
-        phase_cff = torch.Tensor(
-            [(sin(phi), cos(phi)) for phi in # for atan2
-             2*pi*torch.arange(0, phasebook_size)/phasebook_size]
-        )
-        self.magbook = torch.nn.Parameter(
-            mag_cff.repeat(mask_num, out_channel // 2, 1),
-            requires_grad=requires_grad
-        )
-        self.phasebook = torch.nn.Parameter(
-            phase_cff.repeat(mask_num, out_channel // 2, 1, 1),
-            requires_grad=requires_grad
-        )
-
-        self.mask_num = mask_num
-        self.out_channel = out_channel
-        self.magbook_size = magbook_size
-        self.phasebook_size = phasebook_size
-
-    def forward(self, x : torch.Tensor):
-        mag = self.mag_conv(x).unflatten(
-            -2, (self.mask_num, -1, self.magbook_size))
-        mag = torch.nn.functional.softmax(mag, dim=-2)
-        mag = torch.sum(mag * self.magbook.unsqueeze(-1), dim=-2)
-
-        phase = self.phase_conv(x).unflatten(
-            -2, (self.mask_num, -1, self.phasebook_size, 1))
-        phase = torch.nn.functional.softmax(phase, dim=-3)
-        phase = torch.sum(
-            phase * self.phasebook.unsqueeze(-1),
-            dim=-3
-        )
-        phase = torch.atan2(*phase.split(1, dim=-2)).squeeze(-2)
-
-        return torch.cat((
-            mag * torch.cos(phase), mag * torch.sin(phase)), dim=-2)
-
-class SigmoidMask(torch.nn.Module):
-    def __init__(self,
-                 in_channel : int,
-                 out_channel : int,
-                 mask_num : int):
-        super(SigmoidMask, self).__init__()
-        self.mask_num = mask_num
-        self.conv = torch.nn.Conv1d(in_channel,
-                                    out_channel * mask_num // 2,
-                                    1)
-        _init_conv_weight(self.conv)
-
-    def forward(self, x : torch.Tensor):
-        x = self.conv(x).unflatten(-2, (self.mask_num, -1))
-        x = torch.cat((torch.sigmoid(x), torch.zeros_like(x)), dim=-2)
-        return x
 
 class ConvTasNet(torch.nn.Module):
     def __init__(self,
@@ -249,29 +80,29 @@ class ConvTasNet(torch.nn.Module):
                  hop_length=None) -> None:
         super(ConvTasNet, self).__init__()
 
-        if not mask_each:
-            assert out_channel == 2
         if magbook_size > 1 or phasebook_size > 1:
             assert magbook_size > 1 and phasebook_size > 1
         assert kernel_size % 2 == 1
-        n_fft = feature_channel - 2
+        n_fft = feature_channel
 
-        self.encoder = TrainableStftLayer(n_fft, hop_length)
-        self.decoder = TrainableIstftLayer(n_fft, hop_length)
+        self.encoder = TrainableSTFTLayer(n_fft, hop_length)
+        self.decoder = TrainableISTFTLayer(n_fft, hop_length)
 
         self.feature_norm = torch.nn.InstanceNorm1d(feature_channel
                                                     * in_channel)
         self.in_conv = torch.nn.Conv1d(feature_channel * in_channel,
                                        bottleneck_channel,
                                        1)
-        _init_conv_weight(self.in_conv)
+        init_conv_weight(self.in_conv)
 
         self.out_prelu = torch.nn.PReLU()
+        mask_num = in_channel \
+            * (out_channel if mask_each else out_channel - 1)
         if magbook_size > 1 and phasebook_size > 1:
             self.mask_module = CodebookMask(
                 skipconnection_channel,
                 feature_channel,
-                mask_num=out_channel if mask_each else 1,
+                mask_num=mask_num,
                 magbook_size=magbook_size,
                 phasebook_size=phasebook_size,
             )
@@ -279,9 +110,8 @@ class ConvTasNet(torch.nn.Module):
             self.mask_module = SigmoidMask(
                 skipconnection_channel,
                 feature_channel,
-                mask_num=out_channel if mask_each else 1
+                mask_num=mask_num
             )
-
 
         self.blocks = torch.nn.ModuleList()
         for ri in range(repeats):
@@ -321,9 +151,9 @@ class ConvTasNet(torch.nn.Module):
 
         # encode
         base_feature = self.encoder(x_)
-        F, T = base_feature.shape[-2:]
 
-        block_in = self.in_conv(self.feature_norm(base_feature.flatten(1, -2)))
+        block_in = self.in_conv(self.feature_norm(
+            base_feature.flatten(1, -2)))
 
         # calculate residual
         global_residual = None
@@ -344,21 +174,29 @@ class ConvTasNet(torch.nn.Module):
         masks = self.mask_module(embd)
 
         # decode from masks
-        base_feature = base_feature[..., None, :, :, :]
-        masks = masks[..., None, :, :]
-        m_re, m_im = masks[..., :F//2, :], masks[..., F//2:, :]
-        b_re, b_im = base_feature[..., :F//2, :], base_feature[..., F//2:, :]
-        masked_features = torch.cat((
+        base_feature = base_feature.unsqueeze(-5)
+        masks = masks.unflatten(
+            -4,
+            (self.out_channel if self.mask_each else self.out_channel - 1,
+             self.in_channel)
+        )
+        m_re, m_im = [m.squeeze(-3) for m in masks.split(1, dim=-3)]
+        b_re, b_im = [m.squeeze(-3) for m in base_feature.split(1, dim=-3)]
+        masked_features = torch.stack((
             m_re * b_re - m_im * b_im,
             m_re * b_im + m_im * b_re,
-        ), dim=-2)
+        ), dim=-3)
+
         if not self.mask_each:
-            masked_features = torch.cat(
-                (masked_features, base_feature - masked_features),
-                dim=-3
-            )
+            other_feature = base_feature.squeeze(-5) \
+                - torch.sum(masked_features, dim=-5)
+            masked_features = torch.cat((
+                masked_features,
+                other_feature.unsqueeze(-5)
+            ), dim=-5)
         signals = self.decoder(masked_features)
-        signals = signals[..., pad_left:pad_left+x.shape[-1]].squeeze(-3).squeeze(-2)
+        signals = signals[..., pad_left:pad_left+x.shape[-1]]\
+            .squeeze(-3).squeeze(-2)
 
         if return_embd:
             return signals, embd
@@ -436,7 +274,7 @@ class ChimeraConvTasNet(torch.nn.Module):
         self.conv = torch.nn.Conv1d(self.convtasnet.forward_embd_feature(),
                                     embd_feature * embd_dim,
                                     1)
-        _init_conv_weight(self.conv)
+        init_conv_weight(self.conv)
 
         self.embd_feature = embd_feature
         self.embd_dim = embd_dim
