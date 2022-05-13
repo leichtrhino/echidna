@@ -3,10 +3,7 @@ import math
 import itertools
 import torch
 
-import os, sys
-sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
-
-from chimerau.models import waveunet as wu
+from echidna.models import waveunet as wu
 
 class TestWaveUNetModels(unittest.TestCase):
     def test_interpolate(self):
@@ -267,5 +264,3 @@ class TestWaveUNetModels(unittest.TestCase):
         self.assertEqual(n.forward_embd_feature(), e.shape[1])
         self.assertEqual(n.forward_embd_length(1000), e.shape[2])
 
-if __name__ == '__main__':
-    unittest.main()
