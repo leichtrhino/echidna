@@ -3,14 +3,7 @@ import typing as tp
 from math import log2, ceil, floor, sqrt
 import torch
 
-def _init_conv_weight(conv : torch.nn.Conv1d) -> None:
-    torch.nn.init.xavier_normal_(conv.weight)
-    if conv.bias is not None:
-        fan_out, fan_in = \
-            torch.nn.init._calculate_fan_in_and_fan_out(conv.weight)
-        if (fan_in + fan_in) != 0:
-            std = sqrt(2 / (fan_in + fan_out))
-            torch.nn.init.normal_(conv.bias, std=std)
+from .utils import init_conv_weight
 
 class DownsamplingBlock(torch.nn.Module):
     """
@@ -36,7 +29,7 @@ class DownsamplingBlock(torch.nn.Module):
         self.downsample_rate = downsample_rate
         self.conv = torch.nn.Conv1d(
             channel_in, channel_out, kernel_size)
-        _init_conv_weight(self.conv)
+        init_conv_weight(self.conv)
 
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         """
@@ -112,7 +105,7 @@ class UpsamplingBlock(torch.nn.Module):
             upsample_rate, interpolation_mode, channel_in)
         self.conv = torch.nn.Conv1d(
             channel_in, channel_out, kernel_size)
-        _init_conv_weight(self.conv)
+        init_conv_weight(self.conv)
 
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         """
@@ -541,7 +534,7 @@ class WaveUNet(torch.nn.Module):
                                channel_mid):
             self.middle_conv.append(
                 torch.nn.Conv1d(c_in, c_out, kernel_size_m))
-            _init_conv_weight(self.middle_conv[-1])
+            init_conv_weight(self.middle_conv[-1])
 
         decoder_in_channel = channel_mid[-1] if len(channel_mid) else \
             channel_enc_dec[-1]
@@ -557,7 +550,7 @@ class WaveUNet(torch.nn.Module):
         self.out_conv = torch.nn.Conv1d(channel_out_m1,
                                         channel_out,
                                         kernel_size_o)
-        _init_conv_weight(self.out_conv)
+        init_conv_weight(self.out_conv)
 
         self.residual_mode = residual_mode
         self.kernel_size_m = kernel_size_m
@@ -691,7 +684,7 @@ class ChimeraWaveUNet(torch.nn.Module):
         self.conv = torch.nn.Conv1d(self.waveunet.forward_embd_feature(),
                                     embd_feature * embd_dim,
                                     1)
-        _init_conv_weight(self.conv)
+        init_conv_weight(self.conv)
 
         self.embd_feature = embd_feature
         self.embd_dim = embd_dim
