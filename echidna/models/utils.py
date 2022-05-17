@@ -35,3 +35,8 @@ def init_lstm_weight(lstm_layer : torch.nn.LSTM, hidden_size):
             param.data.fill_(0)
             param.data[N:2*N].fill_(1) # for forget gate
 
+def generate_dft_matrix(n_fft):
+    phi = 2*pi*torch.arange(1, n_fft + 1, dtype=torch.float) / n_fft
+    basis = torch.arange(n_fft // 2, dtype=torch.float).unsqueeze(-1)
+    return torch.cat((torch.cos(phi*basis), torch.sin(phi*basis)))
+

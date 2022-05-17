@@ -4,6 +4,97 @@ import torch
 
 from .utils import init_conv_weight, generate_dft_matrix
 
+class TrainableSTFTLayer(torch.nn.Module):
+    """
+    Trainable stft layer
+    """
+    def __init__(self,
+                 n_fft : int,
+                 hop_length : int=None,) -> None:
+        """
+        n_fft : int
+        hop_length : int
+        """
+        super().__init__()
+        if hop_length is None:
+            hop_length = n_fft // 4
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+        # XXX: padding amount in Conv1d
+        self.conv = torch.nn.Conv1d(1,
+                                    n_fft,
+                                    n_fft,
+                                    stride=hop_length,
+                                    padding=hop_length * 2,
+                                    padding_mode='reflect',
+                                    bias=False,)
+
+        weight = torch.sqrt(torch.hann_window(n_fft)) \
+            * generate_dft_matrix(n_fft)
+        with torch.no_grad():
+            self.conv.weight.copy_(weight.unsqueeze(1))
+
+    def forward(self, x):
+        """
+        input: (batch_size, n_channels, waveform_length)
+        output: (batch_size, n_channels, 2, n_fft//2, time)
+        """
+        x_shape = x.shape[:-1]
+        return self.conv(x.flatten(0, -2).unsqueeze(1))\
+                   .unflatten(1, (2, self.n_fft // 2))\
+                   .unflatten(0, x_shape)
+
+    def forward_length(self, l_in : int) -> int:
+        return (l_in + 2 * self.hop_length*2 - self.n_fft) \
+            // self.hop_length + 1
+
+    def reverse_length(self, l_out : int) -> int:
+        return self.hop_length * (l_out - 1) \
+            - 2 * self.hop_length*2 \
+            + self.n_fft
+
+class TrainableISTFTLayer(torch.nn.Module):
+    def __init__(self,
+                 n_fft : int,
+                 hop_length : int=None,) -> None:
+        super().__init__()
+
+        if hop_length is None:
+            hop_length = n_fft // 4
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+        # XXX: padding amount in ConvTranspose1d
+        self.conv = torch.nn.ConvTranspose1d(n_fft,
+                                             1,
+                                             n_fft,
+                                             stride=hop_length,
+                                             padding=hop_length * 2,
+                                             bias=False,)
+
+        weight = torch.sqrt(torch.hann_window(n_fft)) \
+            * generate_dft_matrix(n_fft)
+        with torch.no_grad():
+            self.conv.weight.copy_(weight.unsqueeze(1))
+
+    def forward(self, x):
+        """
+        input: (batch_size, n_channels, 2, n_fft//2, time)
+        output: (batch_size, n_channels, waveform_length)
+        """
+        x_shape = x.shape[:-3]
+        return self.conv(x.flatten(0, -4).flatten(1, 2))\
+                   .squeeze(-2)\
+                   .unflatten(0, x_shape) / self.n_fft
+
+    def forward_length(self, l_in : int) -> int:
+        return self.hop_length * (l_in - 1) - 2 * self.hop_length*2 + self.n_fft
+
+    def reverse_length(self, l_out : int) -> int:
+        return ceil((l_out + 2 * self.hop_length*2 - self.n_fft)
+                    / self.hop_length) + 1
+
 
 class STFTLayer(torch.nn.Module):
     """
