@@ -2,6 +2,98 @@
 from math import pi, ceil, sqrt, cos, sin
 import torch
 
+from .utils import init_conv_weight, generate_dft_matrix
+
+
+class STFTLayer(torch.nn.Module):
+    """
+    Not trainable stft layer
+    """
+    def __init__(self,
+                 n_fft : int,
+                 hop_length : int=None,) -> None:
+        """
+        n_fft : int
+        hop_length : int
+        """
+        super().__init__()
+        if hop_length is None:
+            hop_length = n_fft // 4
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+
+    def forward(self, x):
+        """
+        input: (batch_size, n_channels, waveform_length)
+        output: (batch_size, n_channels, 2, (n_fft//2), time)
+        """
+        window = torch.sqrt(torch.hann_window(self.n_fft, device=x.device))
+        orig_shape = x.shape[:-1]
+
+        return torch.view_as_real(
+            torch.stft(x.flatten(0, -2),
+                       self.n_fft,
+                       self.hop_length,
+                       window=window,
+                       return_complex=True)
+            ).unflatten(0, orig_shape)\
+                    .transpose(-3, -1)\
+                    .transpose(-2, -1)[..., 1:, :]
+
+    def forward_length(self, l_in : int) -> int:
+        return (l_in + 2 * self.hop_length*2 - self.n_fft) \
+            // self.hop_length + 1
+
+    def reverse_length(self, l_out : int) -> int:
+        return self.hop_length * (l_out - 1) \
+            - 2 * self.hop_length*2 \
+            + self.n_fft
+
+class ISTFTLayer(torch.nn.Module):
+    """
+    Not trainable stft layer
+    """
+    def __init__(self,
+                 n_fft : int,
+                 hop_length : int=None,) -> None:
+        super().__init__()
+
+        if hop_length is None:
+            hop_length = n_fft // 4
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+
+    def forward(self, x):
+        """
+        input: (batch_size, n_channels, 2, (n_fft//2+1), time)
+        output: (batch_size, n_channels, waveform_length)
+        """
+        x_shape = x.shape[:-3]
+        window = torch.sqrt(torch.hann_window(self.n_fft, device=x.device))
+        reshaped = x.transpose(-3, -1).transpose(-3, -2).flatten(0, -4)
+        re, im = torch.split(reshaped, 1, dim=-1)
+        reshaped_comp = torch.squeeze(re + 1j * im, dim=-1)
+        reshaped_comp = torch.cat((
+            torch.zeros(
+                *reshaped_comp.shape[:-2], 1, reshaped_comp.shape[-1],
+                dtype=reshaped_comp.dtype, device=reshaped_comp.device
+            ),
+            reshaped_comp), dim=-2)
+        return torch.istft(
+            reshaped_comp,
+            self.n_fft,
+            self.hop_length,
+            window=window,
+        ).unflatten(0, x_shape)
+
+    def forward_length(self, l_in : int) -> int:
+        return self.hop_length * (l_in - 1) - 2 * self.hop_length*2 + self.n_fft
+
+    def reverse_length(self, l_out : int) -> int:
+        return ceil((l_out + 2 * self.hop_length*2 - self.n_fft)
+                    / self.hop_length) + 1
 
 class SigmoidMask(torch.nn.Module):
     def __init__(self,
