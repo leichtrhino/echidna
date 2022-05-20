@@ -12,10 +12,7 @@ import multiprocessing
 
 import torch
 import torchaudio
-import resampy
-import numpy
 import librosa
-import matplotlib.pyplot as plt
 
 from . import transforms
 
@@ -23,186 +20,10 @@ from copy import deepcopy
 from itertools import accumulate
 from bisect import bisect, bisect_left
 
-def plot_partition(x : numpy.ndarray,
-                   partitions : tp.List[tp.Tuple[object]]) -> plt.Figure:
-    """
-    Parameters
-    ----------
-    x : numpy.Array
-        an Array shaped (C, L) where C is the number of sources and L is waveform length
-    partitions :
-        list of partitions
-    """
+logger = logging.getLogger(__name__)
 
-    pos_dict = {tuple(range(x.shape[0])): (0, 0)}
-    for p0, p1 in partitions:
-        pall = tuple(sorted(p0+p1))
-        row, col = pos_dict[pall]
-        pos_dict[tuple(p0)] = (row, col+1)
-        pos_dict[tuple(p1)] = (row+len(p0), col+1)
 
-    nrows = max(map(lambda k: k[0], pos_dict.values())) + 1
-    ncols = max(map(lambda k: k[1], pos_dict.values())) + 1
-
-    # build spectrograms
-    S = numpy.abs(numpy.stack([librosa.stft(y) for y in x], axis=0))
-    S_max = numpy.max(numpy.sum(S, axis=0))
-    fig, ax = plt.subplots(nrows, ncols)
-
-    for p0, p1, _ in partitions:
-        S_p0 = numpy.sum(S[p0], axis=0)
-        S_p1 = numpy.sum(S[p1], axis=0)
-        S_diff = S_p0 - S_p1
-        irow, icol = pos_dict[tuple(sorted(p0+p1))]
-        ax[irow, icol].imshow(S_diff,
-                              cmap='PiYG',
-                              origin='lower',
-                              aspect='auto',
-                              vmin=-S_max,
-                              vmax=S_max)
-        ax[irow, icol].set_title(str(tuple(sorted(p0+p1))),
-                                 fontsize='x-small',
-                                 loc='left')
-
-        if len(p0) == 1:
-            irow, icol = pos_dict[tuple(p0)]
-            ax[irow, icol].imshow(S_p0,
-                                  cmap='PiYG',
-                                  origin='lower',
-                                  aspect='auto',
-                                  vmin=-S_max,
-                                  vmax=S_max)
-            ax[irow, icol].set_title(str(tuple(p0)),
-                                     fontsize='x-small',
-                                     loc='left')
-
-        if len(p1) == 1:
-            irow, icol = pos_dict[tuple(p1)]
-            ax[irow, icol].imshow(-S_p1,
-                                  cmap='PiYG',
-                                  origin='lower',
-                                  aspect='auto',
-                                  vmin=-S_max,
-                                  vmax=S_max)
-            ax[irow, icol].set_title(str(tuple(p1)),
-                                     fontsize='x-small',
-                                     loc='left')
-
-    for irow, icol in itertools.product(range(nrows), range(ncols)):
-        ax[irow, icol].axis('off')
-
-    return fig
-
-def find_partition(x : torch.Tensor,
-                   source_dict : tp.Dict[str, tp.Dict[str, object]],
-                   n_fft : int=4096,
-                   hop_length : int=1024) -> tp.List[tp.Tuple[object]]:
-    """
-    Parameters
-    ----------
-    x : torch.Tensor
-        a tensor shaped (C, L), where C is the number of sources and L is waveform length
-    n_fft : int
-    hop_length : int
-    Returns
-    -------
-    list
-        a list contains the partition which is suitable for minimum entropy PIT
-    """
-
-    win = torch.hann_window(n_fft, device=x.device)
-    S = torch.stft(x, n_fft, hop_length, window=win, return_complex=True).abs()
-
-    in_partition = [list(range(x.shape[0]))]
-    out_partitions = []
-    while in_partition:
-        p = in_partition.pop()
-        S_all = torch.sum(S[p], dim=0)
-        c_min = None
-        e_min = math.inf
-
-        for i in range(1, len(p)):
-            for c in map(lambda c: list(c), itertools.combinations(p, i)):
-                # construct a mixture of selected sources
-                S_c = torch.sum(S[c], dim=0)
-                weight = S_c / torch.sum(S_c).clamp(min=1e-6)
-                # find entropy of this separation
-                prob = S_c / S_all.clamp(min=1e-6)
-                e = torch.sum(
-                    (-prob*torch.log2(prob.clamp(min=1e-6))
-                    -(1-prob)*torch.log2((1-prob).clamp(min=1e-6)))
-                    *weight
-                ).item()
-                if e < e_min:
-                    e_min = e
-                    c_min = c
-
-        not_c = [d for d in p if d not in c_min]
-        cs = sorted(
-            [c_min, not_c],
-            key=lambda c: torch.sum(S[c]),
-            reverse=True
-        )
-        out_partitions.append(cs)
-        for c in cs:
-            if len(c) > 1:
-                in_partition.insert(0, c)
-
-    return out_partitions
-
-def partition_voice_or_not(x : torch.Tensor,
-                           source_dict : tp.Dict[str, tp.Dict[str, object]],
-                           voice_categories : tp.Set[str]
-                           ) -> tp.List[tp.Tuple[object]]:
-    """
-    Parameters
-    ----------
-    x : torch.Tensor
-        a tensor shaped (C, L), where C is the number of sources and L is waveform length
-    source_dict : tp.Dict[str, tp.Dict[str, object]]
-    voice_categories : tp.Set[str]
-    Returns
-    -------
-    list
-        a list contains the partitions of voice and non-voice mixes
-    """
-    logger = logging.getLogger(__name__)
-
-    vocal = [
-        i for i in range(x.shape[0])
-        if source_dict[i].get('category') in voice_categories
-    ]
-    nonvocal = [
-        i for i in range(x.shape[0])
-        if source_dict[i].get('category') not in voice_categories
-    ]
-    if len(vocal) == 0:
-        logger.warning(f'sources '
-                       f'{[s.get("path", None) for s in source_dict]} does not '
-                       f'contain voice (category_set={voice_categories})')
-        return []
-    if len(vocal) == len(source_dict):
-        logger.warning(f'sources '
-                       f'{[s.get("path", None) for s in source_dict]} are all '
-                       f'voice (category_set={voice_categories})')
-        return []
-
-    vocal_combinations = itertools.chain.from_iterable(
-        itertools.combinations(vocal, i)
-        for i in range(1, len(vocal)+1)
-    )
-    nonvocal_combinations = itertools.chain.from_iterable(
-        itertools.combinations(nonvocal, i)
-        for i in range(1, len(nonvocal)+1)
-    )
-
-    out_partitions = []
-    for v, nv in itertools.product(vocal_combinations, nonvocal_combinations):
-        out_partitions.append((v, nv))
-
-    return out_partitions
-
-# utility functions/classes for MEPIT
+# utility functions/classes for echidna dataset
 
 def get_num_sources_and_category_repetition(
         source_list : tp.Dict[pathlib.Path, tp.Dict[str, object]],
@@ -257,7 +78,6 @@ def validate_source_list(
     splits : tp.List[str]
     check_track_strictly : bool
     """
-    logger = logging.getLogger(__name__)
 
     num_sources, category_repetition =\
         get_num_sources_and_category_repetition(
@@ -558,13 +378,6 @@ class TransformGenerator(object):
                 'normalize': self.normalize,
             }
 
-        '''
-        num_frames = math.ceil(
-            orig_sr * duration * tf_params['time_stretch_rate'])
-        offset = max(0,
-                     int(random.uniform(0, metadata.num_frames - num_frames)))
-        '''
-
         waveform_length = math.ceil(duration * sr)
         tf = transforms.build_transform(orig_sr,
                                         sr,
@@ -572,13 +385,13 @@ class TransformGenerator(object):
                                         **tf_params)
         return tf_params, tf
 
-class MEPIT(torch.utils.data.IterableDataset):
+class Sampler(torch.utils.data.IterableDataset):
     """
-    Dataset for ME-PIT
+    Dataset sampler class
     """
 
     def __init__(self,
-                 source_list : tp.Dict[pathlib.Path, tp.Dict[str, object]],
+                 source_list : tp.Dict[str, tp.Dict[str, object]],
                  sr : int,
                  duration : float,
                  source_categories : tp.Union[tp.Set[str], tp.List[str]]=None,
@@ -586,21 +399,14 @@ class MEPIT(torch.utils.data.IterableDataset):
                  category_repetition : bool=False,
                  category_weight : tp.Dict[str, float]=None,
                  splits : tp.List[str]=None,
-                 scale_range : tp.Tuple[float, float]=(1.0, 1.0),
-                 scale_point_range : tp.Tuple[float, float]=(2, 2),
-                 pitch_shift_range : tp.Tuple[float, float]=(1.0, 1.0),
-                 time_stretch_range : tp.Tuple[float, float]=(1.0, 1.0),
-                 normalize : bool=False,
-                 top_db : float=60,
                  check_track_strictly=True,
-                 partition_algorithm : callable=None,
-                 partition_arguments : tp.Dict[str, object]=None,
                  ) -> None:
         """
         Parameters
         ----------
-        source_list : tp.List[tp.Dict[Path, object]]
-            the keys of the dict are path to the .wav files, the value contains followings :
+        source_list : tp.Dict[pathlib.Path, tp.Dict[str, object]]
+            - key: wavpath : path to the .wav file
+            - midipath : path to the .midi file (optional)
             - category : the category of the source (e.g. vocal, piano)
             - split : the split
             - track : the track identification (if two sources have the same track, the sources are coherent)
@@ -610,11 +416,6 @@ class MEPIT(torch.utils.data.IterableDataset):
         num_sources : int
         category_repetition : bool
         splits : tp.List[str]
-        scale_range : tp.Tuple[float, float]
-        scale_point_range : tp.Tuple[float, float]
-        pitch_shift_range : tp.Tuple[float, float]
-        time_stretch_range : tp.Tuple[float, float]
-        normalize : bool
         """
 
         self.source_list = deepcopy(source_list)
@@ -627,18 +428,35 @@ class MEPIT(torch.utils.data.IterableDataset):
             splits=splits,
             check_track_strictly=check_track_strictly,
         )
-        self.tf_generator = TransformGenerator(
-            scale_range=scale_range,
-            scale_point_range=scale_point_range,
-            pitch_shift_range=pitch_shift_range,
-            time_stretch_range=time_stretch_range,
-            normalize=normalize,
-        )
+        self.tf_generator = TransformGenerator()
 
         self.sr = sr
         self.duration = duration
-        self.partition_algorithm = partition_algorithm
-        self.partition_arguments = partition_arguments
+        self._trial_num = 10
+
+    def scale_range(self, scale_range : tp.Tuple[int]):
+        self.tf_generator.scale_range = scale_range
+        return self
+
+    def scale_point_range(self, scale_point_range : tp.Tuple[int]):
+        self.tf_generator.scale_point_range = scale_point_range
+        return self
+
+    def pitch_shift_range(self, pitch_shift_range : tp.Tuple[int]):
+        self.tf_generator.pitch_shift_range = pitch_shift_range
+        return self
+
+    def time_stretch_range(self, time_stretch_range : tp.Tuple[int]):
+        self.tf_generator.time_stretch_range = time_stretch_range
+        return self
+
+    def normalize(self, normalize : bool):
+        self.tf_generator.normalize = normalize
+        return self
+
+    def trial_num(self, trial_num):
+        self._trial_num = trial_num
+        return self
 
     def sample_source(self) -> tp.List[str]:
         """
@@ -657,7 +475,8 @@ class MEPIT(torch.utils.data.IterableDataset):
 
         return sources
 
-    def _sample_data(self, max_trial_num=3) -> tp.Dict[str, object]:
+    def sample_data_no_retry(self) -> tp.Tuple[tp.Dict[str, torch.Tensor],
+                                               tp.Dict[str, object]]:
         """
         returns
         -------
@@ -672,10 +491,7 @@ class MEPIT(torch.utils.data.IterableDataset):
                 'start': start time (in second)
                 'end': end time (in second)
                 'tf_params': parameters of transforms
-        'partitions' : the list of partitions which satisfies minimum entropy pit
-            each partition is a tuple contains (source)
         """
-        logger = logging.getLogger(__name__)
 
         # loading raw waveform
         sources_dicts = []
@@ -683,7 +499,6 @@ class MEPIT(torch.utils.data.IterableDataset):
         activations = []
         track_activation = None
         track_source_count = 0
-        trial_num = 0
 
         self.source_selector.reset()
         while self.source_selector.has_next():
@@ -709,15 +524,8 @@ class MEPIT(torch.utils.data.IterableDataset):
             if max([len(a[2]) for a in dummy_activation]) \
                < source_count + 1:
                 track_name = self.source_list[source].get('track', None)
-                logger.warning(f'source {source} (track {track_name}) '
-                               'does not have activation region '
-                               f'(trial={trial_num}/{max_trial_num})')
-                trial_num += 1
-                if trial_num >= max_trial_num:
-                    raise Exception(f'source {source} (track {track_name}) '
-                                    'does not have activation region '
-                                    f'(trial={trial_num}/{max_trial_num})')
-                continue
+                raise Exception(f'source {source} (track {track_name}) '
+                                'does not have activation region')
 
             # re-calculate activation and add it
             if self.source_list[source].get('track'):
@@ -739,15 +547,9 @@ class MEPIT(torch.utils.data.IterableDataset):
                 'track': self.source_list[source].get('track', None),
                 'orig_sr': orig_sr,
                 'orig_length': x.shape[-1]
-                #'sr': self.sr,
-                #'length': x.shape[-1],
-                #'start': offset / orig_sr,
-                #'end': (offset + num_frames) / orig_sr,
-                #'tf_params': tf_params,
             })
             # reset
             self.source_selector.accept_last_selection()
-            trial_num = 0
 
         # transforming
         track_tf_params = None
@@ -779,7 +581,6 @@ class MEPIT(torch.utils.data.IterableDataset):
 
                 # get activations
                 max_activation = max(len(a[2]) for a in activation)
-                # TODO parametrize "2"
                 activation_ = [
                     a for a in activation
                     if len(a[2]) == max_activation
@@ -787,12 +588,9 @@ class MEPIT(torch.utils.data.IterableDataset):
                 ]
                 if len(activation_)== 0:
                     source_path = source_dict['path']
-                    logger.warning(
-                        f'source {source_path} does not have activation')
                     raise Exception(
                         f'source {source_path} does not have activation')
                 start, end, _ = random.choice(activation_)
-                # TODO parametrize "4"
                 start = max(0, start - num_frames // 4)
                 end = min(source_dict['orig_length'], end + num_frames // 4)
                 end = max(start, end - num_frames)
@@ -817,26 +615,17 @@ class MEPIT(torch.utils.data.IterableDataset):
             })
 
         waveforms = torch.stack(waveforms, dim=0)
-        if self.partition_algorithm is None:
-            partition_func = find_partition
-        else:
-            partition_func = self.partition_algorithm
-        if self.partition_arguments is None:
-            partition_arguments = {}
-        else:
-            partition_arguments = self.partition_arguments
 
-        return waveforms,\
-            sources_dicts,\
-            partition_func(waveforms, sources_dicts, **partition_arguments)
+        return {'waveform': waveforms, 'midi': None}, sources_dicts
 
-    def sample_data(self,
-                    seed : int=None,
-                    sample_trial_num : int=10,
-                    track_trial_num : int = 3) -> tp.Dict[str, object]:
+    def sample_data(self, seed : int=None) -> \
+        tp.Tuple[torch.Tensor,
+                 tp.List[torch.Tensor],
+                 tp.Dict[str, object]]:
         """
         returns
         -------
+        torch.Tensor
         dict
         'data': sampled tensors, shape is (c, l) where c is the channel
                 and l is length of the samples
@@ -848,39 +637,32 @@ class MEPIT(torch.utils.data.IterableDataset):
                 'start': start time (in second)
                 'end': end time (in second)
                 'tf_params': parameters of transforms
-        'partitions' : the list of partitions which satisfies minimum
-                       entropy pit each partition is a tuple contains (source)
         """
 
-        logger = logging.getLogger(__name__)
         random.seed(seed)
-        for trial_i in range(1, sample_trial_num + 2):
+        for trial_i in range(1, self._trial_num + 2):
             try:
-                return self._sample_data(track_trial_num)
+                return self.sample_data_no_retry()
             except Exception as e:
-                logger.warning(f'failed on trial {trial_i} : {e}')
-        raise Exception(f'sample_data exceeds maximum trials ({trial_num})')
+                logger.warning(f'failed on trial {trial_i}/{self._trial_num} : {e}')
+        logger.error(f'failed on trial {trial_i}/{self._trial_num} : {e}')
+        raise Exception(f'sample_data exceeds maximum trials ({self._trial_num})')
 
 
     def _freeze_one(args):
-        out_dir, out_path_suffix, MEPIT, seed, sample_trials, track_trials = args
+        self, out_dir, out_path_suffix, seed = args
         out_path = os.path.join(out_dir, out_path_suffix)
-        data, metadata, partition = MEPIT.sample_data(seed,
-                                                      sample_trials,
-                                                      track_trials)
+        data, metadata = self.sample_data(seed)
         for m in metadata:
             m['path'] = str(m['path'])
         torch.save(data, out_path)
-        return out_path_suffix, metadata, partition
+        return out_path_suffix, metadata
 
     def freeze(self,
                out_dir : tp.Union[str, pathlib.Path],
                num_samples : int,
-               num_process : int=None,
-               sample_trials : int=10,
-               track_trials : int=3) -> None:
-        logger = logging.getLogger(__name__)
-        logger.info('Start freezing MEPIT dataset of %d samples to %s',
+               num_process : int=None) -> None:
+        logger.info('Start freezing dataset of %d samples to %s',
                     num_samples,
                     out_dir)
 
@@ -919,18 +701,15 @@ class MEPIT(torch.utils.data.IterableDataset):
         partitions = dict()
 
         sample_count = 0
-        for out_path_suffix, metadata, partition\
-            in map_fn(MEPIT._freeze_one,
-                      ((out_dir, p, self,
-                        random.randint(0, 2**32-1), sample_trials, track_trials)
-                       for p in out_paths)):
+        seed = lambda: random.randint(0, 2**32-1)
+        for out_path_suffix, metadata in map_fn(
+                Sampler._freeze_one,
+                ((self, out_dir, p, seed()) for p in out_paths)):
 
             source_metadata[out_path_suffix] = metadata
-            partitions[out_path_suffix] = partition
 
             sample_count += 1
-            if sample_count % 1000 == 0:
-                logger.info('file wrote (%d / %d)', sample_count, num_samples)
+            logger.info('file wrote (%d / %d)', sample_count, num_samples)
 
         if not num_process is None:
             pass
@@ -940,14 +719,11 @@ class MEPIT(torch.utils.data.IterableDataset):
         with open(os.path.join(out_dir, 'source_metadata.json'), 'w') as fp:
             json.dump(source_metadata, fp)
 
-        with open(os.path.join(out_dir, 'partition_metadata.json'), 'w') as fp:
-            json.dump(partitions, fp)
-
-        logger.info('Finish freezing MEPIT dataset to %s', out_dir)
+        logger.info('Finish freezing dataset to %s', out_dir)
 
 
     def __iter__(self) -> tp.Iterator[
-            tp.Tuple[torch.Tensor, tp.Dict['str', object], tp.List]]:
+            tp.Tuple[tp.Dict[str, torch.Tensor], tp.Dict[str, object]]]:
         """
         returns
         -------
@@ -957,12 +733,9 @@ class MEPIT(torch.utils.data.IterableDataset):
         while True:
             yield self.sample_data()
 
-
-class FrozenMEPIT(torch.utils.data.Dataset):
+class FrozenSamples(torch.utils.data.Dataset):
     def __init__(self,
-                 root_dir : tp.Union[pathlib.Path, str],
-                 out_partition_metadata : bool=False,
-                 out_source_metadata : bool=False) -> None:
+                 root_dir : tp.Union[pathlib.Path, str]) -> None:
         # load source_metadata.json
         sm_path = os.path.join(root_dir, 'source_metadata.json')
         try:
@@ -976,218 +749,24 @@ class FrozenMEPIT(torch.utils.data.Dataset):
             (os.path.join(root_dir, k), v)
             for k, v in source_metadata.items())
 
-        # check all source exist
-        lack_files = []
-        for s, _ in source_metadata:
-            if not os.path.exists(s):
-                lack_files.append(s)
-        if lack_files:
-            raise ValueError(f'paths {lack_files} does not exist')
-
-        # load partition_metadata.json
-        pm_path = os.path.join(root_dir, 'partition_metadata.json')
-        try:
-            with open(pm_path, 'r') as fp:
-                partition_metadata = json.load(fp)
-        except OSError as err:
-            raise err
-        except ValueError as err:
-            raise err
-        partition_metadata = sorted(
-            (os.path.join(root_dir, k), v)
-            for k, v in partition_metadata.items())
-
-        # check all source exist
-        lack_files = []
-        for s, _ in partition_metadata:
-            if not os.path.exists(s):
-                lack_files.append(s)
-        if lack_files:
-            raise ValueError(f'paths {lack_files} does not exist')
-
-        # check source_metadata and partition_metadata shares same sources
-        if [s for s, _ in source_metadata] \
-           != [s for s, _ in partition_metadata]:
-            raise ValueError(
-                'paths of source_metadata and partition_metadata differs')
-
-        self.out_partition_metadata = out_partition_metadata
-        self.out_source_metadata = out_source_metadata
+        self.root_dir = root_dir
         self.source_metadata = source_metadata
-        self.partition_metadata = partition_metadata
 
     def __len__(self) -> int:
         return len(self.source_metadata)
 
     def __getitem__(self, idx : int) -> \
-        tp.Union[torch.Tensor,
-                 tp.Tuple[torch.Tensor, tp.Dict],
-                 tp.Tuple[torch.Tensor, tp.List],
-                 tp.Tuple[torch.Tensor, tp.List, tp.Dict]]:
+        tp.Tuple[tp.Dict[str, torch.Tensor], tp.Dict[str, object]]:
         path, source_metadata = self.source_metadata[idx]
-        _, partition_metadata = self.partition_metadata[idx]
         data = torch.load(path)
-        if self.out_partition_metadata and self.out_source_metadata:
-            return data, source_metadata, partition_metadata
-        elif self.out_partition_metadata and not self.out_source_metadata:
-            return data, partition_metadata
-        elif not self.out_partition_metadata and self.out_source_metadata:
-            return data, source_metadata
-        elif not self.out_partition_metadata and not self.out_source_metadata:
-            return data
-        else:
-            return None
+        return data, source_metadata
 
-    def collate_fn_with_partition_and_source(l):
-        return (
-            torch.stack([m[0] for m in l], dim=0),
-            [m[1] for m in l],
-            [m[2] for m in l],
-        )
-
-    def collate_fn_with_partition(l):
-        return (
-            torch.stack([m[0] for m in l], dim=0),
-            [m[1] for m in l],
-        )
-
-    def collate_fn_with_source(l):
-        return (
-            torch.stack([m[0] for m in l], dim=0),
-            [m[1] for m in l],
-        )
-
-    def collate_fn_without_metadata(l):
-        return torch.stack([m[0] for m in l], dim=0)
-
-
-    def get_collate_function(self):
-        def collate_function(l):
-            if self.out_partition_metadata and self.out_source_metadata:
-                return (
-                    torch.stack([m[0] for m in l], dim=0),
-                    [m[1] for m in l],
-                    [m[2] for m in l],
-                )
-            elif self.out_partition_metadata and not self.out_source_metadata:
-                return (
-                    torch.stack([m[0] for m in l], dim=0),
-                    [m[1] for m in l],
-                )
-            elif not self.out_partition_metadata and self.out_source_metadata:
-                return (
-                    torch.stack([m[0] for m in l], dim=0),
-                    [m[1] for m in l],
-                )
-            elif not self.out_partition_metadata and not self.out_source_metadata:
-                return torch.stack([m[0] for m in l], dim=0),
-            else:
-                return None
-        return collate_function
-
-
-class FrozenMEPITMixByPartition(torch.utils.data.Dataset):
-    def __init__(self,
-                 root_dir : tp.Union[pathlib.Path, str],
-                 waveform_length : int=None,
-                 random_sample : bool=False) -> None:
-        # load source_metadata.json
-        sm_path = os.path.join(root_dir, 'source_metadata.json')
-        try:
-            with open(sm_path, 'r') as fp:
-                source_metadata = json.load(fp)
-        except OSError as err:
-            raise err
-        except ValueError as err:
-            raise err
-        source_metadata = sorted(
-            (os.path.join(root_dir, k), v)
-            for k, v in source_metadata.items())
-
-        # check all source exist
-        lack_files = []
-        for s, _ in source_metadata:
-            if not os.path.exists(s):
-                lack_files.append(s)
-        if lack_files:
-            raise ValueError(f'paths {lack_files} does not exist')
-
-        # load partition_metadata.json
-        pm_path = os.path.join(root_dir, 'partition_metadata.json')
-        try:
-            with open(pm_path, 'r') as fp:
-                partition_metadata = json.load(fp)
-        except OSError as err:
-            raise err
-        except ValueError as err:
-            raise err
-        partition_metadata = sorted(
-            (os.path.join(root_dir, k), v)
-            for k, v in partition_metadata.items())
-
-        # check all source exist
-        lack_files = []
-        for s, _ in partition_metadata:
-            if not os.path.exists(s):
-                lack_files.append(s)
-        if lack_files:
-            raise ValueError(f'paths {lack_files} does not exist')
-
-        # check source_metadata and partition_metadata shares same sources
-        if [s for s, _ in source_metadata] \
-           != [s for s, _ in partition_metadata]:
-            raise ValueError(
-                'paths of source_metadata and partition_metadata differs')
-
-        self.source_metadata = source_metadata
-        self.partition_metadata = partition_metadata
-        self.source_indices = []
-        for _, p in partition_metadata:
-            self.source_indices.append(
-                len(p)
-                + (0 if len(self.source_indices) == 0 else
-                   self.source_indices[-1])
-            )
-        self.waveform_length = waveform_length
-        self.random_sample = random_sample
-
-    def __len__(self) -> int:
-        return self.source_indices[-1] if len(self.source_indices) > 0 else 0
-
-    def __getitem__(self, idx : int) -> torch.Tensor:
-        s_idx = bisect_left(self.source_indices, idx)
-        offset = idx - self.source_indices[s_idx]
-        path, source_metadata = self.source_metadata[s_idx]
-        _, partition_metadata = self.partition_metadata[s_idx]
-        data = torch.load(path)
-        stacked = torch.stack(
-            [torch.sum(data[list(p), :], dim=0)
-             for p in partition_metadata[offset]],
-            dim=0
-        )
-        if self.waveform_length is None \
-           or self.waveform_length >= stacked.shape[-1]:
-            return stacked
-
-        threshold = 0.1
-        signal_abs = torch.min(stacked.abs(), axis=0)[0]
-        pos = torch.arange(stacked.shape[-1])[signal_abs > threshold]
-        if pos.numel() == 0:
-            pos = torch.argmax(signal_abs, dim=-1)
-        elif self.random_sample:
-            pos = random.choice(pos)
-        else:
-            pos = pos[0]
-
-        if pos < self.waveform_length // 2:
-            left = 0
-            right = min(stacked.shape[-1], self.waveform_length)
-        elif pos > stacked.shape[-1] - self.waveform_length // 2:
-            left = max(0, stacked.shape[-1] - self.waveform_length)
-            right = stacked.shape[-1]
-        else:
-            left = pos - self.waveform_length // 2
-            right = left + self.waveform_length
-
-        return stacked[..., left:right]
+def collate_samples(in_list):
+    return (
+        {
+            'waveform': torch.stack([d[0]['waveform'] for d in in_list]),
+            'midi': None,
+        },
+        [d[1] for d in in_list], # for metadata
+    )
 

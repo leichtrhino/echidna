@@ -1,6 +1,7 @@
 #!/usr/env python
 import os
 import sys
+import pathlib
 import json
 import logging
 import argparse
@@ -8,12 +9,12 @@ import torch
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
 
-from chimerau import datasets as ds
-from chimerau import models as md
-from chimerau.models.waveunet import ChimeraWaveUNet
-from chimerau.models.convtasnet import ChimeraConvTasNet
-from chimerau.models.demucs import ChimeraDemucs
-from chimerau import metrics as mt
+from echidna import datasets as ds
+from echidna import models as md
+from echidna.models.waveunet import ChimeraWaveUNet
+from echidna.models.convtasnet import ChimeraConvTasNet
+from echidna.models.demucs import ChimeraDemucs
+from echidna import metrics as mt
 
 import torchaudio
 
@@ -48,9 +49,11 @@ def parse_args():
     parser.add_argument('--model-params', type=str)
 
     # datasets
-    parser.add_argument('--train-dir', required=True, nargs='+')
+    parser.add_argument('--train-mix', required=True, nargs='+',
+                        help='frozensample/mix-name')
     parser.add_argument('--train-samples', type=int, default=None)
-    parser.add_argument('--validation-dir', nargs='*')
+    parser.add_argument('--validation-mix', nargs='*',
+                        help='frozensample/mix-name')
     parser.add_argument('--validation-samples', type=int, default=None)
     parser.add_argument('--waveform-length', type=int, default=None)
     parser.add_argument('--loader-workers', type=int, default=0)
@@ -404,7 +407,10 @@ def save_checkpoint(output,
     path_params['epoch'] = epoch
 
     logging.info(f'saving model to {output.format(**path_params)}')
-    torch.save(save_dict, output.format(**path_params))
+    torch.save(
+        save_dict,
+        pathlib.Path(output.format(**path_params)).expanduser()
+    )
 
     separator.to(device)
     for state in optimizer.state.values():
@@ -417,14 +423,12 @@ def main():
     if args.log is not None:
         logging.basicConfig(filename=args.log, level=args.log_level)
     else:
-        logging.basicConfig(stream=sys.stdout, level=args.lov_level)
+        logging.basicConfig(stream=sys.stdout, level=args.log_level)
 
     # build dataset
     train_datasets = [
-        ds.FrozenMEPITMixByPartition(d,
-                                     args.waveform_length,
-                                     random_sample=True)
-        for d in args.train_dir
+        ds.FrozenMix(pathlib.Path(sampler_dir).expanduser(), mix_name)
+        for sampler_dir, mix_name in [d.split(':') for d in args.train_mix]
     ]
     train_dataset = torch.utils.data.ConcatDataset(train_datasets)
     train_sampler = None
@@ -439,15 +443,15 @@ def main():
         sampler=train_sampler,
         shuffle=train_sampler is None,
         num_workers=args.loader_workers,
-        worker_init_fn=lambda: random.seed()
+        worker_init_fn=lambda: random.seed(),
+        collate_fn=ds.collate_mix,
     )
 
-    if args.validation_dir:
+    if args.validation_mix:
         validation_datasets = [
-            ds.FrozenMEPITMixByPartition(d,
-                                         args.waveform_length,
-                                         random_sample=False)
-            for d in args.validation_dir
+            ds.FrozenMix(pathlib.Path(sampler_dir).expanduser(), mix_name)
+            for sampler_dir, mix_name in [
+                    d.split(':') for d in args.validation_mix]
         ]
         validation_dataset = torch.utils.data.ConcatDataset(validation_datasets)
         if args.validation_samples is not None\
@@ -463,19 +467,22 @@ def main():
             batch_size=args.compute_batch_size,
             shuffle=False,
             num_workers=args.loader_workers,
+            collate_fn=ds.collate_mix,
         )
 
     # build (and load) a model
     if args.input_checkpoint:
-        cp = torch.load(args.input_checkpoint)
+        cp = torch.load(pathlib.Path(args.input_checkpoint).expanduser())
         separator = build_separator(cp['model-type'], cp['model-params'])
         optimizer = torch.optim.Adam(
             separator.parameter_list(args.lr), args.lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
             optimizer, factor=0.5, patience=5)
         separator.load_state_dict(cp['model'])
-        optimizer.load_state_dict(cp['optimizer'])
-        scheduler.load_state_dict(cp['scheduler'])
+        if 'optimizer' in cp:
+            optimizer.load_state_dict(cp.get('optimizer'))
+        if 'scheduler' in cp:
+            scheduler.load_state_dict(cp.get('scheduler'))
         init_epoch = cp['epoch'] + 1
 
     else:
@@ -507,7 +514,8 @@ def main():
 
         # training loop
         separator.train()
-        for step, batch in enumerate(train_loader, 1):
+        for step, (data, metadata) in enumerate(train_loader, 1):
+            batch = data['waveform']
             # obtain batch
             batch = batch.to(args.device)
 
@@ -539,14 +547,15 @@ def main():
             for ln, lv in sum_loss.items()
         )
 
-        if args.validation_dir:
+        if args.validation_mix:
             # validation
             separator.eval()
             sum_val_loss = dict((ln, 0) for ln in args.loss)
             sum_val_loss['loss'] = 0
             total_val_batch = 0
 
-            for batch in validation_loader:
+            for (data, metadata) in validation_loader:
+                batch = data['waveform']
                 batch = batch.to(args.device)
                 with torch.no_grad():
                     loss_dict = process_batch(separator,

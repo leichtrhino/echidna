@@ -26,19 +26,6 @@ def permutation_invariant(loss_function : callable,
 
     return _loss_function
 
-def approximation_loss(s_pred : torch.Tensor,
-                       s_true : torch.Tensor,
-                       norm : int=1) -> torch.Tensor:
-    """
-    loss function for wave/spectrogram approximation
-    s_pred: (batch_size, *, waveform_length)
-        or (batch_size, *, freq_bin, time_stretch)
-    s_true: (batch_size, *, waveform_length)
-        or (batch_size, *, freq_bin, time_stretch)
-    """
-    return torch.sum(torch.abs(s_pred - s_true) ** norm) \
-        / s_pred.numel()
-
 def deep_clustering_loss(embd : torch.Tensor,
                          label : torch.Tensor,
                          weight : torch.Tensor=None,

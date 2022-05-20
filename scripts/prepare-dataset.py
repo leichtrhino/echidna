@@ -6,7 +6,7 @@ import logging
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
 
-from chimerau import datasets as ds
+from echidna import datasets as ds
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -44,10 +44,10 @@ def parse_args():
     parser.add_argument('--stretch-ratio', type=float, nargs=2, default=(1., 1.))
     parser.add_argument('--normalize-scale', action='store_true')
 
-    # partition algorithm
-    parser.add_argument('--partition-algorithm',
-                        choices=['mepit', 'voice-category'], default='mepit')
-    parser.add_argument('--voice-categories', nargs='*')
+    # mix algorithm
+    parser.add_argument('--mix-name', type=str, required=True)
+    parser.add_argument('--mix-category', nargs='+', action='append')
+    parser.add_argument('--mix-include-other', action='store_true')
 
     args = parser.parse_args()
 
@@ -74,11 +74,6 @@ def parse_args():
             args.num_sources = len(args.categories)
         if args.categories is not None:
             args.categories = set(args.categories)
-
-    if args.partition_algorithm == 'voice-category':
-        if len(args.voice_categories) == 0:
-            raise ValueError('--voice-category specified for '
-                             '--partition-algorithm=voice-category')
 
     return args
 
@@ -123,37 +118,38 @@ def main():
             }
         ) for l in source_list_reader)
 
-    if args.partition_algorithm == 'mepit':
-        partition_algorithm = ds.find_partition
-        partition_arguments = {}
-    elif args.partition_algorithm == 'voice-category':
-        partition_algorithm = ds.partition_voice_or_not
-        partition_arguments = {'voice_categories': args.voice_categories}
+    if not os.path.exists(args.output):
+        # build Sampler
+        sampler = ds.Sampler(
+            source_list,
+            sr=args.sr,
+            duration=args.duration,
+            source_categories=args.categories,
+            num_sources=args.num_sources,
+            category_repetition=args.allow_category_repetition,
+            category_weight=args.weights,
+            splits=args.splits,
+            check_track_strictly=False) \
+                    .scale_range(args.scale_ratio) \
+                    .scale_point_range((2, args.scale_point)) \
+                    .pitch_shift_range(args.shift_ratio) \
+                    .time_stretch_range(args.stretch_ratio) \
+                    .normalize(args.normalize_scale) \
+                    .trial_num(10000)
 
-    # build MEPIT
-    mepit = ds.MEPIT(source_list,
-                     sr=args.sr,
-                     duration=args.duration,
-                     source_categories=args.categories,
-                     num_sources=args.num_sources,
-                     category_repetition=args.allow_category_repetition,
-                     category_weight=args.weights,
-                     splits=args.splits,
-                     scale_range=args.scale_ratio,
-                     scale_point_range=(2, args.scale_point),
-                     pitch_shift_range=args.shift_ratio,
-                     time_stretch_range=args.stretch_ratio,
-                     normalize=args.normalize_scale,
-                     check_track_strictly=False,
-                     partition_algorithm=partition_algorithm,
-                     partition_arguments=partition_arguments)
+        # freeze Sampler
+        sampler.freeze(
+            out_dir=args.output,
+            num_samples=args.samples,
+            num_process=args.process)
 
-    # freeze MEPIT
-    mepit.freeze(out_dir=args.output,
-                 num_samples=args.samples,
-                 num_process=args.process,
-                 sample_trials=10000,
-                 track_trials=3)
+    # calculate mix
+    ds.freeze_mix(
+        sampler=args.output,
+        algorithm=ds.CategoryMix(
+            args.mix_category,
+            output_other=args.mix_include_other),
+        name=args.mix_name)
 
 if __name__ == '__main__':
     main()

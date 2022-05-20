@@ -12,9 +12,9 @@ import sklearn.cluster
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
 
-from chimerau.models.waveunet import ChimeraWaveUNet
-from chimerau.models.convtasnet import ChimeraConvTasNet
-from chimerau.models.demucs import ChimeraDemucs
+from echidna.models.waveunet import ChimeraWaveUNet
+from echidna.models.convtasnet import ChimeraConvTasNet
+from echidna.models.demucs import ChimeraDemucs
 
 def parse_args():
     parser = argparse.ArgumentParser()
