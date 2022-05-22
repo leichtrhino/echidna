@@ -183,6 +183,27 @@ class TimeStretchAndPitchShift(torch.nn.Module):
         x_target = self.istft(spec_target)
         return self.resample(x_target)
 
+class Crop(torch.nn.Module):
+    """
+    Crop
+    """
+
+    def __init__(self,
+                 waveform_length : int,
+                 offset : int):
+        super(Crop, self).__init__()
+        self.waveform_length = waveform_length
+        self.offset = offset
+
+    def forward(self, x : torch.Tensor) -> torch.Tensor:
+        offset = self.offset % (2 * x.shape[-1])
+        repeats = math.ceil((self.waveform_length + self.offset)
+                            / (2 * x.shape[-1]))
+        if offset + self.waveform_length <= x.shape[-1]:
+            return x[..., offset:offset+self.waveform_length]
+        x = torch.cat([x, x.flip(-1)] * repeats, dim=-1)
+        return x[..., offset:offset+self.waveform_length]
+
 class PadOrCrop(torch.nn.Module):
     """
     PadOrCrop
