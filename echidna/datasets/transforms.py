@@ -328,7 +328,7 @@ class MultiPointScale(torch.nn.Module):
 
     def __init__(self,
                  scales : tp.List[float],
-                 durations : tp.List[float],
+                 fractions : tp.List[float],
                  normalize : bool=False) -> None:
         """
         Parameters
@@ -336,10 +336,10 @@ class MultiPointScale(torch.nn.Module):
         """
 
         super(MultiPointScale, self).__init__()
-        assert len(scales) == len(durations) + 2
+        assert len(scales) == len(fractions) + 1
 
         self.scales = scales
-        self.durations = [d / sum(durations) for d in durations]
+        self.fractions = [d / sum(fractions) for d in fractions]
         self.normalize = normalize
 
     def forward(self, x : torch.Tensor) -> torch.Tensor:
@@ -351,29 +351,21 @@ class MultiPointScale(torch.nn.Module):
         -------
         """
 
-        if len(self.durations) > 0:
-            transition_length = [int(x.shape[-1] * d) for d in self.durations[:-1]]
+        if len(self.fractions) > 0:
+            transition_length = [int(x.shape[-1] * d) for d in self.fractions[:-1]]
         else:
             transition_length = []
         transition_length.append(x.shape[-1] - sum(transition_length))
 
-        scale_rate = torch.cat([
-            torch.linspace(s, t, l)
-            for s, t, l in zip(
-                    self.scales[:-1], self.scales[1:], transition_length)
-        ])
-
-        """
-        transition_duration = int(x.shape[-1] * self.transition_duration)
-        transition_start = int(
-            x.shape[-1] * (1 - self.transition_duration) * self.transition_start
-        )
-        scale_rate = torch.cat((
-            self.scale_start * torch.ones(transition_start),
-            torch.linspace(self.scale_start, self.scale_end, transition_duration),
-            self.scale_end * torch.ones(x.shape[-1] - transition_start - transition_duration)
-        ))
-        """
+        if len(self.scales) > 1:
+            scale_rate = torch.cat([
+                torch.linspace(s, t, l)
+                for s, t, l in zip(self.scales[:-1],
+                                   self.scales[1:],
+                                   transition_length)
+            ])
+        else:
+            scale_rate = self.scales[0]
 
         if self.normalize:
             x /= torch.max(
