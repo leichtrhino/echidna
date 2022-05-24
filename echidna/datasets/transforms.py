@@ -375,14 +375,16 @@ class MultiPointScale(torch.nn.Module):
         return scale_rate * x
 
 
-def build_transform(orig_freq : int,
-                    new_freq : int,
+def build_transform(normalize : bool,
+                    source_sample_rate : int,
+                    target_sample_rate : int,
+                    time_stretch_rate : int,
+                    pitch_shift_rate : int,
+                    scale_amounts : tp.List[float],
+                    scale_fractions : tp.List[float],
+                    offset : int,
                     waveform_length : int,
-                    time_stretch_rate : float,
-                    pitch_shift_rate : float,
-                    scales : tp.List[float],
-                    scale_duration : tp.List[float],
-                    normalize : bool=False,
+
                     n_fft : int=2048,
                     hop_length : int=512,
                     win_length : int=2048) -> torch.nn.Module:
@@ -394,22 +396,31 @@ def build_transform(orig_freq : int,
     -------
     """
 
-    transforms = [
-        TimeStretchAndPitchShift(orig_freq,
-                                 time_stretch_rate,
-                                 pitch_shift_rate,
-                                 n_fft=n_fft,
-                                 hop_length=hop_length,
-                                 win_length=win_length),
-        Resample(float(orig_freq),
-                 float(new_freq)),
-        MultiPointScale(scales,
-                        scale_duration,
-                        normalize=normalize),
-    ]
-    if waveform_length is not None:
+    transforms = []
+    if source_sample_rate is not None \
+       and target_sample_rate is not None:
         transforms.append(
-            PadOrCrop(waveform_length,
-                      random=False)
+            TimeStretchAndPitchShift(source_sample_rate,
+                                     time_stretch_rate,
+                                     pitch_shift_rate,
+                                     n_fft=n_fft,
+                                     hop_length=hop_length,
+                                     win_length=win_length)
         )
+        transforms.append(
+            Resample(source_sample_rate,
+                     target_sample_rate)
+        )
+    if waveform_length is not None and offset is not None:
+        transforms.append(
+            Crop(waveform_length, offset)
+        )
+    if scale_amounts is not None and scale_fractions is not None:
+        transforms.append(
+            MultiPointScale(scale_amounts,
+                            scale_fractions,
+                            normalize=normalize)
+        )
+
     return Compose(transforms)
+
