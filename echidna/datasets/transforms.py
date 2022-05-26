@@ -204,59 +204,6 @@ class Crop(torch.nn.Module):
         x = torch.cat([x, x.flip(-1)] * repeats, dim=-1)
         return x[..., offset:offset+self.waveform_length]
 
-
-class TwoPointScale(torch.nn.Module):
-    """
-    TwoPointScale
-    """
-
-    def __init__(self,
-                 scale_start : float,
-                 scale_end : float,
-                 transition_start : float,
-                 transition_duration : float,
-                 normalize : bool=False) -> None:
-        """
-        Parameters
-        ----------
-        """
-
-        super(TwoPointScale, self).__init__()
-        assert 0 <= transition_start <= 1
-        assert 0 <= transition_duration <= 1
-
-        self.scale_start = scale_start
-        self.scale_end = scale_end
-        self.transition_start = transition_start
-        self.transition_duration = transition_duration
-        self.normalize = normalize
-
-    def forward(self, x : torch.Tensor) -> torch.Tensor:
-        """
-        Parameters
-        ----------
-
-        Returns
-        -------
-        """
-
-        transition_duration = int(x.shape[-1] * self.transition_duration)
-        transition_start = int(
-            x.shape[-1] * (1 - self.transition_duration) * self.transition_start
-        )
-        scale_rate = torch.cat((
-            self.scale_start * torch.ones(transition_start),
-            torch.linspace(self.scale_start, self.scale_end, transition_duration),
-            self.scale_end * torch.ones(x.shape[-1] - transition_start - transition_duration)
-        ))
-
-        if self.normalize:
-            x /= torch.max(
-                torch.max(x.abs(), dim=-1, keepdims=True)[0],
-                torch.ones(*x.shape[:-1], 1) * 0.1
-            )
-        return scale_rate * x
-
 class MultiPointScale(torch.nn.Module):
     """
     ThreePointScale
