@@ -288,7 +288,8 @@ class SourceSelector(object):
 
     def reset(self):
         self.source_i = 0
-        self.last_source = None
+        self.last_track = None
+        self.last_source = []
         self.track_category_dict = deepcopy(self.track_category_dict_orig)
 
     def select_source(self):
@@ -298,6 +299,9 @@ class SourceSelector(object):
         elif self.source_categories is None or type(self.source_categories) == set:
             category_list = list(set(
                 c for t, c in self.track_category_dict
+                if self.last_track is None
+                or t is None
+                or self.last_track == t
             ))
             if self.category_weight:
                 category_weight = [
@@ -317,15 +321,24 @@ class SourceSelector(object):
         source_list = sum([
             list(ps) for (t, c), ps in self.track_category_dict.items()
             if c == category
+            and (self.last_track is None or t is None or self.last_track == t)
         ], [])
+
+        if len(source_list) == 0:
+            self.reset()
+            raise ValueError('no candidate source. the selector will reset')
         source = random.choice(source_list)
 
-        self.last_source = source
+        self.last_track = self.source_list[source].get('category', None)
+        self.last_source.append(source)
         return source
 
-    def accept_last_selection(self):
+    def deny_last_selection(self):
+        self.last_source = []
+
+    def accept_last_selections(self):
         # remove last_category and last_source from source, category dict
-        if self.last_source is None:
+        if len(self.last_source) == 0:
             raise ValueError('no source selected')
 
         track = self.source_list[self.last_source].get('track', None)
@@ -346,7 +359,7 @@ class SourceSelector(object):
 
         # increment source_i
         self.source_i += 1
-        self.last_source = None
+        self.last_source = []
 
 class TransformGenerator(object):
     def __init__(self,
@@ -458,23 +471,6 @@ class Sampler(torch.utils.data.IterableDataset):
         self._trial_num = trial_num
         return self
 
-    def sample_source(self) -> tp.List[str]:
-        """
-        @deprecated remains the method for backward compatibility
-        returns
-        -------
-        list of selected keys from source_list
-        """
-
-        sources = []
-        self.source_selector.reset()
-        while self.source_selector.has_next():
-            source = self.source_selector.select_source()
-            sources.append(source)
-            self.source_selector.accept_last_selection()
-
-        return sources
-
     def sample_data_no_retry(self) -> tp.Tuple[tp.Dict[str, torch.Tensor],
                                                tp.Dict[str, object]]:
         """
@@ -503,12 +499,23 @@ class Sampler(torch.utils.data.IterableDataset):
         self.source_selector.reset()
         while self.source_selector.has_next():
             # load
-            source = self.source_selector.select_source()
-            x, orig_sr = torchaudio.load(source)
-            x = x.mean(dim=0)
+            sources = []
+            x = None
+            while x is None or x.shape[-1] < int(self.duration * self.sr):
+                source = self.source_selector.select_source()
+                sources.append(source)
+                x_, orig_sr = torchaudio.load(source)
+                x = x_.mean(dim=0)
+                x_ = transforms.Resample(orig_sr, self.sr)(x_)
+                if x is None:
+                    x = x_
+                else:
+                    x = torch.cat((x, x_), dim=-1)
+            selected_track = self.source_list[sources[0]].get('track', None)
+            selected_category = self.source_list[sources[0]].get('category', None)
 
             # evaluate source to append (dry-run)
-            if self.source_list[source].get('track'):
+            if selected_track:
                 # merge activation window and check if they have overlaps
                 if track_activation is None:
                     dummy_activation = [(0, x.shape[-1], [])]
@@ -523,12 +530,12 @@ class Sampler(torch.utils.data.IterableDataset):
             merge_activation(dummy_activation, x, tag=source)
             if max([len(a[2]) for a in dummy_activation]) \
                < source_count + 1:
-                track_name = self.source_list[source].get('track', None)
+                track_name = selected_track
                 raise Exception(f'source {source} (track {track_name}) '
                                 'does not have activation region')
 
             # re-calculate activation and add it
-            if self.source_list[source].get('track'):
+            if selected_track:
                 # merge activation window and check if they have overlaps
                 if track_activation is None:
                     track_activation = [(0, x.shape[-1], [])]
@@ -542,13 +549,11 @@ class Sampler(torch.utils.data.IterableDataset):
             # adding it to waveform
             raw_waveforms.append(x)
             sources_dicts.append({
-                'path': source,
-                'category': self.source_list[source].get('category', None),
-                'track': self.source_list[source].get('track', None),
-                'orig_sr': orig_sr,
-                'orig_length': x.shape[-1]
+                'path': sources,
+                'category': selected_category,
+                'track': selected_track,
             })
-            # reset
+            # accept
             self.source_selector.accept_last_selection()
 
         # transforming
@@ -609,8 +614,8 @@ class Sampler(torch.utils.data.IterableDataset):
             source_dict.update({
                 'sr': self.sr,
                 'length': waveform.shape[-1],
-                'start': offset / source_dict['orig_sr'],
-                'end': (offset + num_frames) / source_dict['orig_sr'],
+                'start': offset / self.sr,
+                'end': (offset + num_frames) / self.sr,
                 'tf_params': tf_params,
             })
 
