@@ -276,4 +276,245 @@ class SamplesJournal(object):
         }
 
 def _save_sample(spec : SampleSpec):
+    """
+    Save sample to files
+
+    """
+    process_start = datetime.now()
+
+    # datasources to select
+    fold = [spec.fold] if type(spec.fold) == str else spec.fold
+    datasources = [
+        ds for ds in spec.datasources
+        if fold is None or ds.fold in fold
+    ]
+
+    # args for worker function
+    random_ = random.Random(spec.seed)
+    rel_paths = [
+        os.path.join(f'{i//1000:03d}', f'{i%1000:03d}.pth')
+        for i in range(spec.sample_size)
+    ]
+    args = [(
+        datasources,
+        spec.source_per_category,
+        spec.sample_rate,
+        spec.duration,
+        spec.metadata_path,
+        os.path.join(spec.data_dir, rel_path),
+        random_.randrange(2**32), # seed
+    ) for rel_path in rel_paths]
+
+    # create map function
+    if spec.jobs is not None:
+        pool = multiprocessing.Pool(spec.jobs)
+        map_fn = pool.imap_unordered
+    else:
+        map_fn = map
+
+    # sample
+    metadata_list = []
+    journal_list = []
+    for metadata, journal in map_fn(_save_single_sample, args):
+        metadata_list.append(metadata)
+        journal_list.append(journal)
+
+    # close map function
+    if spec.jobs is not None:
+        pool.close()
+
+    process_finish = datetime.now()
+
+    # save metadata
+    with open(spec.metadata_path, 'w') as fp:
+        json.dump([m.to_dict() for m in metadata_list], fp)
+    if spec.journal_path:
+        journals = SamplesJournal(
+            process_start=process_start,
+            process_finish=process_finish,
+            metadata_path=os.path.relpath(
+                spec.metadata_path,
+                os.path.dirname(spec.journal_path)
+            ),
+            spec=spec,
+            seed=spec.seed,
+            sample_journals=journal_list
+        )
+        with open(spec.journal_path, 'w') as fp:
+            json.dump(journals.to_dict(), fp)
+
+def _save_single_sample(args):
+    """
+
+    Parameters
+    ----------
+    datasources : tp.List[Datasource],
+    source_per_category : int,
+    sample_rate : int,
+    duration : float,
+    metadata_path : str,
+    data_path : str,
+    rel_path : str,
+    seed : int
+    """
+    datasources, source_per_category, sample_rate, duration, \
+        metadata_path, data_path, seed = args
+    wavelength = int(sample_rate * duration)
+
+    random.seed(seed)
+    torch.manual_seed(seed)
+    numpy.random.seed(seed)
+
+    # select track
+    tracks = dict()
+    for ds in datasources:
+        if ds.track not in tracks:
+            tracks[ds.track] = []
+        tracks[ds.track].append(ds)
+    if len(tracks) == 1 and None in tracks:
+        track = None
+    else:
+        track = random.choice([t for t in tracks.keys() if t is not None])
+
+    # calculate category list
+    categories = dict()
+    for ds in tracks[track] \
+        + (tracks.get(None, []) if track is not None else []):
+        if ds.category not in categories:
+            categories[ds.category] = []
+        categories[ds.category].append(ds)
+
+    for ds_list in categories.values():
+        random.shuffle(ds_list)
+
+    # loop
+    waves = []
+    sheets = []
+    datasources = []
+    for category, ds_list in categories.items():
+        source_i = 0
+        source_num = 0
+        # NOTE: Lagging could be occur if tracked and no-tracked waves
+        # are in single category
+        while source_num < source_per_category \
+              and source_i < len(ds_list):
+            wave = None
+            sheet = None
+            selected_ds = []
+            while (wave is None or wave.shape[-1] < wavelength) \
+                  and source_i < len(ds_list):
+                ds = ds_list[source_i]
+                source_i += 1
+                selected_ds.append(ds)
+                # load wav and concat
+                w, orig_sr = torchaudio.load(ds.wave_path)
+                w = w.mean(dim=0)
+                w = Resample(orig_sr, sample_rate)(w)
+                wave = w if wave is None else torch.cat((wave, w), dim=-1)
+                # load midi
+                if ds.sheet_path:
+                    sheet = None
+                    raise NotImplementedError()
+
+            # append
+            waves.append(wave)
+            sheets.append(sheet)
+            datasources.append(selected_ds)
+            source_num += 1
+
+    # calculate activation
+    track_activations = dict(
+        (ds[0].track, [(0, w.shape[-1], [])])
+        for ds, w in zip(datasources, waves)
+        if ds[0].track is not None
+    )
+    source_activations = [
+        track_activations.get(ds[0].track, [(0, w.shape[-1], [])])
+        for ds, w in zip(datasources, waves)
+    ]
+    for i, (a, w) in enumerate(zip(source_activations, waves)):
+        merge_activation(a, w, i)
+
+    # choose activation
+    track_activation = dict()
+    for k, a in track_activations.items():
+        weights = [
+            (end-start)*(10**(len(tags)-1)) if len(tags) else 0
+            for start, end, tags in a
+        ]
+        track_activation[k] =\
+            random.choices(a, weights=weights, k=1)[0]
+
+    source_activation = []
+    for i, (ds, a) \
+        in enumerate(zip(datasources, source_activations)):
+        if i not in set(tag for _, _, tags in a for tag in tags):
+            source_activation.append(None)
+        elif ds[0] in track_activations:
+            source_activation.append(track_activation[ds[0]])
+        else:
+            weights = [
+                end - start if len(tags) > 0 else 0
+                for start, end, tags in a
+            ]
+            source_activation.append(
+                random.choices(a, weights=weights, k=1)[0]
+            )
+
+    # crop waveforms and sheets
+    crop_waves = []
+    crop_sheets = []
+    crop_datasources = []
+    crop_offsets = []
+    for ds, w, s, a in zip(datasources, waves, sheets, source_activation):
+        if a is None:
+            continue
+        start, end, _ = a
+        start = max(0, start - wavelength // 4)
+        end = min(w.shape[-1], end + wavelength // 4)
+        end = max(start, end - wavelength)
+        offset = random.randint(start, end)
+        pad = max(0, offset + wavelength - w.shape[-1])
+        w = torch.cat((
+            w[..., offset:min(offset+wavelength, w.shape[-1])],
+            torch.zeros((*w.shape[:-1], pad), device=w.device)
+        ), dim=-1)
+        if s is not None:
+            raise NotImplementedError()
+        crop_waves.append(w)
+        crop_sheets.append(s)
+        crop_datasources.append(ds)
+        crop_offsets.append(offset)
+
+    # save
+    dirname = os.path.dirname(data_path)
+    if not os.path.isdir(dirname):
+        os.makedirs(dirname)
+    torch.save({
+        'waves': torch.stack(crop_waves),
+        'sheets': crop_sheets,
+    }, data_path)
+
+    # create metadata
+    sample_metadata = Sample(
+        path=os.path.relpath(data_path, os.path.dirname(metadata_path)),
+        categories=[dss[0].category for dss in crop_datasources],
+        tracks=[dss[0].track for dss in crop_datasources],
+        folds=[dss[0].fold for dss in crop_datasources],
+        sample_rate=sample_rate
+    )
+
+    journal_metadata = SampleJournal(
+        created_at=datetime.now(),
+        seed=seed,
+        datasources=[
+            [ds.id for ds in dss]
+            for dss in crop_datasources
+        ],
+        length=wavelength,
+        offsets=crop_offsets,
+        sample=sample_metadata,
+    )
+
+    return sample_metadata, journal_metadata
 
