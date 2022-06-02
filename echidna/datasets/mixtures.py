@@ -162,4 +162,91 @@ def _save_mixture(spec : MixtureSpec):
     """
     """
 
+    process_start = datetime.now()
+    # setup algorithm
+    alg_cls = _mix_algorithms.get(spec.algorithm_name)
+    algorithm = alg_cls(**spec.algorithm_params)
+
+    random_ = random.Random(spec.seed)
+
+    # load metadata
+    with open(spec.sample_metadata_path, 'r') as fp:
+        metadata_list = Sample.from_list(json.load(fp))
+
+    # prepare arguments
+    args = [
+        (
+            sample_i,
+            mix_i,
+            algorithm,
+            os.path.join(
+                os.path.dirname(spec.sample_metadata_path),
+                metadata.path
+            ), #data_path,
+            metadata,
+            random_.randrange(2**32), #seed,
+        )
+        for sample_i, metadata in enumerate(metadata_list)
+        for mix_i in range(spec.mix_per_sample)
+    ]
+
+    # map func
+    if spec.jobs is not None:
+        pool = multiprocessing.Pool(spec.jobs)
+        map_fn = pool.imap_unordered
+    else:
+        map_fn = map
+
+    # iterate over dataset and find mixtures
+    mixture_list = []
+    journal_list = []
+    for mixture, journal in map_fn(_make_single_mixture, args):
+        mixture_list.append(mixture)
+        journal_list.append(journal)
+
+    # close map function
+    if spec.jobs is not None:
+        pool.close()
+
+    process_finish = datetime.now()
+
+    # save metadata
+    if not os.path.exists(os.path.dirname(spec.mixture_metadata_path)):
+        os.makedirs(os.path.dirname(spec.mixture_metadata_path))
+    with open(spec.mixture_metadata_path, 'w') as fp:
+        json.dump([m.to_dict() for m in mixture_list], fp)
+
+    # save journal
+    if spec.journal_path is not None:
+        if not os.path.exists(os.path.dirname(spec.journal_path)):
+            os.makedirs(os.path.dirname(spec.journal_path))
+        mixtures_journal = MixturesJournal(
+            process_start=process_start,
+            process_finish=process_finish,
+            metadata_path=os.path.relpath(
+                spec.mixture_metadata_path,
+                os.path.dirname(spec.journal_path)
+            ),
+            spec=spec,
+            mixture_journals=journal_list,
+        )
+        with open(spec.journal_path, 'w') as fp:
+            json.dump(mixtures_journal.to_dict(), fp)
+
+def _make_single_mixture(args):
+    sample_i, mix_i, algorithm, data_path, metadata, seed = args
+    data = torch.load(data_path)
+
+    mixture_indices, aux_out = algorithm.mix_index(data,
+                                               metadata,
+                                               seed)
+    mixture = Mixture(sample_index=sample_i,
+                      mixture_index=mix_i,
+                      mixture_indices=mixture_indices)
+    journal = MixtureJournal(mixture=mixture,
+                             created_at=datetime.now(),
+                             seed=seed,
+                             algorithm_out=aux_out)
+
+    return mixture, journal
 
