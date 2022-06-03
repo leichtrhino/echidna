@@ -157,6 +157,91 @@ class MixtureSpec(object):
     def save_mixture(self):
         _save_mixture(self)
 
+class MixAlgorithm(object):
+    def mix_index(self,
+                  data : tp.Dict[str, torch.Tensor],
+                  metadata : Sample,
+                  seed : int,
+                  ) -> tp.Tuple[tp.List[tp.List[tp.List[int]]],
+                                tp.Dict[str, str]]:
+        """
+        # mix_samples, mix_out, mix_in
+        """
+        raise NotImplementedError()
+
+class CategoryMix(MixAlgorithm):
+    def __init__(self,
+                 mix_category_list : tp.List[tp.Union[str, tp.List[str]]],
+                 include_other : bool=True,
+                 check_duplicate : bool=True):
+        self.mix_categories = []
+        all_categories = set()
+        for i, l in enumerate(mix_category_list):
+            self.mix_categories.append([])
+            if type(l) == str:
+                if l in all_categories:
+                    logger.warning(f'category {l} at {i} duplicates')
+                    if check_duplicate:
+                        raise ValueError(f'category {l} at {i} duplicates')
+                self.mix_categories[i].append(l)
+                all_categories.add(l)
+                continue
+            for j, c in enumerate(l):
+                if c in all_categories:
+                    logger.warning(f'category {c} at {i} duplicates')
+                    if check_duplicate:
+                        raise ValueError(f'category {c} at {i} duplicates')
+                self.mix_categories[i].append(c)
+                all_categories.add(c)
+        self.include_other = include_other
+
+    def mix_index(self,
+                  data : tp.Dict[str, torch.Tensor],
+                  metadata : Sample,
+                  seed : int,
+                  ) -> tp.Tuple[tp.List[tp.List[tp.List[int]]],
+                                tp.Dict[str, str]]:
+        """
+        # mix_samples, mix_out, mix_in
+        """
+        base_index = [[] for _ in range(len(self.mix_categories))]
+        if self.include_other:
+            base_index.append([])
+
+        for i, c in enumerate(metadata.categories):
+            is_other = True
+            for j, ds in enumerate(self.mix_categories):
+                if c in ds:
+                    base_index[j].append(i)
+                    is_other = False
+            if self.include_other and is_other:
+                base_index[-1].append(i)
+
+        mix_index = []
+        for bi in base_index:
+            comb_index = sum(
+                (list(combinations(bi, r)) for r in range(1, len(bi)+1)),
+                []
+            )
+            if len(comb_index) == 0:
+                comb_index.append([])
+            mix_index.append(comb_index)
+
+        return list(product(*mix_index)), dict()
+
+def register_mix_algorithm(name : str,
+                           algorithm : tp.Type):
+    _mix_algorithms[name] = algorithm
+
+def get_mix_algorithm(name : str):
+    if name not in _mix_algorithms:
+        raise ValueError(f'{name} is not registered as a mix algorithm')
+    return _mix_algorithms[name]
+
+_mix_algorithms = dict()
+if len(_mix_algorithms) == 0:
+    register_mix_algorithm('CategoryMix', CategoryMix)
+
 
 def _save_mixture(spec : MixtureSpec):
     """
