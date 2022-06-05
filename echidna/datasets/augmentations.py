@@ -230,4 +230,222 @@ def _save_augmentation(spec : AugmentationSpec):
     """
     """
 
+    process_start = datetime.now()
+    # setup algorithm
+    alg_cls = _augmentation_algorithms.get(spec.algorithm_name)
+    algorithm = alg_cls(**spec.algorithm_params)
+
+    random_ = random.Random(spec.seed)
+
+    # load metadata
+    with open(spec.sample_metadata_path, 'r') as fp:
+        metadata_list = Sample.from_list(json.load(fp))
+
+    # prepare arguments
+    args = [
+        (
+            sample_i,
+            augment_i,
+            algorithm,
+            os.path.join(
+                os.path.dirname(spec.sample_metadata_path),
+                metadata.path
+            ), #data_path,
+            metadata,
+            random_.randrange(2**32), #seed,
+        )
+        for sample_i, metadata in enumerate(metadata_list)
+        for augment_i in range(spec.augmentation_per_sample)
+    ]
+
+    # map func
+    if spec.jobs is not None:
+        pool = multiprocessing.Pool(spec.jobs)
+        map_fn = pool.imap_unordered
+    else:
+        map_fn = map
+
+    # iterate over dataset and find mixtures
+    augmentation_list = []
+    journal_list = []
+    for augmentation, journal in map_fn(_make_single_augmentation, args):
+        augmentation_list.append(augmentation)
+        journal_list.append(journal)
+
+    # close map function
+    if spec.jobs is not None:
+        pool.close()
+
+    process_finish = datetime.now()
+
+    # save metadata
+    if not os.path.exists(os.path.dirname(spec.augmentation_metadata_path)):
+        os.makedirs(os.path.dirname(spec.augmentation_metadata_path))
+    with open(spec.augmentation_metadata_path, 'w') as fp:
+        json.dump([a.to_dict() for a in augmentation_list], fp)
+
+    # save journal
+    if spec.journal_path is not None:
+        if not os.path.exists(os.path.dirname(spec.journal_path)):
+            os.makedirs(os.path.dirname(spec.journal_path))
+        augmentations_journal = AugmentationsJournal(
+            process_start=process_start,
+            process_finish=process_finish,
+            metadata_path=os.path.relpath(
+                spec.augmentation_metadata_path,
+                os.path.dirname(spec.journal_path)
+            ),
+            spec=spec,
+            augmentation_journals=journal_list,
+        )
+        with open(spec.journal_path, 'w') as fp:
+            json.dump(augmentations_journal.to_dict(), fp)
+
+def _make_single_augmentation(args):
+    sample_i, augment_i, algorithm, data_path, metadata, seed \
+        = args
+    data = torch.load(data_path)
+
+    transform_param, aux_out = algorithm.augmentation_params(data,
+                                                             metadata,
+                                                             seed)
+    augmentation = Augmentation(sample_index=sample_i,
+                                augmentation_index=augment_i,
+                                **transform_param)
+    journal = AugmentationJournal(augmentation=augmentation,
+                                  created_at=datetime.now(),
+                                  seed=seed,
+                                  algorithm_out=aux_out)
+
+    return augmentation, journal
+
+
+def _make_param_set(data : tp.Dict[str, torch.Tensor],
+                    metadata : tp.List[tp.Dict[str, object]],
+                    seed : int,
+
+                    source_sample_rate : int,
+                    target_sample_rate : int,
+                    waveform_length : int,
+
+                    normalize : bool,
+                    scale_range : tp.Tuple[int],
+                    scale_point_range : tp.Tuple[int],
+                    time_stretch_range : tp.Tuple[int],
+                    pitch_shift_range : tp.Tuple[int],
+
+                    n_fft : int=2048,
+                    hop_length : int=512,
+                    win_length : int=2048,
+                    ) -> tp.List[tp.Dict[str, object]]:
+
+    assert len(scale_range) == 2
+    assert len(scale_point_range) == 2
+    assert len(time_stretch_range) == 2
+    assert len(pitch_shift_range) == 2
+
+    random.seed(seed)
+    torch.manual_seed(seed)
+    numpy.random.seed(seed)
+
+    # make time-dependent parameter for each track
+    track_param = dict()
+    track_activation = dict()
+    for track in set(track for track in metadata.tracks if track is not None):
+        track_param[track] = {
+            'time_stretch_rate': random.uniform(*time_stretch_range),
+        }
+        track_activation[track] = [(0, None, [])]
+
+    waves = data['waves']
+    # make transform parameter without offset
+    channel_params = []
+    channel_activations = []
+    transformed_waves = []
+    common_params = {
+        'normalize': normalize,
+        'source_sample_rate': source_sample_rate,
+        'target_sample_rate': target_sample_rate,
+        'waveform_length': None, # this param is overwritten at the end
+        'n_fft': n_fft,
+        'hop_length': hop_length,
+        'win_length': win_length,
+    }
+
+    for channel_i, (wave, track) in enumerate(zip(waves, metadata.tracks)):
+        # build transform
+        time_stretch_rate = track_param.get(
+            track,
+            {'time_stretch_rate' : random.uniform(*time_stretch_range)}
+        )['time_stretch_rate']
+        pitch_shift_rate = random.uniform(*pitch_shift_range)
+        scale_points = random.randint(*scale_point_range)
+        scale_amounts = [
+            random.uniform(*scale_range) for _ in range(scale_points)
+        ]
+        scale_fractions = [
+            random.random() for _ in range(scale_points-1)
+        ]
+
+        params = {
+            'time_stretch_rate': time_stretch_rate,
+            'pitch_shift_rate': pitch_shift_rate,
+            'scale_amounts': scale_amounts,
+            'scale_fractions': scale_fractions,
+            'offset': None,
+        }
+
+        tf = build_transform(**common_params, **params)
+        transformed_wave = tf(wave)
+        transformed_waves.append(transformed_wave)
+
+        # find activatio
+        activation = track_activation.get(
+            track, [(0, transformed_wave.shape[-1], [])]
+        )
+        merge_activation(activation, transformed_wave, channel_i)
+        channel_params.append(params)
+        channel_activations.append(activation)
+
+    # get offset
+    for track, wave, param, activations in \
+        zip(metadata.tracks, transformed_waves, channel_params, channel_activations):
+        if 'offset' in track_param.get(track, dict()):
+            offset = track_param[track]['offset']
+        else: # calculate offset from activation
+            weights = [
+                (end-start)*(10**(len(tags)-1)) if len(tags) else 0
+                for start, end, tags in activations
+            ]
+            activation = random.choices(activations,
+                                        weights=weights, k=1)[0]
+
+            start, end, _ = activation
+            start = max(0, start - waveform_length // 4)
+            end = min(wave.shape[-1], end + waveform_length // 4)
+            end = max(start, end - waveform_length)
+            offset = random.randint(start, end)
+
+            if track in track_param: # assign offset to track
+                track_param[track]['offset'] = offset
+
+        param['offset'] = offset
+
+    common_params['waveform_length'] = waveform_length
+    augment_param = dict(
+        **common_params,
+        **{
+            'offsets': [
+                p['offset'] for p in channel_params],
+            'time_stretch_rates': [
+                p['time_stretch_rate'] for p in channel_params],
+            'pitch_shift_rates': [
+                p['pitch_shift_rate'] for p in channel_params],
+            'scale_amount_list': [
+                p['scale_amounts'] for p in channel_params],
+            'scale_fraction_list': [
+                p['scale_fractions'] for p in channel_params],
+        }
+    )
+    return augment_param
 
