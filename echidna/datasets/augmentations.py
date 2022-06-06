@@ -225,6 +225,392 @@ class AugmentationAlgorithm(object):
                             ) -> tp.List[tp.Dict[str, object]]:
         raise NotImplementedError()
 
+class RandomAugmentation(AugmentationAlgorithm):
+    def __init__(self,
+                 source_sample_rate : int,
+                 target_sample_rate : int,
+                 waveform_length : int,
+
+                 normalize : bool,
+                 scale_range : tp.Tuple[int],
+                 scale_point_range : tp.Tuple[int],
+                 time_stretch_range : tp.Tuple[int],
+                 pitch_shift_range : tp.Tuple[int],
+
+                 n_fft : int=2048,
+                 hop_length : int=512,
+                 win_length : int=2048,
+                 ):
+
+        self.source_sample_rate = source_sample_rate
+        self.target_sample_rate = target_sample_rate
+        self.waveform_length = waveform_length
+
+        self.normalize = normalize
+        self.scale_range = scale_range
+        self.scale_point_range = scale_point_range
+        self.time_stretch_range = time_stretch_range
+        self.pitch_shift_range = pitch_shift_range
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+        self.win_length = win_length
+
+
+    def augmentation_params(self,
+                            data : tp.Dict[str, torch.Tensor],
+                            metadata : tp.List[tp.Dict[str, object]],
+                            seed : int,
+                            ) -> tp.List[tp.Dict[str, object]]:
+        augmentation_params = _make_param_set(
+            data=data,
+            metadata=metadata,
+            seed=seed,
+            source_sample_rate=self.source_sample_rate,
+            target_sample_rate=self.target_sample_rate,
+            waveform_length=self.waveform_length,
+            normalize=self.normalize,
+            scale_range=self.scale_range,
+            scale_point_range=self.scale_point_range,
+            time_stretch_range=self.time_stretch_range,
+            pitch_shift_range=self.pitch_shift_range,
+            n_fft=self.n_fft,
+            hop_length=self.hop_length,
+            win_length=self.win_length
+        )
+        algorithm_out = None
+        return augmentation_params, algorithm_out
+
+class EntropyAugmentation(AugmentationAlgorithm):
+    def __init__(self,
+                 source_sample_rate : int,
+                 target_sample_rate : int,
+                 waveform_length : int,
+
+                 normalize : bool,
+                 scale_range : tp.Tuple[int],
+                 scale_point_range : tp.Tuple[int],
+                 time_stretch_range : tp.Tuple[int],
+                 pitch_shift_range : tp.Tuple[int],
+
+                 mixture_algorithm_name : str,
+                 mixture_algorithm_params : tp.Dict[str, object],
+                 trials_per_augmentation : int,
+                 separation_difficulty : float,
+
+                 n_fft : int=2048,
+                 hop_length : int=512,
+                 win_length : int=2048,
+                 ):
+
+        assert 0.0 <= separation_difficulty <= 1.0
+
+        self.source_sample_rate = source_sample_rate
+        self.target_sample_rate = target_sample_rate
+        self.waveform_length = waveform_length
+
+        self.normalize = normalize
+        self.scale_range = scale_range
+        self.scale_point_range = scale_point_range
+        self.time_stretch_range = time_stretch_range
+        self.pitch_shift_range = pitch_shift_range
+
+        self.mixture_algorithm_name = mixture_algorithm_name
+        self.mixture_algorithm_params = mixture_algorithm_params
+        self.trials_per_augmentation = trials_per_augmentation
+        self.separation_difficulty = separation_difficulty
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+        self.win_length = win_length
+
+    def augmentation_params(self,
+                            data : tp.Dict[str, torch.Tensor],
+                            metadata : tp.List[tp.Dict[str, object]],
+                            seed : int,
+                            ) -> tp.List[tp.Dict[str, object]]:
+        # calculate mix index from data and metadata
+        # using self.algorithm
+        mixture_algorithm_class = get_mix_algorithm(
+            self.mixture_algorithm_name)
+        mixture_algorithm = mixture_algorithm_class(
+            **self.mixture_algorithm_params)
+
+        mix_indices, _ = mixture_algorithm.mix_index(data=data,
+                                                     metadata=metadata,
+                                                     seed=seed)
+        random_ = random.Random(seed)
+
+        # make random augmentation parameter sets
+        seeds = [
+            random_.randrange(2**32)
+            for _ in range(self.trials_per_augmentation)
+        ]
+        parameters = [
+            _make_param_set(
+                data=data,
+                metadata=metadata,
+                seed=seed_,
+                source_sample_rate=self.source_sample_rate,
+                target_sample_rate=self.target_sample_rate,
+                waveform_length=self.waveform_length,
+                normalize=self.normalize,
+                scale_range=self.scale_range,
+                scale_point_range=self.scale_point_range,
+                time_stretch_range=self.time_stretch_range,
+                pitch_shift_range=self.pitch_shift_range,
+                n_fft=self.n_fft,
+                hop_length=self.hop_length,
+                win_length=self.win_length
+            )
+            for seed_ in seeds
+        ]
+
+        # calculate spectrogram for each source in data
+        # evaluate difficulty for each augmentation param. set
+        evaluation_scores = []
+        for param in parameters:
+
+            transforms = [
+                build_transform(
+                    normalize=param['normalize'],
+                    source_sample_rate=param['source_sample_rate'],
+                    target_sample_rate=param['target_sample_rate'],
+                    time_stretch_rate=tsr,
+                    pitch_shift_rate=psr,
+                    scale_amounts=sa,
+                    scale_fractions=sf,
+                    offset=of,
+                    waveform_length=param['waveform_length'],
+                    n_fft=param['n_fft'],
+                    hop_length=param['hop_length'],
+                    win_length=param['win_length'],
+                )
+                for of, tsr, psr, sa, sf in zip(
+                        param['offsets'],
+                        param['time_stretch_rates'],
+                        param['pitch_shift_rates'],
+                        param['scale_amount_list'],
+                        param['scale_fraction_list'],
+                )
+            ]
+            specgrams = torch.stft(
+                torch.stack([
+                    tf(w) for tf, w in zip(transforms, data['waves'])
+                ], dim=0),
+                n_fft=self.n_fft,
+                hop_length=self.hop_length,
+                win_length=self.win_length,
+                return_complex=True,
+            ).abs().clamp(min=1e-3) ** 2
+
+            subscore = []
+            for mix_index in mix_indices:
+                mix_sg = [
+                    torch.sum(specgrams[mi], dim=0)
+                    for mi in mix_index if len(mi) > 0
+                ]
+                total_sg = sum(mix_sg)
+                score = sum(
+                    torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
+                    for sg in mix_sg
+                ) / total_sg.numel()
+                subscore.append(score.item())
+
+            evaluation_scores.append(sum(subscore) / len(subscore))
+
+        # find most appropriate param. set
+        sorted_scores = sorted(enumerate(evaluation_scores),
+                               key=lambda e: e[1])
+        sorted_i = int(self.separation_difficulty * len(sorted_scores))
+        sorted_i = min(max(sorted_i, 0), len(sorted_scores)-1)
+        param_i, score = sorted_scores[sorted_i]
+
+        # get score statistics
+        score_stats = {
+            'min': sorted_scores[0][1],
+            'median': sorted_scores[len(sorted_scores)//2][1],
+            'mean': sum(s[1] for s in sorted_scores) / len(sorted_scores),
+            'max': sorted_scores[-1][1],
+        }
+
+        return parameters[param_i], \
+            {'score': score, 'scoreStats': score_stats}
+
+
+class FrequencyAugmentation(AugmentationAlgorithm):
+    def __init__(self,
+                 source_sample_rate : int,
+                 target_sample_rate : int,
+                 waveform_length : int,
+
+                 normalize : bool,
+                 scale_range : tp.Tuple[int],
+                 scale_point_range : tp.Tuple[int],
+                 time_stretch_range : tp.Tuple[int],
+                 pitch_shift_range : tp.Tuple[int],
+
+                 mixture_algorithm_name : str,
+                 mixture_algorithm_params : tp.Dict[str, object],
+                 trials_per_augmentation : int,
+                 separation_difficulty : float,
+
+                 n_fft : int=2048,
+                 hop_length : int=512,
+                 win_length : int=2048,
+                 ):
+
+        assert 0.0 <= separation_difficulty <= 1.0
+
+        self.source_sample_rate = source_sample_rate
+        self.target_sample_rate = target_sample_rate
+        self.waveform_length = waveform_length
+
+        self.normalize = normalize
+        self.scale_range = scale_range
+        self.scale_point_range = scale_point_range
+        self.time_stretch_range = time_stretch_range
+        self.pitch_shift_range = pitch_shift_range
+
+        self.mixture_algorithm_name = mixture_algorithm_name
+        self.mixture_algorithm_params = mixture_algorithm_params
+        self.trials_per_augmentation = trials_per_augmentation
+        self.separation_difficulty = separation_difficulty
+
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+        self.win_length = win_length
+
+    def augmentation_params(self,
+                            data : tp.Dict[str, torch.Tensor],
+                            metadata : tp.List[tp.Dict[str, object]],
+                            seed : int,
+                            ) -> tp.List[tp.Dict[str, object]]:
+        # calculate mix index from data and metadata
+        # using self.algorithm
+        mixture_algorithm_class = get_mix_algorithm(
+            self.mixture_algorithm_name)
+        mixture_algorithm = mixture_algorithm_class(
+            **self.mixture_algorithm_params)
+
+        mix_indices, _ = mixture_algorithm.mix_index(data=data,
+                                                     metadata=metadata,
+                                                     seed=seed)
+        random_ = random.Random(seed)
+
+        # make random augmentation parameter sets
+        seeds = [
+            random_.randrange(2**32)
+            for _ in range(self.trials_per_augmentation)
+        ]
+        parameters = [
+            _make_param_set(
+                data=data,
+                metadata=metadata,
+                seed=seed_,
+                source_sample_rate=self.source_sample_rate,
+                target_sample_rate=self.target_sample_rate,
+                waveform_length=self.waveform_length,
+                normalize=self.normalize,
+                scale_range=self.scale_range,
+                scale_point_range=self.scale_point_range,
+                time_stretch_range=self.time_stretch_range,
+                pitch_shift_range=self.pitch_shift_range,
+                n_fft=self.n_fft,
+                hop_length=self.hop_length,
+                win_length=self.win_length
+            )
+            for seed_ in seeds
+        ]
+
+        # calculate spectrogram for each source in data
+        # evaluate difficulty for each augmentation param. set
+        evaluation_scores = []
+        for param in parameters:
+
+            transforms = [
+                build_transform(
+                    normalize=param['normalize'],
+                    source_sample_rate=param['source_sample_rate'],
+                    target_sample_rate=param['target_sample_rate'],
+                    time_stretch_rate=tsr,
+                    pitch_shift_rate=psr,
+                    scale_amounts=sa,
+                    scale_fractions=sf,
+                    offset=of,
+                    waveform_length=param['waveform_length'],
+                    n_fft=param['n_fft'],
+                    hop_length=param['hop_length'],
+                    win_length=param['win_length'],
+                )
+                for of, tsr, psr, sa, sf in zip(
+                        param['offsets'],
+                        param['time_stretch_rates'],
+                        param['pitch_shift_rates'],
+                        param['scale_amount_list'],
+                        param['scale_fraction_list'],
+                )
+            ]
+
+            waves = torch.stack([
+                tf(w) for tf, w in zip(transforms, data['waves'])
+            ], dim=0).numpy()
+
+            subscore = []
+            for mix_index in mix_indices:
+                mix_waves = numpy.stack([
+                    waves[mi, :].sum(axis=0)
+                    for mi in mix_index if len(mi) > 0
+                ])
+                f0, voiced_flag, voiced_prob = librosa.pyin(
+                    mix_waves,
+                    fmin=librosa.note_to_hz('C2'),
+                    fmax=librosa.note_to_hz('C7'),
+                    sr=param['target_sample_rate'],
+                    frame_length=self.win_length,
+                )
+                f0 = numpy.nan_to_num(f0, nan=0.0)
+                score = sum(
+                    numpy.abs(f0_a - f0_b).sum().item()
+                    for f0_a, f0_b in combinations(f0, 2)
+                ) / (len(f0)*(len(f0)-1)/2 * f0.shape[-1])
+                subscore.append(score)
+
+            evaluation_scores.append(sum(subscore) / len(subscore))
+
+        # find most appropriate param. set
+        sorted_scores = sorted(enumerate(evaluation_scores),
+                               key=lambda e: e[1],
+                               reverse=True)
+        sorted_i = int(self.separation_difficulty * len(sorted_scores))
+        sorted_i = min(max(sorted_i, 0), len(sorted_scores)-1)
+        param_i, score = sorted_scores[sorted_i]
+
+        # get score statistics
+        score_stats = {
+            'min': sorted_scores[0][1],
+            'median': sorted_scores[len(sorted_scores)//2][1],
+            'mean': sum(s[1] for s in sorted_scores) / len(sorted_scores),
+            'max': sorted_scores[-1][1],
+        }
+
+        return parameters[param_i], \
+            {'score': score, 'scoreStats': score_stats}
+
+
+
+def register_augmentation_algorithm(name : str,
+                                    algorithm : tp.Type):
+    _augmentation_algorithms[name] = algorithm
+
+_augmentation_algorithms = dict()
+if len(_augmentation_algorithms) == 0:
+    register_augmentation_algorithm('RandomAugmentation',
+                                    RandomAugmentation)
+    register_augmentation_algorithm('EntropyAugmentation',
+                                    EntropyAugmentation)
+    register_augmentation_algorithm('FrequencyAugmentation',
+                                    FrequencyAugmentation)
 
 def _save_augmentation(spec : AugmentationSpec):
     """
