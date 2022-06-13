@@ -9,7 +9,7 @@ import torchaudio
 import librosa
 import matplotlib.pyplot as plt
 
-from echidna.datasets import sampler
+from echidna.datasets import utils
 
 class TestMergeActivation(unittest.TestCase):
     def test_merge_activation_create(self):
@@ -24,7 +24,7 @@ class TestMergeActivation(unittest.TestCase):
         x[16*16000:19*16000] = \
             torch.sin(torch.linspace(0, 2*torch.pi, 19*16000-16*16000))
 
-        sampler.merge_activation(base_list, x, tag='x')
+        utils.merge_activation(base_list, x, tag='x')
 
         self.assertEqual(base_list[0][0], 0)
         self.assertEqual(base_list[-1][1], 25*16000)
@@ -53,8 +53,8 @@ class TestMergeActivation(unittest.TestCase):
         y[14*16000:21*16000] = \
             torch.sin(torch.linspace(0, 2*torch.pi, 21*16000-14*16000))
 
-        sampler.merge_activation(base_list, x, tag='x')
-        sampler.merge_activation(base_list, y, tag='y')
+        utils.merge_activation(base_list, x, tag='x')
+        utils.merge_activation(base_list, y, tag='y')
 
         self.assertEqual(base_list[0][0], 0)
         self.assertEqual(base_list[-1][1], 25*16000)
@@ -75,7 +75,7 @@ class TestMergeActivation(unittest.TestCase):
         x[4*16000:5*16000] = \
             torch.sin(torch.linspace(0, 2*torch.pi, 5*16000-4*16000))
 
-        sampler.merge_activation(base_list, x, tag='x')
+        utils.merge_activation(base_list, x, tag='x')
 
         self.assertEqual(base_list[0][0], 0)
         self.assertEqual(base_list[-1][1], 5*16000)
