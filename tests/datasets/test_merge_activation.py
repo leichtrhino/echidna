@@ -1,13 +1,6 @@
 
 import unittest
-import pathlib
-import tempfile
-import math
-import itertools
 import torch
-import torchaudio
-import librosa
-import matplotlib.pyplot as plt
 
 from echidna.datasets import utils
 
