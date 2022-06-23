@@ -2,7 +2,7 @@
 import unittest
 import torch
 
-from echidna.datasets import utils
+from echidna.data import utils
 
 class TestMergeActivation(unittest.TestCase):
     def test_merge_activation_create(self):

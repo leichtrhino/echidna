@@ -4,10 +4,10 @@ import os
 import pathlib
 import tempfile
 
-from echidna.datasets.samples import Sample
-from echidna.datasets.augmentations import Augmentation, AugmentationSpec
-from echidna.datasets.mixtures import Mixture, MixtureSpec
-from echidna.datasets.datasets import Dataset
+from echidna.data.samples import Sample
+from echidna.data.augmentations import Augmentation, AugmentationSpec
+from echidna.data.mixtures import Mixture, MixtureSpec
+from echidna.data.datasets import Dataset
 
 from .utils import prepare_datasources
 

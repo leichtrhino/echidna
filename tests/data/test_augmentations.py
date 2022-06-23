@@ -4,12 +4,12 @@ import pathlib
 import tempfile
 import json
 
-from echidna.datasets.augmentations import (
+from echidna.data.augmentations import (
     Augmentation,
     AugmentationsJournal,
     AugmentationSpec
 )
-from echidna.datasets.samples import (
+from echidna.data.samples import (
     Sample,
     SampleSpec
 )

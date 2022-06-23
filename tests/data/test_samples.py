@@ -10,7 +10,7 @@ import torchaudio
 
 from collections import Counter
 
-from echidna.datasets import samples
+from echidna.data import samples
 
 from .utils import prepare_datasources
 

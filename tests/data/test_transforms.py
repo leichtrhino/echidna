@@ -2,7 +2,7 @@
 import unittest
 import torch
 
-from echidna.datasets import transforms
+from echidna.data import transforms
 
 class TestTransform(unittest.TestCase):
     def test_multipointscale(self):

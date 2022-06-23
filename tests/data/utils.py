@@ -5,7 +5,7 @@ import math
 import torch
 import torchaudio
 
-from echidna.datasets import samples
+from echidna.data import samples
 
 def prepare_datasources(tmpdir, seed):
     datasource_dir = pathlib.Path(tmpdir.name) / 'datasources'

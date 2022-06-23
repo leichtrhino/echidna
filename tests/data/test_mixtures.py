@@ -4,10 +4,10 @@ import pathlib
 import tempfile
 import json
 
-from echidna.datasets.mixtures import (
+from echidna.data.mixtures import (
     Mixture, MixturesJournal, MixtureSpec
 )
-from echidna.datasets.samples import SampleSpec
+from echidna.data.samples import SampleSpec
 
 from .utils import prepare_datasources
 
