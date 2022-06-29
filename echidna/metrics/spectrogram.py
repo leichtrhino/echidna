@@ -2,6 +2,137 @@
 import math
 import torch
 
+from .loss import Loss
+
+class _SpectrogramLoss(Loss):
+    def __init__(self,
+                 fft_spec=[(512, 128), (1024, 256), (2048, 512)],
+                 reduction='mean'):
+        super().__init__(reduction)
+        if not fft_spec:
+            raise ValueError('empty fft_spec')
+        self.fft_spec = fft_spec
+
+    @property
+    def domains(self):
+        return ('waves',)
+
+    def to_dict(self):
+        return {
+            'reduction': self.reduction,
+            'fft_spec': self.fft_spec,
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            fft_spec=d.get('fft_spec', [(512, 128), (1024, 256), (2048, 512)]),
+            reduction=d['reduction']
+        )
+
+class L1SpectrogramLoss(_SpectrogramLoss):
+    def forward_no_reduction(self,
+                             s_pred : torch.Tensor,
+                             s_true: torch.Tensor):
+        raw = multiscale_spectrogram_loss(
+            s_pred,
+            s_true,
+            self.fft_spec,
+            spectral_convergence_weight=0.0,
+            spectral_magnitude_weight=1.0,
+            spectral_magnitude_norm=1,
+            spectral_magnitude_log=False)
+        return raw
+
+class L2SpectrogramLoss(_SpectrogramLoss):
+    def forward_no_reduction(self,
+                             s_pred : torch.Tensor,
+                             s_true: torch.Tensor):
+        raw = multiscale_spectrogram_loss(
+            s_pred,
+            s_true,
+            self.fft_spec,
+            spectral_convergence_weight=0.0,
+            spectral_magnitude_weight=1.0,
+            spectral_magnitude_norm=2,
+            spectral_magnitude_log=False)
+        return raw
+
+class SpectrogramConvergenceLoss(_SpectrogramLoss):
+    def forward_no_reduction(self,
+                             s_pred : torch.Tensor,
+                             s_true: torch.Tensor):
+        raw = multiscale_spectrogram_loss(
+            s_pred,
+            s_true,
+            self.fft_spec,
+            spectral_convergence_weight=1.0,
+            spectral_magnitude_weight=0.0,
+            spectral_magnitude_norm=1,
+            spectral_magnitude_log=False
+        )
+        return raw
+
+class SpectrogramLoss(Loss):
+    def __init__(self,
+                 fft_spec=[(512, 128), (1024, 256), (2048, 512)],
+                 spectral_convergence_weight : float=1.0,
+                 spectral_magnitude_weight : float=1.0,
+                 spectral_magnitude_norm : int=1,
+                 spectral_magnitude_log : bool=True,
+                 reduction='mean'):
+        super().__init__(reduction)
+        if not fft_spec:
+            raise ValueError('empty fft_spec')
+        self.fft_spec = fft_spec
+        self.spectral_convergence_weight = spectral_convergence_weight
+        self.spectral_magnitude_weight = spectral_magnitude_weight
+        self.spectral_magnitude_norm = spectral_magnitude_norm
+        self.spectral_magnitude_log = spectral_magnitude_log
+
+    @property
+    def domains(self):
+        return ('waves',)
+
+    def to_dict(self):
+        return {
+            'reduction': self.reduction,
+            'fft_spec': self.fft_spec,
+            'spectral_convergence_weight': self.spectral_convergence_weight,
+            'spectral_magnitude_weight': self.spectral_magnitude_weight,
+            'spectral_magnitude_norm': self.spectral_magnitude_norm,
+            'spectral_magnitude_log': self.spectral_magnitude_log,
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            fft_spec=d.get(
+                'fft_spec', [(512, 128), (1024, 256), (2048, 512)]),
+            spectral_convergence_weight=d.get(
+                'spectral_convergence_weight', 1.0),
+            spectral_magnitude_weight=d.get(
+                'spectral_magnitude_weight', 1.0),
+            spectral_magnitude_norm=d.get(
+                'spectral_magnitude_norm', 1),
+            spectral_magnitude_log=d.get(
+                'spectral_magnitude_log', True),
+            reduction=d.get('reduction', 'mean'),
+        )
+
+    def forward_no_reduction(self,
+                             s_pred : torch.Tensor,
+                             s_true: torch.Tensor):
+        raw = multiscale_spectrogram_loss(
+            s_pred,
+            s_true,
+            self.fft_spec,
+            self.spectral_convergence_weight,
+            self.spectral_magnitude_weight,
+            self.spectral_magnitude_norm,
+            self.spectral_magnitude_log,
+        )
+        return raw
 
 def multiscale_spectrogram_loss(
         s_pred : torch.Tensor,
