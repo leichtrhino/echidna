@@ -1,6 +1,76 @@
 
 import torch
 
+from .loss import Loss
+
+class _EmbeddingLoss(Loss):
+    def __init__(self,
+                 mode,
+                 label='argmax', # or softmax
+                 weight='none', # or magnitude_ratio
+                 reduction='mean'):
+        super().__init__(reduction)
+        if weight not in ('none', 'magnitude_ratio'):
+            raise ValueError(f'invalid weight type {weight}')
+        if label not in ('argmax', 'softmax'):
+            raise ValueError(f'invalid label type {label}')
+
+        self.label = label
+        self.weight = weight
+        self.mode = mode
+
+    @property
+    def domains(self):
+        return ('embd',)
+
+    def to_dict(self):
+        return {
+            'label': self.label,
+            'weight': self.weight,
+            'reduction': self.reduction,
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        return cls(
+            label=d.get('label', 'argmax'),
+            weight=d.get('weight', 'none'),
+            reduction=d.get('reduction', 'mean'),
+        )
+
+    def forward_no_reduction(self,
+                             e_pred : torch.Tensor,
+                             e_true : torch.Tensor):
+        if self.label == 'argmax':
+            C = e_pred.shape[-1]
+            device = e_true.device
+            label = torch.eye(C, device=device)[e_true.argmax(dim=-1)]
+        elif self.label == 'softmax':
+            label = e_true.softmax(dim=-1)
+
+        weight = None
+        if self.weight == 'magnitude_ratio':
+            weight = e_true.abs().sum(dim=-1, keepdims=True) \
+                / e_true.abs().sum().clamp(min=1e-3)
+
+        raw = deep_clustering_loss(e_pred, label, weight, self.mode)
+        return raw
+
+class DeepClusteringLoss(_EmbeddingLoss):
+    def __init__(self, label='argmax', weight='none', reduction='mean'):
+        super().__init__('deep_clustering', label, weight, reduction)
+
+class DeepLDALoss(_EmbeddingLoss):
+    def __init__(self, label='argmax', weight='none', reduction='mean'):
+        super().__init__('deep_lda', label, weight, reduction)
+
+class GraphLaplacianLoss(_EmbeddingLoss):
+    def __init__(self, label='argmax', weight='none', reduction='mean'):
+        super().__init__('graph_laplacian_distance', label, weight, reduction)
+
+class WhitenedKMeansLoss(_EmbeddingLoss):
+    def __init__(self, label='argmax', weight='none', reduction='mean'):
+        super().__init__('whitened_kmeans', label, weight, reduction)
 
 def deep_clustering_loss(embd : torch.Tensor,
                          label : torch.Tensor,
