@@ -31,7 +31,7 @@ class TestAugmentations(unittest.TestCase):
     def test_random_augmentation(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_1'
         spec = AugmentationSpec(
-            algorithm_name='RandomAugmentation',
+            algorithm_name='random',
             algorithm_params={
                 'source_sample_rate': 8000,
                 'target_sample_rate': 8000,
@@ -81,7 +81,7 @@ class TestAugmentations(unittest.TestCase):
     def test_entropy_augmentation_minscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_2'
         spec = AugmentationSpec(
-            algorithm_name='EntropyAugmentation',
+            algorithm_name='entropy',
             algorithm_params={
                 'source_sample_rate': 8000,
                 'target_sample_rate': 8000,
@@ -93,7 +93,7 @@ class TestAugmentations(unittest.TestCase):
                 'time_stretch_range': [0.5, 1.5],
                 'pitch_shift_range': [0.5, 1.5],
 
-                'mixture_algorithm_name': 'CategoryMix',
+                'mixture_algorithm_name': 'category',
                 'mixture_algorithm_params': {
                     'mix_category_list': [
                         ['ct001'],
@@ -141,13 +141,13 @@ class TestAugmentations(unittest.TestCase):
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
         for j in journal.augmentation_journals:
             self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['scoreStats']['min'])
+                             j.algorithm_out['score_stats']['min'])
 
 
     def test_entropy_augmentation_maxscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_3'
         spec = AugmentationSpec(
-            algorithm_name='EntropyAugmentation',
+            algorithm_name='entropy',
             algorithm_params={
                 'source_sample_rate': 8000,
                 'target_sample_rate': 8000,
@@ -159,7 +159,7 @@ class TestAugmentations(unittest.TestCase):
                 'time_stretch_range': [0.5, 1.5],
                 'pitch_shift_range': [0.5, 1.5],
 
-                'mixture_algorithm_name': 'CategoryMix',
+                'mixture_algorithm_name': 'category',
                 'mixture_algorithm_params': {
                     'mix_category_list': [
                         ['ct001'],
@@ -207,13 +207,13 @@ class TestAugmentations(unittest.TestCase):
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
         for j in journal.augmentation_journals:
             self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['scoreStats']['max'])
+                             j.algorithm_out['score_stats']['max'])
 
 
     def test_frequency_augmentation_minscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_3'
         spec = AugmentationSpec(
-            algorithm_name='FrequencyAugmentation',
+            algorithm_name='frequency',
             algorithm_params={
                 'source_sample_rate': 8000,
                 'target_sample_rate': 8000,
@@ -225,7 +225,7 @@ class TestAugmentations(unittest.TestCase):
                 'time_stretch_range': [0.5, 1.5],
                 'pitch_shift_range': [0.5, 1.5],
 
-                'mixture_algorithm_name': 'CategoryMix',
+                'mixture_algorithm_name': 'category',
                 'mixture_algorithm_params': {
                     'mix_category_list': [
                         ['ct001'],
@@ -273,12 +273,12 @@ class TestAugmentations(unittest.TestCase):
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
         for j in journal.augmentation_journals:
             self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['scoreStats']['min'])
+                             j.algorithm_out['score_stats']['min'])
 
     def test_frequency_augmentation_maxscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_5'
         spec = AugmentationSpec(
-            algorithm_name='FrequencyAugmentation',
+            algorithm_name='frequency',
             algorithm_params={
                 'source_sample_rate': 8000,
                 'target_sample_rate': 8000,
@@ -290,7 +290,7 @@ class TestAugmentations(unittest.TestCase):
                 'time_stretch_range': [0.5, 1.5],
                 'pitch_shift_range': [0.5, 1.5],
 
-                'mixture_algorithm_name': 'CategoryMix',
+                'mixture_algorithm_name': 'category',
                 'mixture_algorithm_params': {
                     'mix_category_list': [
                         ['ct001'],
@@ -338,5 +338,5 @@ class TestAugmentations(unittest.TestCase):
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
         for j in journal.augmentation_journals:
             self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['scoreStats']['max'])
+                             j.algorithm_out['score_stats']['max'])
 

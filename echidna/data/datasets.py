@@ -47,17 +47,17 @@ class Dataset(torch.utils.data.Dataset):
 
     def to_dict(self):
         return {
-            'samplesPath': self.samples_metadata_path,
-            'augmentationsPath': self.augmentations_metadata_path,
-            'mixturesPath': self.mixtures_metadata_path,
+            'samples_path': self.samples_metadata_path,
+            'augmentations_path': self.augmentations_metadata_path,
+            'mixtures_path': self.mixtures_metadata_path,
         }
 
     @classmethod
     def from_dict(cls, d : dict):
         return cls(
-            samples_metadata_path=d['samplesPath'],
-            augmentations_metadata_path=d['augmentationsPath'],
-            mixtures_metadata_path=d['mixturesPath'],
+            samples_metadata_path=d['samples_path'],
+            augmentations_metadata_path=d['augmentations_path'],
+            mixtures_metadata_path=d['mixtures_path'],
         )
 
     def __len__(self):

@@ -40,9 +40,9 @@ class TestTraining(unittest.TestCase):
             compute_batch_size=compute_batch_size,
             max_grad_norm=1e4,
             checkpoint_pattern=tmproot \
-            / '{model}-{model_epoch}-{process_end}.tar',
+            / '{model}-{model_epoch}-{process_finish}.tar',
             journal_pattern=tmproot \
-            / '{model}-{model_epoch}-{process_end}.json',
+            / '{model}-{model_epoch}-{process_finish}.json',
             log_pattern=tmproot \
             / '{model}-{model_epoch}.log'
         )

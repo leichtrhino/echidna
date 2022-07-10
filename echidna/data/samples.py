@@ -46,8 +46,8 @@ class Datasource(object):
         """
         """
         return cls(id=d['id'],
-                   wave_path=d['wavePath'],
-                   sheet_path=d.get('sheetPath', None),
+                   wave_path=d['wave_path'],
+                   sheet_path=d.get('sheet_path', None),
                    category=d.get('category', None),
                    track=d.get('track', None),
                    fold=d.get('fold', None))
@@ -57,8 +57,8 @@ class Datasource(object):
         """
         return {
             'id': self.id,
-            'wavePath': str(self.wave_path) if self.wave_path else None,
-            'sheetPath': str(self.sheet_path) if self.sheet_path else None,
+            'wave_path': str(self.wave_path) if self.wave_path else None,
+            'sheet_path': str(self.sheet_path) if self.sheet_path else None,
             'category': self.category,
             'track': self.track,
             'fold': self.fold,
@@ -84,7 +84,7 @@ class Sample(object):
             categories=d['categories'],
             tracks=d.get('tracks', [None] * len(d['categories'])),
             folds=d.get('folds', [None] * len(d['categories'])),
-            sample_rate=d['sampleRate'],
+            sample_rate=d['sample_rate'],
         )
 
     @classmethod
@@ -97,7 +97,7 @@ class Sample(object):
             'categories': self.categories,
             'tracks': self.tracks,
             'folds': self.folds,
-            'sampleRate': self.sample_rate,
+            'sample_rate': self.sample_rate,
         }
 
 class SampleSpec(object):
@@ -145,14 +145,14 @@ class SampleSpec(object):
         return cls(
             datasources=[Datasource.from_dict(s) for s in d['datasources']],
             fold=d['fold'],
-            sample_size=d['sampleSize'],
-            source_per_category=d['sourcePerCategory'],
-            sample_rate=d['sampleRate'],
+            sample_size=d['sample_size'],
+            source_per_category=d['source_per_category'],
+            sample_rate=d['sample_rate'],
             duration=d['duration'],
             seed=d['seed'],
-            metadata_path=d['metadataPath'],
-            data_dir=d['dataDir'],
-            journal_path=d.get('journalPath', None),
+            metadata_path=d['metadata_path'],
+            data_dir=d['data_dir'],
+            journal_path=d.get('journal_path', None),
             jobs=d.get('jobs', None),
         )
 
@@ -160,14 +160,14 @@ class SampleSpec(object):
         return {
             'datasources': [s.to_dict() for s in self.datasources],
             'fold': self.fold,
-            'sampleSize': self.sample_size,
-            'sourcePerCategory': self.source_per_category,
-            'sampleRate': self.sample_rate,
+            'sample_size': self.sample_size,
+            'source_per_category': self.source_per_category,
+            'sample_rate': self.sample_rate,
             'duration': self.duration,
             'seed': self.seed,
-            'metadataPath': str(self.metadata_path) if self.metadata_path else None,
-            'dataDir': str(self.data_dir) if self.data_dir else None,
-            'journalPath': str(self.journal_path) if self.journal_path else None,
+            'metadata_path': str(self.metadata_path) if self.metadata_path else None,
+            'data_dir': str(self.data_dir) if self.data_dir else None,
+            'journal_path': str(self.journal_path) if self.journal_path else None,
             'jobs': self.jobs,
         }
 
@@ -205,7 +205,7 @@ class SampleJournal(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            created_at=datetime.fromisoformat(d['createdAt']),
+            created_at=datetime.fromisoformat(d['created_at']),
             seed=d['seed'],
             datasources=d.get('datasources', []),
             length=d['length'],
@@ -215,7 +215,7 @@ class SampleJournal(object):
 
     def to_dict(self):
         return {
-            'createdAt': self.created_at.isoformat(),
+            'created_at': self.created_at.isoformat(),
             'seed': self.seed,
             'datasources': self.datasources,
             'length': self.length,
@@ -254,25 +254,25 @@ class SamplesJournal(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            process_start=datetime.fromisoformat(d['processStart']),
-            process_finish=datetime.fromisoformat(d['processFinish']),
-            metadata_path=d['metadataPath'],
+            process_start=datetime.fromisoformat(d['process_start']),
+            process_finish=datetime.fromisoformat(d['process_finish']),
+            metadata_path=d['metadata_path'],
             seed=d['seed'],
             spec=SampleSpec.from_dict(d['spec']),
             sample_journals=[
                 SampleJournal.from_dict(j)
-                for j in d['sampleJournals']
+                for j in d['sample_journals']
             ],
         )
 
     def to_dict(self):
         return {
-            'processStart': self.process_start.isoformat(),
-            'processFinish': self.process_finish.isoformat(),
-            'metadataPath': str(self.metadata_path) if self.metadata_path else None,
+            'process_start': self.process_start.isoformat(),
+            'process_finish': self.process_finish.isoformat(),
+            'metadata_path': str(self.metadata_path) if self.metadata_path else None,
             'seed': self.seed,
             'spec': self.spec.to_dict(),
-            'sampleJournals': [j.to_dict() for j in self.sample_journals]
+            'sample_journals': [j.to_dict() for j in self.sample_journals]
         }
 
 def _save_sample(spec : SampleSpec):

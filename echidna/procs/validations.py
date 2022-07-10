@@ -113,7 +113,7 @@ class ValidationSpec(object):
             'model_epoch': self.model.get_epoch(),
             # from validation journal
             'process_start': datetime.now(),
-            'process_end': datetime.now(),
+            'process_finish': datetime.now(),
             'validation_loss': 0.0,
         }
 
@@ -135,14 +135,14 @@ class ValidationSpec(object):
 class ValidationJournal(object):
     def __init__(self,
                  process_start : datetime,
-                 process_end : datetime,
+                 process_finish : datetime,
                  validation_loss : float,
                  validation_step_journals : list,
                  log_path : str,
                  spec : ValidationSpec):
 
         self.process_start = process_start
-        self.process_end = process_end
+        self.process_finish = process_finish
         self.validation_loss = validation_loss
         self.validation_step_journals = validation_step_journals
         self.log_path = log_path
@@ -151,7 +151,7 @@ class ValidationJournal(object):
     def to_dict(self):
         return {
             'process_start': self.process_start.isoformat(),
-            'process_end': self.process_end.isoformat(),
+            'process_finish': self.process_finish.isoformat(),
             'validation_loss': self.validation_loss,
             'validation_step_journals': [
                 e.to_dict() for e in self.validation_step_journals
@@ -164,7 +164,7 @@ class ValidationJournal(object):
     def from_dict(cls, d : dict):
         return cls(
             process_start=datetime.fromisoformat(d['process_start']),
-            process_end=datetime.fromisoformat(d['process_end']),
+            process_finish=datetime.fromisoformat(d['process_finish']),
             validation_loss=d['validation_loss'],
             validation_step_journals=[
                 utils.StepJournal.from_dict(e)
@@ -253,7 +253,7 @@ def _validate(spec : ValidationSpec):
     # move model back to cpu
     spec.model.get_torch_model().to('cpu')
 
-    process_end = datetime.now()
+    process_finish = datetime.now()
 
     pattern_dict = {
         # from specification
@@ -261,7 +261,7 @@ def _validate(spec : ValidationSpec):
         'model_epoch': spec.model.get_epoch(),
         # from epoch journal
         'process_start': process_start,
-        'process_end': process_end,
+        'process_finish': process_finish,
         'validation_loss': validation_loss,
     }
 
@@ -270,7 +270,7 @@ def _validate(spec : ValidationSpec):
         journal_path = spec.journal_pattern.format(**pattern_dict)
         journal = ValidationJournal(
             process_start=process_start,
-            process_end=process_end,
+            process_finish=process_finish,
             validation_loss=validation_loss,
             validation_step_journals=validation_step_journals,
             log_path=log_path,

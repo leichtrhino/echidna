@@ -39,7 +39,7 @@ class TestValidations(unittest.TestCase):
             batch_size=batch_size,
             compute_batch_size=compute_batch_size,
             journal_pattern=tmproot \
-            / '{model}-{process_end}.json',
+            / '{model}-{process_finish}.json',
             log_pattern=tmproot \
             / '{model}.log'
         )

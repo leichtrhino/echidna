@@ -27,9 +27,9 @@ class Mixture(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            sample_index=d['sampleIndex'],
-            mixture_index=d['mixtureIndex'],
-            mixture_indices=d['mixtureIndices'])
+            sample_index=d['sample_index'],
+            mixture_index=d['mixture_index'],
+            mixture_indices=d['mixture_indices'])
 
     @classmethod
     def from_list(cls, d : tp.List):
@@ -37,9 +37,9 @@ class Mixture(object):
 
     def to_dict(self):
         return {
-            'sampleIndex': self.sample_index,
-            'mixtureIndex': self.mixture_index,
-            'mixtureIndices': self.mixture_indices
+            'sample_index': self.sample_index,
+            'mixture_index': self.mixture_index,
+            'mixture_indices': self.mixture_indices
         }
 
 class MixtureJournal(object):
@@ -57,17 +57,17 @@ class MixtureJournal(object):
     def from_dict(cls, d : tp.Dict):
         return cls(
             mixture=Mixture.from_dict(d['mixture']),
-            created_at=datetime.fromisoformat(d['createdAt']),
+            created_at=datetime.fromisoformat(d['created_at']),
             seed=d['seed'],
-            algorithm_out=d.get('algorithmOut', None),
+            algorithm_out=d.get('algorithm_out', None),
         )
 
     def to_dict(self):
         return {
             'mixture': self.mixture.to_dict(),
-            'createdAt': self.created_at.isoformat(),
+            'created_at': self.created_at.isoformat(),
             'seed': self.seed,
-            'algorithmOut': self.algorithm_out,
+            'algorithm_out': self.algorithm_out,
         }
 
 class MixturesJournal(object):
@@ -86,23 +86,23 @@ class MixturesJournal(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            process_start=datetime.fromisoformat(d['processStart']),
-            process_finish=datetime.fromisoformat(d['processFinish']),
-            metadata_path=d['metadataPath'],
+            process_start=datetime.fromisoformat(d['process_start']),
+            process_finish=datetime.fromisoformat(d['process_finish']),
+            metadata_path=d['metadata_path'],
             spec=MixtureSpec.from_dict(d['spec']),
             mixture_journals=[
                 MixtureJournal.from_dict(j)
-                for j in d['mixtureJournals']
+                for j in d['mixture_journals']
             ]
         )
 
     def to_dict(self):
         return {
-            'processStart': self.process_start.isoformat(),
-            'processFinish': self.process_finish.isoformat(),
-            'metadataPath': str(self.metadata_path) if self.metadata_path else None,
+            'process_start': self.process_start.isoformat(),
+            'process_finish': self.process_finish.isoformat(),
+            'metadata_path': str(self.metadata_path) if self.metadata_path else None,
             'spec': self.spec.to_dict(),
-            'mixtureJournals': [j.to_dict() for j in self.mixture_journals]
+            'mixture_journals': [j.to_dict() for j in self.mixture_journals]
         }
 
 
@@ -129,27 +129,27 @@ class MixtureSpec(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            algorithm_name=d['algorithmName'],
-            algorithm_params=d['algorithmParams'],
+            algorithm_name=d['algorithm_name'],
+            algorithm_params=d['algorithm_params'],
             seed=d['seed'],
-            mix_per_sample=d['mixPerSample'],
-            sample_metadata_path=d['sampleMetadataPath'],
-            mixture_metadata_path=d['mixtureMetadataPath'],
-            journal_path=d['journalPath'],
+            mix_per_sample=d['mix_per_sample'],
+            sample_metadata_path=d['sample_metadata_path'],
+            mixture_metadata_path=d['mixture_metadata_path'],
+            journal_path=d['journal_path'],
             jobs=d.get('jobs', None)
         )
 
     def to_dict(self):
         return {
-            'algorithmName': self.algorithm_name,
-            'algorithmParams': self.algorithm_params,
+            'algorithm_name': self.algorithm_name,
+            'algorithm_params': self.algorithm_params,
             'seed': self.seed,
-            'mixPerSample': self.mix_per_sample,
-            'sampleMetadataPath': str(self.sample_metadata_path)
+            'mix_per_sample': self.mix_per_sample,
+            'sample_metadata_path': str(self.sample_metadata_path)
             if self.sample_metadata_path else None,
-            'mixtureMetadataPath': str(self.mixture_metadata_path)
+            'mixture_metadata_path': str(self.mixture_metadata_path)
             if self.mixture_metadata_path else None,
-            'journalPath': str(self.journal_path)
+            'journal_path': str(self.journal_path)
             if self.journal_path else None,
             'jobs': self.jobs
         }
@@ -240,7 +240,7 @@ def get_mix_algorithm(name : str):
 
 _mix_algorithms = dict()
 if len(_mix_algorithms) == 0:
-    register_mix_algorithm('CategoryMix', CategoryMix)
+    register_mix_algorithm('category', CategoryMix)
 
 
 def _save_mixture(spec : MixtureSpec):

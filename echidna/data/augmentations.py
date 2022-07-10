@@ -62,42 +62,42 @@ class Augmentation(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            sample_index=d['sampleIndex'],
-            augmentation_index=d['augmentationIndex'],
-            source_sample_rate=d['sourceSampleRate'],
-            target_sample_rate=d['targetSampleRate'],
-            waveform_length=d['waveformLength'],
+            sample_index=d['sample_index'],
+            augmentation_index=d['augmentation_index'],
+            source_sample_rate=d['source_sample_rate'],
+            target_sample_rate=d['target_sample_rate'],
+            waveform_length=d['waveform_length'],
             normalize=d.get('normalize', True),
 
             offsets=d['offsets'],
-            time_stretch_rates=d['timeStretchRates'],
-            pitch_shift_rates=d['pitchShiftRates'],
-            scale_amount_list=d['scaleAmountList'],
-            scale_fraction_list=d['scaleFractionList'],
+            time_stretch_rates=d['time_stretch_rates'],
+            pitch_shift_rates=d['pitch_shift_rates'],
+            scale_amount_list=d['scale_amount_list'],
+            scale_fraction_list=d['scale_fraction_list'],
 
-            n_fft=d.get('nFft', 2048),
-            hop_length=d.get('hopLength', 512),
-            win_length=d.get('winLength', 2048),
+            n_fft=d.get('n_fft', 2048),
+            hop_length=d.get('hop_length', 512),
+            win_length=d.get('win_length', 2048),
         )
 
     def to_dict(self):
         return {
-            'sampleIndex': self.sample_index,
-            'augmentationIndex': self.augmentation_index,
-            'sourceSampleRate': self.source_sample_rate,
-            'targetSampleRate': self.target_sample_rate,
-            'waveformLength': self.waveform_length,
+            'sample_index': self.sample_index,
+            'augmentation_index': self.augmentation_index,
+            'source_sample_rate': self.source_sample_rate,
+            'target_sample_rate': self.target_sample_rate,
+            'waveform_length': self.waveform_length,
             'normalize': self.normalize,
 
             'offsets': self.offsets,
-            'timeStretchRates': self.time_stretch_rates,
-            'pitchShiftRates': self.pitch_shift_rates,
-            'scaleAmountList': self.scale_amount_list,
-            'scaleFractionList': self.scale_fraction_list,
+            'time_stretch_rates': self.time_stretch_rates,
+            'pitch_shift_rates': self.pitch_shift_rates,
+            'scale_amount_list': self.scale_amount_list,
+            'scale_fraction_list': self.scale_fraction_list,
 
-            'nFft': self.n_fft,
-            'hopLength': self.hop_length,
-            'winLength': self.win_length,
+            'n_fft': self.n_fft,
+            'hop_length': self.hop_length,
+            'win_length': self.win_length,
         }
 
 
@@ -116,17 +116,17 @@ class AugmentationJournal(object):
     def from_dict(cls, d : tp.Dict):
         return cls(
             augmentation=Augmentation.from_dict(d['augmentation']),
-            created_at=datetime.fromisoformat(d['createdAt']),
+            created_at=datetime.fromisoformat(d['created_at']),
             seed=d['seed'],
-            algorithm_out=d.get('algorithmOut', None),
+            algorithm_out=d.get('algorithm_out', None),
         )
 
     def to_dict(self):
         return {
             'augmentation': self.augmentation.to_dict(),
-            'createdAt': self.created_at.isoformat(),
+            'created_at': self.created_at.isoformat(),
             'seed': self.seed,
-            'algorithmOut': self.algorithm_out,
+            'algorithm_out': self.algorithm_out,
         }
 
 class AugmentationsJournal(object):
@@ -145,24 +145,24 @@ class AugmentationsJournal(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            process_start=datetime.fromisoformat(d['processStart']),
-            process_finish=datetime.fromisoformat(d['processFinish']),
-            metadata_path=d['metadataPath'],
+            process_start=datetime.fromisoformat(d['process_start']),
+            process_finish=datetime.fromisoformat(d['process_finish']),
+            metadata_path=d['metadata_path'],
             spec=AugmentationSpec.from_dict(d['spec']),
             augmentation_journals=[
                 AugmentationJournal.from_dict(j)
-                for j in d['augmentationJournals']
+                for j in d['augmentation_journals']
             ]
         )
 
     def to_dict(self):
         return {
-            'processStart': self.process_start.isoformat(),
-            'processFinish': self.process_finish.isoformat(),
-            'metadataPath': str(self.metadata_path)
+            'process_start': self.process_start.isoformat(),
+            'process_finish': self.process_finish.isoformat(),
+            'metadata_path': str(self.metadata_path)
             if self.metadata_path else None,
             'spec': self.spec.to_dict(),
-            'augmentationJournals': [
+            'augmentation_journals': [
                 j.to_dict() for j in self.augmentation_journals]
         }
 
@@ -188,27 +188,27 @@ class AugmentationSpec(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            algorithm_name=d['algorithmName'],
-            algorithm_params=d['algorithmParams'],
+            algorithm_name=d['algorithm_name'],
+            algorithm_params=d['algorithm_params'],
             seed=d['seed'],
-            augmentation_per_sample=d['augmentationPerSample'],
-            sample_metadata_path=d['sampleMetadataPath'],
-            augmentation_metadata_path=d['augmentationMetadataPath'],
-            journal_path=d['journalPath'],
+            augmentation_per_sample=d['augmentation_per_sample'],
+            sample_metadata_path=d['sample_metadata_path'],
+            augmentation_metadata_path=d['augmentation_metadata_path'],
+            journal_path=d['journal_path'],
             jobs=d.get('jobs', None)
         )
 
     def to_dict(self):
         return {
-            'algorithmName': self.algorithm_name,
-            'algorithmParams': self.algorithm_params,
+            'algorithm_name': self.algorithm_name,
+            'algorithm_params': self.algorithm_params,
             'seed': self.seed,
-            'augmentationPerSample': self.augmentation_per_sample,
-            'sampleMetadataPath': str(self.sample_metadata_path)
+            'augmentation_per_sample': self.augmentation_per_sample,
+            'sample_metadata_path': str(self.sample_metadata_path)
             if self.sample_metadata_path else None,
-            'augmentationMetadataPath': str(self.augmentation_metadata_path)
+            'augmentation_metadata_path': str(self.augmentation_metadata_path)
             if self.augmentation_metadata_path else None,
-            'journalPath': str(self.journal_path)
+            'journal_path': str(self.journal_path)
             if self.journal_path else None,
             'jobs': self.jobs
         }
@@ -435,7 +435,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
         }
 
         return parameters[param_i], \
-            {'score': score, 'scoreStats': score_stats}
+            {'score': score, 'score_stats': score_stats}
 
 
 class FrequencyAugmentation(AugmentationAlgorithm):
@@ -595,7 +595,7 @@ class FrequencyAugmentation(AugmentationAlgorithm):
         }
 
         return parameters[param_i], \
-            {'score': score, 'scoreStats': score_stats}
+            {'score': score, 'score_stats': score_stats}
 
 
 
@@ -605,12 +605,9 @@ def register_augmentation_algorithm(name : str,
 
 _augmentation_algorithms = dict()
 if len(_augmentation_algorithms) == 0:
-    register_augmentation_algorithm('RandomAugmentation',
-                                    RandomAugmentation)
-    register_augmentation_algorithm('EntropyAugmentation',
-                                    EntropyAugmentation)
-    register_augmentation_algorithm('FrequencyAugmentation',
-                                    FrequencyAugmentation)
+    register_augmentation_algorithm('random', RandomAugmentation)
+    register_augmentation_algorithm('entropy', EntropyAugmentation)
+    register_augmentation_algorithm('frequency', FrequencyAugmentation)
 
 def _save_augmentation(spec : AugmentationSpec):
     """

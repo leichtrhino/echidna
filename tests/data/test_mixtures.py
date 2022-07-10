@@ -26,7 +26,7 @@ class TestMixtures(unittest.TestCase):
     def test_category_mix_include_other(self):
         mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_1'
         spec = MixtureSpec(
-            algorithm_name='CategoryMix',
+            algorithm_name='category',
             algorithm_params={
                 'mix_category_list': [['ct001'], ['ct002', 'ct003']],
                 'include_other': True,
@@ -64,7 +64,7 @@ class TestMixtures(unittest.TestCase):
     def test_category_mix_exclude_other(self):
         mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_2'
         spec = MixtureSpec(
-            algorithm_name='CategoryMix',
+            algorithm_name='category',
             algorithm_params={
                 'mix_category_list': [['ct001'], ['ct002', 'ct003']],
                 'include_other': False,

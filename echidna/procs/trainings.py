@@ -151,7 +151,7 @@ class TrainingSpec(object):
             'scheduler': self.checkpoint.get_scheduler_class(),
             # from epoch journal
             'process_start': datetime.now(),
-            'process_end': datetime.now(),
+            'process_finish': datetime.now(),
             'training_epoch': 0,
             'training_loss': 0.0,
             'validation_loss': 0.0,
@@ -170,7 +170,7 @@ class TrainingSpec(object):
 class EpochJournal(object):
     def __init__(self,
                  process_start : datetime,
-                 process_end : datetime,
+                 process_finish : datetime,
                  model_epoch : int,
                  training_epoch : int,
                  training_loss : float,
@@ -182,7 +182,7 @@ class EpochJournal(object):
                  spec : TrainingSpec):
 
         self.process_start = process_start
-        self.process_end = process_end
+        self.process_finish = process_finish
         self.model_epoch = model_epoch
         self.training_epoch = training_epoch
         self.training_loss = training_loss
@@ -196,7 +196,7 @@ class EpochJournal(object):
     def to_dict(self):
         return {
             'process_start': self.process_start.isoformat(),
-            'process_end': self.process_end.isoformat(),
+            'process_finish': self.process_finish.isoformat(),
             'model_epoch': self.model_epoch,
             'training_epoch': self.training_epoch,
             'training_loss': self.training_loss,
@@ -216,7 +216,7 @@ class EpochJournal(object):
     def from_dict(cls, d : dict):
         return cls(
             process_start=datetime.fromisoformat(d['process_start']),
-            process_end=datetime.fromisoformat(d['process_end']),
+            process_finish=datetime.fromisoformat(d['process_finish']),
             model_epoch=d['model_epoch'],
             training_epoch=d['training_epoch'],
             training_loss=d['training_loss'],
@@ -400,7 +400,7 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
     }))
 
     # finish epoch
-    process_end = datetime.now()
+    process_finish = datetime.now()
 
     # get dict for formatting checkpoint and journal file
     pattern_dict = {
@@ -412,7 +412,7 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
         'scheduler': spec.checkpoint.get_scheduler_class(),
         # from epoch journal
         'process_start': process_start,
-        'process_end': process_end,
+        'process_finish': process_finish,
         'training_epoch': training_epoch,
         'training_loss': training_loss,
         'validation_loss': validation_loss,
@@ -436,7 +436,7 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
         journal_path = spec.journal_pattern.format(**pattern_dict)
         journal = EpochJournal(
             process_start=process_start,
-            process_end=process_end,
+            process_finish=process_finish,
             model_epoch=spec.checkpoint.get_epoch(),
             training_epoch=training_epoch,
             training_loss=training_loss,

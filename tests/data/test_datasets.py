@@ -23,7 +23,7 @@ class TestDatasets(unittest.TestCase):
 
         self.aug_dir = pathlib.Path(self.tmpdir.name) / 'aug'
         aug_spec = AugmentationSpec(
-            algorithm_name='RandomAugmentation',
+            algorithm_name='random',
             algorithm_params={
                 'source_sample_rate': 8000,
                 'target_sample_rate': 8000,
@@ -46,7 +46,7 @@ class TestDatasets(unittest.TestCase):
 
         self.mix_dir = pathlib.Path(self.tmpdir.name) / 'mix'
         mix_spec = MixtureSpec(
-            algorithm_name='CategoryMix',
+            algorithm_name='category',
             algorithm_params={
                 'mix_category_list': [['ct001'], ['ct002', 'ct003']],
                 'include_other': False,
