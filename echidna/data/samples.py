@@ -1,6 +1,7 @@
 
 import os
 import typing as tp
+import logging
 import math
 import json
 import random
@@ -126,6 +127,8 @@ class SampleSpec(object):
                  metadata_path : str,
                  data_dir : str,
                  journal_path : str,
+                 log_path : str,
+                 log_level : str,
                  jobs : int=None):
 
         self.datasources = datasources
@@ -138,6 +141,8 @@ class SampleSpec(object):
         self.metadata_path = metadata_path
         self.data_dir = data_dir
         self.journal_path = journal_path
+        self.log_path = log_path
+        self.log_level = log_level
         self.jobs = jobs
 
     @classmethod
@@ -153,6 +158,8 @@ class SampleSpec(object):
             metadata_path=d['metadata_path'],
             data_dir=d['data_dir'],
             journal_path=d.get('journal_path', None),
+            log_path=d.get('log_path'),
+            log_level=d.get('log_level'),
             jobs=d.get('jobs', None),
         )
 
@@ -168,6 +175,8 @@ class SampleSpec(object):
             'metadata_path': str(self.metadata_path) if self.metadata_path else None,
             'data_dir': str(self.data_dir) if self.data_dir else None,
             'journal_path': str(self.journal_path) if self.journal_path else None,
+            'log_path': str(self.log_path) if self.log_path else None,
+            'log_level': self.log_level,
             'jobs': self.jobs,
         }
 
@@ -241,12 +250,14 @@ class SamplesJournal(object):
                  process_start : datetime,
                  process_finish : datetime,
                  metadata_path : str,
+                 log_path : str,
                  spec,
                  seed : int,
                  sample_journals : tp.List[SampleJournal]):
         self.process_start = process_start
         self.process_finish = process_finish
         self.metadata_path = metadata_path
+        self.log_path = log_path
         self.spec = spec
         self.seed = seed
         self.sample_journals = sample_journals
@@ -257,6 +268,7 @@ class SamplesJournal(object):
             process_start=datetime.fromisoformat(d['process_start']),
             process_finish=datetime.fromisoformat(d['process_finish']),
             metadata_path=d['metadata_path'],
+            log_path=d.get('log_path'),
             seed=d['seed'],
             spec=SampleSpec.from_dict(d['spec']),
             sample_journals=[
@@ -270,6 +282,7 @@ class SamplesJournal(object):
             'process_start': self.process_start.isoformat(),
             'process_finish': self.process_finish.isoformat(),
             'metadata_path': str(self.metadata_path) if self.metadata_path else None,
+            'log_path': str(self.log_path) if self.log_path else None,
             'seed': self.seed,
             'spec': self.spec.to_dict(),
             'sample_journals': [j.to_dict() for j in self.sample_journals]
@@ -288,6 +301,18 @@ def _save_sample(spec : SampleSpec):
         ds for ds in spec.datasources
         if fold is None or ds.fold in fold
     ]
+
+    # prepare log
+    logger = None
+    if spec.log_path:
+        if not os.path.exists(os.path.dirname(spec.log_path)):
+            os.makedirs(os.path.dirname(spec.log_path))
+        logger = logging.getLogger(__name__)
+        logger.setLevel(spec.log_level)
+        handler = logging.FileHandler(str(spec.log_path))
+        handler.setFormatter(
+            logging.Formatter('[%(levelname)s] %(message)s'))
+        logger.addHandler(handler)
 
     # args for worker function
     random_ = random.Random(spec.seed)
@@ -312,12 +337,31 @@ def _save_sample(spec : SampleSpec):
     else:
         map_fn = map
 
+    if logger:
+        logger.info(json.dumps({
+            'type': 'start_sampling',
+            'timestamp': datetime.now().isoformat(),
+            'sample_size': spec.sample_size,
+            'source_per_category': spec.source_per_category,
+            'sample_rate': spec.sample_rate,
+            'duration': spec.duration,
+            'seed': spec.seed,
+            'jobs': spec.jobs,
+        }))
+
     # sample
     metadata_list = []
     journal_list = []
     for metadata, journal in map_fn(_save_single_sample, args):
         metadata_list.append(metadata)
         journal_list.append(journal)
+        if logger:
+            logger.info(json.dumps({
+                'type': 'made_sample',
+                'timestamp': datetime.now().isoformat(),
+                'sample_path': journal.sample.path,
+                'channels': len(journal.sample.categories),
+            }))
 
     # close map function
     if spec.jobs is not None:
@@ -328,6 +372,15 @@ def _save_sample(spec : SampleSpec):
     # save metadata
     with open(spec.metadata_path, 'w') as fp:
         json.dump([m.to_dict() for m in metadata_list], fp)
+
+    if logger:
+        logger.info(json.dumps({
+            'type': 'save_samples',
+            'timestamp': datetime.now().isoformat(),
+            'metadata_path': str(spec.metadata_path),
+            'sample_size': len(metadata_list),
+        }))
+
     if spec.journal_path:
         journals = SamplesJournal(
             process_start=process_start,
@@ -336,12 +389,35 @@ def _save_sample(spec : SampleSpec):
                 spec.metadata_path,
                 os.path.dirname(spec.journal_path)
             ),
+            log_path=os.path.relpath(
+                spec.log_path,
+                os.path.dirname(spec.journal_path)
+            ) if spec.log_path else None,
             spec=spec,
             seed=spec.seed,
             sample_journals=journal_list
         )
         with open(spec.journal_path, 'w') as fp:
             json.dump(journals.to_dict(), fp)
+
+        if logger:
+            logger.info(json.dumps({
+                'type': 'save_samples_journal',
+                'timestamp': datetime.now().isoformat(),
+                'journal_path': str(spec.journal_path),
+            }))
+
+    # finish epoch and close log handler
+    if logger:
+        logger.info(json.dumps({
+            'type': 'finish_sampling',
+            'timestamp': datetime.now().isoformat(),
+        }))
+        handlers = logger.handlers[:]
+        for handler in handlers:
+            logger.removeHandler(handler)
+            handler.close()
+
 
 def _save_single_sample(args):
     """
