@@ -68,6 +68,8 @@ def prepare_datasources(tmpdir, seed):
         metadata_path=sample_dir/'a1'/'metadata.json',
         data_dir=sample_dir/'a1',
         journal_path=sample_dir/'a1'/'journal.json',
+        log_path=sample_dir/'a1'/'log.txt',
+        log_level='DEBUG',
     )
     samplespec_a_2 = samples.SampleSpec(
         datasources=datasources_a,
@@ -80,6 +82,8 @@ def prepare_datasources(tmpdir, seed):
         metadata_path=sample_dir/'a2'/'metadata.json',
         data_dir=sample_dir/'a2',
         journal_path=sample_dir/'a2'/'journal.json',
+        log_path=sample_dir/'a2'/'log.txt',
+        log_level='DEBUG',
     )
 
     # datasources b: with folds
@@ -109,6 +113,8 @@ def prepare_datasources(tmpdir, seed):
         metadata_path=sample_dir/'b1'/'metadata.json',
         data_dir=sample_dir/'b1',
         journal_path=sample_dir/'b1'/'journal.json',
+        log_path=sample_dir/'b1'/'log.txt',
+        log_level='DEBUG',
     )
 
     # datasources c: with tracks
@@ -152,6 +158,8 @@ def prepare_datasources(tmpdir, seed):
         metadata_path=sample_dir/'c2'/'metadata.json',
         data_dir=sample_dir/'c2',
         journal_path=sample_dir/'c2'/'journal.json',
+        log_path=sample_dir/'c2'/'log.txt',
+        log_level='DEBUG',
     )
 
     # datasources d: without tracks, folds
@@ -196,6 +204,8 @@ def prepare_datasources(tmpdir, seed):
         metadata_path=sample_dir/'d1'/'metadata.json',
         data_dir=sample_dir/'d1',
         journal_path=sample_dir/'d1'/'journal.json',
+        log_path=sample_dir/'d1'/'log.txt',
+        log_level='DEBUG',
     )
 
     # datasources e: with tracks
@@ -240,6 +250,8 @@ def prepare_datasources(tmpdir, seed):
         metadata_path=sample_dir/'e1'/'metadata.json',
         data_dir=sample_dir/'e1',
         journal_path=sample_dir/'e1'/'journal.json',
+        log_path=sample_dir/'e1'/'log.txt',
+        log_level='DEBUG',
     )
 
     return {

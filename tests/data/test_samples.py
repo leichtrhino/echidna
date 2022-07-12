@@ -293,3 +293,12 @@ class TestSamples(unittest.TestCase):
         self.assertEqual(data['waves'].shape, (2, 12000))
         self.assertIn('sheets', data)
 
+        # test logs
+        log_path = self.sample_dir / 'c2' / 'log.txt'
+        with open(log_path, 'r') as fp:
+            for l in fp:
+                event_dict = json.loads(l[l.index(' ')+1:])
+                self.assertIn(event_dict['type'],
+                              {'start_sampling', 'made_sample',
+                               'save_samples', 'save_samples_journal',
+                               'finish_sampling'})
