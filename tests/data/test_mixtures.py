@@ -36,6 +36,8 @@ class TestMixtures(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
             mixture_metadata_path=mix_dir/'d1'/'metadata.json',
             journal_path=mix_dir/'d1'/'journal.json',
+            log_path=None,
+            log_level=None,
             jobs=None
         )
         spec.save_mixture()
@@ -74,6 +76,8 @@ class TestMixtures(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
             mixture_metadata_path=mix_dir/'d1'/'metadata.json',
             journal_path=mix_dir/'d1'/'journal.json',
+            log_path=mix_dir/'d1'/'log.txt',
+            log_level='DEBUG',
             jobs=None
         )
         spec.save_mixture()
@@ -99,3 +103,11 @@ class TestMixtures(unittest.TestCase):
         self.assertEqual(journal.metadata_path, 'metadata.json')
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
 
+        # load log
+        with open(spec.log_path, 'r') as fp:
+            for l in fp:
+                event_dict = json.loads(l[l.index(' ')+1:])
+                self.assertIn(event_dict['type'],
+                              {'start_mixing', 'made_mixture',
+                               'save_mixtures', 'save_mixtures_journal',
+                               'finish_mixing'})
