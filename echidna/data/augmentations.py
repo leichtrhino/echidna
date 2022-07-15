@@ -1,6 +1,7 @@
 
 import typing as tp
 import os
+import logging
 import json
 import random
 import multiprocessing
@@ -134,11 +135,13 @@ class AugmentationsJournal(object):
                  process_start : datetime,
                  process_finish : datetime,
                  metadata_path : str,
+                 log_path : str,
                  spec,
                  augmentation_journals : tp.List[AugmentationJournal]):
         self.process_start = process_start
         self.process_finish = process_finish
         self.metadata_path = metadata_path
+        self.log_path = log_path
         self.spec = spec
         self.augmentation_journals = augmentation_journals
 
@@ -148,6 +151,7 @@ class AugmentationsJournal(object):
             process_start=datetime.fromisoformat(d['process_start']),
             process_finish=datetime.fromisoformat(d['process_finish']),
             metadata_path=d['metadata_path'],
+            log_path=d.get('log_path'),
             spec=AugmentationSpec.from_dict(d['spec']),
             augmentation_journals=[
                 AugmentationJournal.from_dict(j)
@@ -161,6 +165,8 @@ class AugmentationsJournal(object):
             'process_finish': self.process_finish.isoformat(),
             'metadata_path': str(self.metadata_path)
             if self.metadata_path else None,
+            'log_path': str(self.log_path)
+            if self.log_path else None,
             'spec': self.spec.to_dict(),
             'augmentation_journals': [
                 j.to_dict() for j in self.augmentation_journals]
@@ -175,6 +181,8 @@ class AugmentationSpec(object):
                  sample_metadata_path : str,
                  augmentation_metadata_path : str,
                  journal_path : str,
+                 log_path : str,
+                 log_level : str,
                  jobs : int=None):
         self.algorithm_name = algorithm_name
         self.algorithm_params = algorithm_params
@@ -183,6 +191,8 @@ class AugmentationSpec(object):
         self.sample_metadata_path = sample_metadata_path
         self.augmentation_metadata_path = augmentation_metadata_path
         self.journal_path = journal_path
+        self.log_path = log_path
+        self.log_level = log_level
         self.jobs = jobs
 
     @classmethod
@@ -195,6 +205,8 @@ class AugmentationSpec(object):
             sample_metadata_path=d['sample_metadata_path'],
             augmentation_metadata_path=d['augmentation_metadata_path'],
             journal_path=d['journal_path'],
+            log_path=d.get('log_path'),
+            log_level=d.get('log_level'),
             jobs=d.get('jobs', None)
         )
 
@@ -210,6 +222,9 @@ class AugmentationSpec(object):
             if self.augmentation_metadata_path else None,
             'journal_path': str(self.journal_path)
             if self.journal_path else None,
+            'log_path': str(self.log_path)
+            if self.log_path else None,
+            'log_level': self.log_level,
             'jobs': self.jobs
         }
 
@@ -620,6 +635,18 @@ def _save_augmentation(spec : AugmentationSpec):
 
     random_ = random.Random(spec.seed)
 
+    # prepare log
+    logger = None
+    if spec.log_path:
+        if not os.path.exists(os.path.dirname(spec.log_path)):
+            os.makedirs(os.path.dirname(spec.log_path))
+        logger = logging.getLogger(__name__)
+        logger.setLevel(spec.log_level)
+        handler = logging.FileHandler(str(spec.log_path))
+        handler.setFormatter(
+            logging.Formatter('[%(levelname)s] %(message)s'))
+        logger.addHandler(handler)
+
     # load metadata
     with open(spec.sample_metadata_path, 'r') as fp:
         metadata_list = Sample.from_list(json.load(fp))
@@ -648,18 +675,46 @@ def _save_augmentation(spec : AugmentationSpec):
     else:
         map_fn = map
 
+    if logger:
+        logger.info(json.dumps({
+            'type': 'start_augmentation',
+            'timestamp': datetime.now().isoformat(),
+            'augmentation_algorithm': spec.algorithm_name,
+            'sample_size': len(metadata_list),
+            'augmentation_per_sample': spec.augmentation_per_sample,
+            'seed': spec.seed,
+            'jobs': spec.jobs,
+        }))
+
     # iterate over dataset and find mixtures
     augmentation_list = []
     journal_list = []
     for augmentation, journal in map_fn(_make_single_augmentation, args):
         augmentation_list.append(augmentation)
         journal_list.append(journal)
+        if logger:
+            logger.info(json.dumps({
+                'type': 'made_augmentation',
+                'timestamp': datetime.now().isoformat(),
+                'augmentation_algorithm': spec.algorithm_name,
+                'sample_index': augmentation.sample_index,
+                'augmentation_index': augmentation.augmentation_index,
+            }))
 
     # close map function
     if spec.jobs is not None:
         pool.close()
 
     process_finish = datetime.now()
+
+    if logger:
+        logger.info(json.dumps({
+            'type': 'save_augmentations',
+            'timestamp': datetime.now().isoformat(),
+            'augmentation_algorithm': spec.algorithm_name,
+            'metadata_path': str(spec.augmentation_metadata_path),
+            'augmentation_size': len(augmentation_list),
+        }))
 
     # save metadata
     if not os.path.exists(os.path.dirname(spec.augmentation_metadata_path)):
@@ -678,11 +733,36 @@ def _save_augmentation(spec : AugmentationSpec):
                 spec.augmentation_metadata_path,
                 os.path.dirname(spec.journal_path)
             ),
+            log_path=os.path.relpath(
+                spec.log_path,
+                os.path.dirname(spec.log_path)
+            ) if spec.log_path else None,
             spec=spec,
             augmentation_journals=journal_list,
         )
         with open(spec.journal_path, 'w') as fp:
             json.dump(augmentations_journal.to_dict(), fp)
+
+        if logger:
+            logger.info(json.dumps({
+                'type': 'save_augmentations_journal',
+                'timestamp': datetime.now().isoformat(),
+                'augmentation_algorithm': spec.algorithm_name,
+                'journal_path': str(spec.journal_path),
+            }))
+
+    # finish epoch and close log handler
+    if logger:
+        logger.info(json.dumps({
+            'type': 'finish_augmentation',
+            'timestamp': datetime.now().isoformat(),
+            'augmentation_algorithm': spec.algorithm_name,
+        }))
+        handlers = logger.handlers[:]
+        for handler in handlers:
+            logger.removeHandler(handler)
+            handler.close()
+
 
 def _make_single_augmentation(args):
     sample_i, augment_i, algorithm, data_path, metadata, seed \
