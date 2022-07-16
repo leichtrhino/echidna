@@ -9,8 +9,23 @@ from .samples import Sample
 from .augmentations import Augmentation
 from .mixtures import Mixture
 
-
 class Dataset(torch.utils.data.Dataset):
+    def to_dict(self):
+        return {
+            'type': _reverse_dataset_type_map[type(self)],
+            'args': self.to_dict_args(),
+        }
+
+    def to_dict_args(self):
+        raise NotImplementedError()
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        ds_type = d['type']
+        ds_class = get_dataset_type(ds_type)
+        return ds_class.from_dict_args(d['args'])
+
+class BasicDataset(Dataset):
     """
     Combine samples, mixtures, augmentations
 
