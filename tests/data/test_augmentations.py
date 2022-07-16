@@ -48,6 +48,8 @@ class TestAugmentations(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
             journal_path=aug_dir/'e1'/'journal.json',
+            log_path=aug_dir/'e1'/'log.txt',
+            log_level='DEBUG',
             jobs=None
         )
         spec.save_augmentation()
@@ -77,6 +79,17 @@ class TestAugmentations(unittest.TestCase):
 
         self.assertEqual(journal.metadata_path, 'metadata.json')
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
+
+        # load logs
+        with open(spec.log_path, 'r') as fp:
+            for l in fp:
+                event_dict = json.loads(l[l.index(' '):])
+                self.assertIn(event_dict['type'],
+                              {'start_augmentation',
+                               'made_augmentation',
+                               'save_augmentations',
+                               'save_augmentations_journal',
+                               'finish_augmentation',})
 
     def test_entropy_augmentation_minscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_2'
@@ -110,6 +123,8 @@ class TestAugmentations(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
             journal_path=aug_dir/'e1'/'journal.json',
+            log_path=None,
+            log_level=None,
             jobs=None
         )
         spec.save_augmentation()
@@ -176,6 +191,8 @@ class TestAugmentations(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
             journal_path=aug_dir/'e1'/'journal.json',
+            log_path=None,
+            log_level=None,
             jobs=None
         )
         spec.save_augmentation()
@@ -242,6 +259,8 @@ class TestAugmentations(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
             journal_path=aug_dir/'e1'/'journal.json',
+            log_path=None,
+            log_level=None,
             jobs=None
         )
         spec.save_augmentation()
@@ -307,6 +326,8 @@ class TestAugmentations(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
             journal_path=aug_dir/'e1'/'journal.json',
+            log_path=None,
+            log_level=None,
             jobs=None
         )
         spec.save_augmentation()
