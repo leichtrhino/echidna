@@ -40,6 +40,8 @@ class TestDatasets(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentation_metadata_path=self.aug_dir/'e1'/'metadata.json',
             journal_path=self.aug_dir/'e1'/'journal.json',
+            log_path=self.aug_dir/'e1'/'log.txt',
+            log_level='DEBUG',
             jobs=None
         )
         aug_spec.save_augmentation()
@@ -56,6 +58,8 @@ class TestDatasets(unittest.TestCase):
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
             mixture_metadata_path=self.mix_dir/'e1'/'metadata.json',
             journal_path=self.mix_dir/'e1'/'journal.json',
+            log_path=self.mix_dir/'e1'/'log.txt',
+            log_level='DEBUG',
             jobs=None
         )
         mix_spec.save_mixture()
