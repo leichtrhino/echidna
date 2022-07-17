@@ -60,7 +60,7 @@ class BasicDataset(Dataset):
                 for ni, n in enumerate(m.mixture_indices):
                     self.indices.append((a.sample_index, ai, mi, ni))
 
-    def to_dict(self):
+    def to_dict_args(self):
         return {
             'samples_path': self.samples_metadata_path,
             'augmentations_path': self.augmentations_metadata_path,
@@ -68,7 +68,7 @@ class BasicDataset(Dataset):
         }
 
     @classmethod
-    def from_dict(cls, d : dict):
+    def from_dict_args(cls, d : dict):
         return cls(
             samples_metadata_path=d['samples_path'],
             augmentations_metadata_path=d['augmentations_path'],
