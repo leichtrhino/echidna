@@ -69,8 +69,12 @@ class DatasourceAction(argparse.Action):
         datasource_path = values
         if datasource_path.endswith('.csv'):
             with open(datasource_path, 'r') as fp:
-                csv_reader = csv.DictReader(fp)
-                datasource = [r for r in csv_reader]
+                csv_reader = csv.reader(fp)
+                h = next(csv_reader)
+                datasource = [
+                    dict(zip(h, (c or None for c in r)))
+                    for r in csv_reader
+                ]
         elif datasource_path.endswith('.json'):
             with open(datasource_path, 'r') as fp:
                 datasource = json.load(fp)
