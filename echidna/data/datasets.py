@@ -1,6 +1,7 @@
 
 import typing as tp
 import os
+from bisect import bisect_left
 import json
 import torch
 
@@ -223,3 +224,44 @@ def collate_fn(l : tp.List[tp.Tuple[tp.Dict[str, torch.Tensor], tp.Dict]]):
     }
 
     return collate_data, collate_metadata
+
+class CompositeDataset(Dataset):
+    def __init__(self, components : list):
+        self.components = components
+        self.idx_ulimit = [0]
+        for c in self.components:
+            self.idx_ulimit.append(self.idx_ulimit[-1] + len(c))
+
+    def to_dict_args(self):
+        return {'components': [c.to_dict() for c in self.components]}
+
+    @classmethod
+    def from_dict_args(cls, d : dict):
+        return cls([Dataset.from_dict(e) for e in d['components']])
+
+    def __len__(self):
+        return self.idx_ulimit[-1]
+
+    def __getitem__(self, idx):
+        ds_idx = bisect_left(self.idx_ulimit, idx)
+        idx_in_ds = idx - self.idx_ulimit[ds_idx]
+
+        data, metadata = self.components[ds_idx][idx_in_ds]
+        if 'index' in metadata:
+            metadata['index'] += self.idx_ulimit[ds_idx]
+        # NOTE: limitation: this information will be lost in
+        #       the composite dataset of composite datasets
+        metadata['dataset_index'] = ds_idx
+        return data, metadata
+
+_dataset_type_map = {
+    'basic': BasicDataset,
+    'composite': CompositeDataset,
+}
+_reverse_dataset_type_map = dict(
+    (v, k) for k, v in _dataset_type_map.items())
+
+def get_dataset_type(name : str):
+    if name not in _dataset_type_map:
+        raise ValueError(f'invalid dataset type {name}')
+    return _dataset_type_map[name]
