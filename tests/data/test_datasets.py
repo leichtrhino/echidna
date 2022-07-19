@@ -7,7 +7,7 @@ import tempfile
 from echidna.data.samples import Sample
 from echidna.data.augmentations import Augmentation, AugmentationSpec
 from echidna.data.mixtures import Mixture, MixtureSpec
-from echidna.data.datasets import Dataset
+from echidna.data.datasets import Dataset, BasicDataset, CompositeDataset
 
 from .utils import prepare_datasources
 
@@ -69,7 +69,7 @@ class TestDatasets(unittest.TestCase):
 
     def test_dataset(self):
         # initialize dataset
-        dataset = Dataset(
+        dataset = BasicDataset(
             samples_metadata_path=self.sample_dir/'e1'/'metadata.json',
             augmentations_metadata_path=self.aug_dir/'e1'/'metadata.json',
             mixtures_metadata_path=self.mix_dir/'e1'/'metadata.json',
@@ -80,4 +80,28 @@ class TestDatasets(unittest.TestCase):
             waves = data['waves']
             self.assertTrue(waves.shape, (2, int(8000 * 0.5)))
 
+        # serialize/deserialize
+        dataset_dict = dataset.to_dict()
+        dataset_from_dict = Dataset.from_dict(dataset_dict)
+        self.assertEqual(dataset.to_dict(), dataset_from_dict.to_dict())
+
+    def test_composite_dataset(self):
+        # initialize dataset
+        basic_dataset = BasicDataset(
+            samples_metadata_path=self.sample_dir/'e1'/'metadata.json',
+            augmentations_metadata_path=self.aug_dir/'e1'/'metadata.json',
+            mixtures_metadata_path=self.mix_dir/'e1'/'metadata.json',
+        )
+        dataset = CompositeDataset([basic_dataset, basic_dataset])
+
+        self.assertTrue(len(dataset), 2 * (2 * 2 * 3))
+        for i, (data, metadata) in enumerate(dataset):
+            waves = data['waves']
+            self.assertTrue(waves.shape, (2, int(8000 * 0.5)))
+            self.assertEqual(metadata['index'], i)
+
+        # serialize/deserialize
+        dataset_dict = dataset.to_dict()
+        dataset_from_dict = Dataset.from_dict(dataset_dict)
+        self.assertEqual(dataset.to_dict(), dataset_from_dict.to_dict())
 
