@@ -2,6 +2,7 @@
 from datetime import datetime
 import typing as tp
 import json
+import math
 import random
 import numpy
 import torch
@@ -33,13 +34,16 @@ def build_dataloader(dataset,
         numpy.random.seed(seed)
         random.seed(seed)
 
-    if sample_size and len(dataset) > sample_size and shuffle:
-        all_indices = list(range(len(dataset)))
-        random.shuffle(all_indices)
-        indices = all_indices[:sample_size]
-        pass
-    elif sample_size and len(dataset) > sample_size and not shuffle:
-        indices = list(range(sample_size))
+    if sample_size and shuffle:
+        repeats = math.ceil(sample_size / len(dataset))
+        base_indices = list(range(len(dataset)))
+        extra_indices = list(range(len(dataset)))
+        random.shuffle(extra_indices)
+        indices = (base_indices * (repeats-1) + extra_indices)[:sample_size]
+    elif sample_size and not shuffle:
+        # +0.5 to avoid uneven sampling when |dataset| << sample_size
+        indices = numpy.linspace(
+            0.5, (len(dataset)-1)+0.5, sample_size, dtype=int).tolist()
     else:
         indices = list(range(len(dataset)))
     dataset = torch.utils.data.Subset(dataset, indices)
