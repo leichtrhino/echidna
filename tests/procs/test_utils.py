@@ -66,7 +66,8 @@ class TestDataLoader(unittest.TestCase):
                                   num_workers=0,
                                   shuffle=False,
                                   seed=None)
-        for indices, (data, metadata) in zip([[0, 1, 2, 3], [4]], loader):
+        # NOTE: index=2 is lacks from dataset
+        for indices, (data, metadata) in zip([[0, 1, 3, 4], [5]], loader):
             self.assertEqual(data['waves'].shape, (len(indices), 3, 4000))
             for i, w in zip(indices, data['waves']):
                 self.assertEqual(i, w[0][0].item())
