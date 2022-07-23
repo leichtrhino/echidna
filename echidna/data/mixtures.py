@@ -113,8 +113,7 @@ class MixturesJournal(object):
 
 class MixtureSpec(object):
     def __init__(self,
-                 algorithm_name : str,
-                 algorithm_params : tp.Dict[str, str],
+                 algorithm,
                  seed : int,
                  mix_per_sample : int,
                  sample_metadata_path : str,
@@ -123,8 +122,7 @@ class MixtureSpec(object):
                  log_path : str,
                  log_level : str,
                  jobs : int=None):
-        self.algorithm_name = algorithm_name
-        self.algorithm_params = algorithm_params
+        self.algorithm = algorithm
         self.seed = seed
         self.mix_per_sample = mix_per_sample
         self.sample_metadata_path = sample_metadata_path
@@ -137,8 +135,7 @@ class MixtureSpec(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            algorithm_name=d['algorithm_name'],
-            algorithm_params=d['algorithm_params'],
+            algorithm=MixAlgorithm.from_dict(d['algorithm']),
             seed=d['seed'],
             mix_per_sample=d['mix_per_sample'],
             sample_metadata_path=d['sample_metadata_path'],
@@ -151,8 +148,7 @@ class MixtureSpec(object):
 
     def to_dict(self):
         return {
-            'algorithm_name': self.algorithm_name,
-            'algorithm_params': self.algorithm_params,
+            'algorithm': self.algorithm.to_dict(),
             'seed': self.seed,
             'mix_per_sample': self.mix_per_sample,
             'sample_metadata_path': str(self.sample_metadata_path)
@@ -171,6 +167,21 @@ class MixtureSpec(object):
         _save_mixture(self)
 
 class MixAlgorithm(object):
+    def to_dict(self):
+        return {
+            'type': _reverse_mix_algorithms[type(self)],
+            'args': self.to_dict_args(),
+        }
+
+    def to_dict_args(self):
+        raise NotImplementedError()
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        mx_type = d['type']
+        mx_class = get_mix_algorithm(mx_type)
+        return mx_class.from_dict_args(d['args'])
+
     def mix_index(self,
                   data : tp.Dict[str, torch.Tensor],
                   metadata : Sample,
@@ -207,6 +218,19 @@ class CategoryMix(MixAlgorithm):
                 self.mix_categories[i].append(c)
                 all_categories.add(c)
         self.include_other = include_other
+
+    def to_dict_args(self):
+        return {
+            'mix_category_list': self.mix_categories,
+            'include_other': self.include_other,
+        }
+
+    @classmethod
+    def from_dict_args(cls, d : dict):
+        return cls(
+            mix_category_list=d['mix_category_list'],
+            include_other=d.get('include_other', True),
+        )
 
     def mix_index(self,
                   data : tp.Dict[str, torch.Tensor],
@@ -245,15 +269,17 @@ class CategoryMix(MixAlgorithm):
 def register_mix_algorithm(name : str,
                            algorithm : tp.Type):
     _mix_algorithms[name] = algorithm
+    _reverse_mix_algorithms[algorithm] = name
 
 def get_mix_algorithm(name : str):
     if name not in _mix_algorithms:
         raise ValueError(f'{name} is not registered as a mix algorithm')
     return _mix_algorithms[name]
 
-_mix_algorithms = dict()
-if len(_mix_algorithms) == 0:
-    register_mix_algorithm('category', CategoryMix)
+_mix_algorithms = {
+    'category': CategoryMix
+}
+_reverse_mix_algorithms = dict((v, k) for k, v in _mix_algorithms.items())
 
 
 def _save_mixture(spec : MixtureSpec):
@@ -262,8 +288,8 @@ def _save_mixture(spec : MixtureSpec):
 
     process_start = datetime.now()
     # setup algorithm
-    alg_cls = _mix_algorithms.get(spec.algorithm_name)
-    algorithm = alg_cls(**spec.algorithm_params)
+    algorithm = spec.algorithm
+    algorithm_name = algorithm.to_dict()['type']
 
     random_ = random.Random(spec.seed)
 
@@ -311,7 +337,7 @@ def _save_mixture(spec : MixtureSpec):
         logger.info(json.dumps({
             'type': 'start_mixing',
             'timestamp': datetime.now().isoformat(),
-            'mix_algorithm': spec.algorithm_name,
+            'mix_algorithm': algorithm_name,
             'sample_size': len(metadata_list),
             'mix_per_sample': spec.mix_per_sample,
             'seed': spec.seed,
@@ -328,7 +354,7 @@ def _save_mixture(spec : MixtureSpec):
             logger.info(json.dumps({
                 'type': 'made_mixture',
                 'timestamp': datetime.now().isoformat(),
-                'mix_algorithm': spec.algorithm_name,
+                'mix_algorithm': algorithm_name,
                 'sample_index': mixture.sample_index,
                 'mixture_index': mixture.mixture_index,
                 'mixture_size': len(mixture.mixture_indices),
@@ -350,7 +376,7 @@ def _save_mixture(spec : MixtureSpec):
         logger.info(json.dumps({
             'type': 'save_mixtures',
             'timestamp': datetime.now().isoformat(),
-            'mix_algorithm': spec.algorithm_name,
+            'mix_algorithm': algorithm_name,
             'metadata_path': str(spec.mixture_metadata_path),
             'mixture_size': len(mixture_list),
             'mixture_sample_size': sum(
@@ -382,7 +408,7 @@ def _save_mixture(spec : MixtureSpec):
             logger.info(json.dumps({
                 'type': 'save_mixtures_journal',
                 'timestamp': datetime.now().isoformat(),
-                'mix_algorithm': spec.algorithm_name,
+                'mix_algorithm': algorithm_name,
                 'journal_path': str(spec.journal_path),
             }))
 
@@ -391,7 +417,7 @@ def _save_mixture(spec : MixtureSpec):
         logger.info(json.dumps({
             'type': 'finish_mixing',
             'timestamp': datetime.now().isoformat(),
-            'mix_algorithm': spec.algorithm_name,
+            'mix_algorithm': algorithm_name,
         }))
         handlers = logger.handlers[:]
         for handler in handlers:
