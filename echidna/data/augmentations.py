@@ -16,7 +16,7 @@ import librosa
 from .utils import merge_activation
 from .transforms import build_transform
 from .samples import Sample
-from .mixtures import get_mix_algorithm
+from .mixtures import MixAlgorithm
 
 class Augmentation(object):
     def __init__(self,
@@ -174,8 +174,7 @@ class AugmentationsJournal(object):
 
 class AugmentationSpec(object):
     def __init__(self,
-                 algorithm_name : str,
-                 algorithm_params : tp.Dict[str, str],
+                 algorithm,
                  seed : int,
                  augmentation_per_sample : int,
                  sample_metadata_path : str,
@@ -184,8 +183,7 @@ class AugmentationSpec(object):
                  log_path : str,
                  log_level : str,
                  jobs : int=None):
-        self.algorithm_name = algorithm_name
-        self.algorithm_params = algorithm_params
+        self.algorithm = algorithm
         self.seed = seed
         self.augmentation_per_sample = augmentation_per_sample
         self.sample_metadata_path = sample_metadata_path
@@ -198,8 +196,7 @@ class AugmentationSpec(object):
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            algorithm_name=d['algorithm_name'],
-            algorithm_params=d['algorithm_params'],
+            algorithm=AugmentationAlgorithm.from_dict(d['algorithm']),
             seed=d['seed'],
             augmentation_per_sample=d['augmentation_per_sample'],
             sample_metadata_path=d['sample_metadata_path'],
@@ -212,8 +209,7 @@ class AugmentationSpec(object):
 
     def to_dict(self):
         return {
-            'algorithm_name': self.algorithm_name,
-            'algorithm_params': self.algorithm_params,
+            'algorithm': self.algorithm.to_dict(),
             'seed': self.seed,
             'augmentation_per_sample': self.augmentation_per_sample,
             'sample_metadata_path': str(self.sample_metadata_path)
@@ -233,6 +229,21 @@ class AugmentationSpec(object):
 
 
 class AugmentationAlgorithm(object):
+    def to_dict(self):
+        return {
+            'type': _reverse_augmentation_algorithms[type(self)],
+            'args': self.to_dict_args(),
+        }
+
+    def to_dict_args(self):
+        raise NotImplementedError()
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        ag_type = d['type']
+        ag_class = get_augmentation_algorithm(ag_type)
+        return ag_class.from_dict_args(d['args'])
+
     def augmentation_params(self,
                             data : tp.Dict[str, torch.Tensor],
                             metadata : tp.List[tp.Dict[str, object]],
@@ -271,6 +282,41 @@ class RandomAugmentation(AugmentationAlgorithm):
         self.hop_length = hop_length
         self.win_length = win_length
 
+    def to_dict_args(self):
+        return {
+            'source_sample_rate': self.source_sample_rate,
+            'target_sample_rate': self.target_sample_rate,
+            'waveform_length': self.waveform_length,
+
+            'normalize': self.normalize,
+            'scale_range': self.scale_range,
+            'scale_point_range': self.scale_point_range,
+            'time_stretch_range': self.time_stretch_range,
+            'pitch_shift_range': self.pitch_shift_range,
+
+            'n_fft': self.n_fft,
+            'hop_length': self.hop_length,
+            'win_length': self.win_length,
+        }
+
+    @classmethod
+    def from_dict_args(cls, d : dict):
+        return cls(
+            source_sample_rate=d['source_sample_rate'],
+            target_sample_rate=d['target_sample_rate'],
+            waveform_length=d['waveform_length'],
+
+            normalize=d['normalize'],
+            scale_range=d['scale_range'],
+            scale_point_range=d['scale_point_range'],
+            time_stretch_range=d['time_stretch_range'],
+            pitch_shift_range=d['pitch_shift_range'],
+
+            n_fft=d.get('n_fft', 2048),
+            hop_length=d.get('hop_length', 512),
+            win_length=d.get('win_length', 2048),
+        )
+
 
     def augmentation_params(self,
                             data : tp.Dict[str, torch.Tensor],
@@ -308,8 +354,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
                  time_stretch_range : tp.Tuple[int],
                  pitch_shift_range : tp.Tuple[int],
 
-                 mixture_algorithm_name : str,
-                 mixture_algorithm_params : tp.Dict[str, object],
+                 mixture_algorithm : MixAlgorithm,
                  trials_per_augmentation : int,
                  separation_difficulty : float,
 
@@ -330,14 +375,56 @@ class EntropyAugmentation(AugmentationAlgorithm):
         self.time_stretch_range = time_stretch_range
         self.pitch_shift_range = pitch_shift_range
 
-        self.mixture_algorithm_name = mixture_algorithm_name
-        self.mixture_algorithm_params = mixture_algorithm_params
+        self.mixture_algorithm = mixture_algorithm
         self.trials_per_augmentation = trials_per_augmentation
         self.separation_difficulty = separation_difficulty
 
         self.n_fft = n_fft
         self.hop_length = hop_length
         self.win_length = win_length
+
+    def to_dict_args(self):
+        return {
+            'source_sample_rate': self.source_sample_rate,
+            'target_sample_rate': self.target_sample_rate,
+            'waveform_length': self.waveform_length,
+
+            'normalize': self.normalize,
+            'scale_range': self.scale_range,
+            'scale_point_range': self.scale_point_range,
+            'time_stretch_range': self.time_stretch_range,
+            'pitch_shift_range': self.pitch_shift_range,
+
+            'mixture_algorithm': self.mixture_algorithm.to_dict(),
+            'trials_per_augmentation': self.trials_per_augmentation,
+            'separation_difficulty': self.separation_difficulty,
+
+            'n_fft': self.n_fft,
+            'hop_length': self.hop_length,
+            'win_length': self.win_length,
+        }
+
+    @classmethod
+    def from_dict_args(cls, d : dict):
+        return cls(
+            source_sample_rate=d['source_sample_rate'],
+            target_sample_rate=d['target_sample_rate'],
+            waveform_length=d['waveform_length'],
+
+            normalize=d['normalize'],
+            scale_range=d['scale_range'],
+            scale_point_range=d['scale_point_range'],
+            time_stretch_range=d['time_stretch_range'],
+            pitch_shift_range=d['pitch_shift_range'],
+
+            mixture_algorithm=MixAlgorithm.from_dict(d['mixture_algorithm']),
+            trials_per_augmentation=d['trials_per_augmentation'],
+            separation_difficulty=d['separation_difficulty'],
+
+            n_fft=d.get('n_fft', 2048),
+            hop_length=d.get('hop_length', 512),
+            win_length=d.get('win_length', 2048),
+        )
 
     def augmentation_params(self,
                             data : tp.Dict[str, torch.Tensor],
@@ -346,11 +433,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
                             ) -> tp.List[tp.Dict[str, object]]:
         # calculate mix index from data and metadata
         # using self.algorithm
-        mixture_algorithm_class = get_mix_algorithm(
-            self.mixture_algorithm_name)
-        mixture_algorithm = mixture_algorithm_class(
-            **self.mixture_algorithm_params)
-
+        mixture_algorithm = self.mixture_algorithm
         mix_indices, _ = mixture_algorithm.mix_index(data=data,
                                                      metadata=metadata,
                                                      seed=seed)
@@ -465,8 +548,7 @@ class FrequencyAugmentation(AugmentationAlgorithm):
                  time_stretch_range : tp.Tuple[int],
                  pitch_shift_range : tp.Tuple[int],
 
-                 mixture_algorithm_name : str,
-                 mixture_algorithm_params : tp.Dict[str, object],
+                 mixture_algorithm : MixAlgorithm,
                  trials_per_augmentation : int,
                  separation_difficulty : float,
 
@@ -487,14 +569,56 @@ class FrequencyAugmentation(AugmentationAlgorithm):
         self.time_stretch_range = time_stretch_range
         self.pitch_shift_range = pitch_shift_range
 
-        self.mixture_algorithm_name = mixture_algorithm_name
-        self.mixture_algorithm_params = mixture_algorithm_params
+        self.mixture_algorithm = mixture_algorithm
         self.trials_per_augmentation = trials_per_augmentation
         self.separation_difficulty = separation_difficulty
 
         self.n_fft = n_fft
         self.hop_length = hop_length
         self.win_length = win_length
+
+    def to_dict_args(self):
+        return {
+            'source_sample_rate': self.source_sample_rate,
+            'target_sample_rate': self.target_sample_rate,
+            'waveform_length': self.waveform_length,
+
+            'normalize': self.normalize,
+            'scale_range': self.scale_range,
+            'scale_point_range': self.scale_point_range,
+            'time_stretch_range': self.time_stretch_range,
+            'pitch_shift_range': self.pitch_shift_range,
+
+            'mixture_algorithm': self.mixture_algorithm.to_dict(),
+            'trials_per_augmentation': self.trials_per_augmentation,
+            'separation_difficulty': self.separation_difficulty,
+
+            'n_fft': self.n_fft,
+            'hop_length': self.hop_length,
+            'win_length': self.win_length,
+        }
+
+    @classmethod
+    def from_dict_args(cls, d : dict):
+        return cls(
+            source_sample_rate=d['source_sample_rate'],
+            target_sample_rate=d['target_sample_rate'],
+            waveform_length=d['waveform_length'],
+
+            normalize=d['normalize'],
+            scale_range=d['scale_range'],
+            scale_point_range=d['scale_point_range'],
+            time_stretch_range=d['time_stretch_range'],
+            pitch_shift_range=d['pitch_shift_range'],
+
+            mixture_algorithm=MixAlgorithm.from_dict(d['mixture_algorithm']),
+            trials_per_augmentation=d['trials_per_augmentation'],
+            separation_difficulty=d['separation_difficulty'],
+
+            n_fft=d.get('n_fft', 2048),
+            hop_length=d.get('hop_length', 512),
+            win_length=d.get('win_length', 2048),
+        )
 
     def augmentation_params(self,
                             data : tp.Dict[str, torch.Tensor],
@@ -503,11 +627,7 @@ class FrequencyAugmentation(AugmentationAlgorithm):
                             ) -> tp.List[tp.Dict[str, object]]:
         # calculate mix index from data and metadata
         # using self.algorithm
-        mixture_algorithm_class = get_mix_algorithm(
-            self.mixture_algorithm_name)
-        mixture_algorithm = mixture_algorithm_class(
-            **self.mixture_algorithm_params)
-
+        mixture_algorithm = self.mixture_algorithm
         mix_indices, _ = mixture_algorithm.mix_index(data=data,
                                                      metadata=metadata,
                                                      seed=seed)
@@ -612,17 +732,23 @@ class FrequencyAugmentation(AugmentationAlgorithm):
         return parameters[param_i], \
             {'score': score, 'score_stats': score_stats}
 
-
+def get_augmentation_algorithm(name : str):
+    if name not in _augmentation_algorithms:
+        raise ValueError(f'{name} is invalid augmentation algorithm')
+    return _augmentation_algorithms[name]
 
 def register_augmentation_algorithm(name : str,
                                     algorithm : tp.Type):
     _augmentation_algorithms[name] = algorithm
+    _reverse_augmentation_algorithms[algorithm] = name
 
-_augmentation_algorithms = dict()
-if len(_augmentation_algorithms) == 0:
-    register_augmentation_algorithm('random', RandomAugmentation)
-    register_augmentation_algorithm('entropy', EntropyAugmentation)
-    register_augmentation_algorithm('frequency', FrequencyAugmentation)
+_augmentation_algorithms = {
+    'random': RandomAugmentation,
+    'entropy': EntropyAugmentation,
+    'frequency': FrequencyAugmentation,
+}
+_reverse_augmentation_algorithms = dict(
+    (v, k) for k, v in _augmentation_algorithms.items())
 
 def _save_augmentation(spec : AugmentationSpec):
     """
@@ -630,9 +756,8 @@ def _save_augmentation(spec : AugmentationSpec):
 
     process_start = datetime.now()
     # setup algorithm
-    alg_cls = _augmentation_algorithms.get(spec.algorithm_name)
-    algorithm = alg_cls(**spec.algorithm_params)
-
+    algorithm = spec.algorithm
+    algorithm_name = algorithm.to_dict()['type']
     random_ = random.Random(spec.seed)
 
     # prepare log
@@ -679,7 +804,7 @@ def _save_augmentation(spec : AugmentationSpec):
         logger.info(json.dumps({
             'type': 'start_augmentation',
             'timestamp': datetime.now().isoformat(),
-            'augmentation_algorithm': spec.algorithm_name,
+            'augmentation_algorithm': algorithm_name,
             'sample_size': len(metadata_list),
             'augmentation_per_sample': spec.augmentation_per_sample,
             'seed': spec.seed,
@@ -696,7 +821,7 @@ def _save_augmentation(spec : AugmentationSpec):
             logger.info(json.dumps({
                 'type': 'made_augmentation',
                 'timestamp': datetime.now().isoformat(),
-                'augmentation_algorithm': spec.algorithm_name,
+                'augmentation_algorithm': algorithm_name,
                 'sample_index': augmentation.sample_index,
                 'augmentation_index': augmentation.augmentation_index,
             }))
@@ -711,7 +836,7 @@ def _save_augmentation(spec : AugmentationSpec):
         logger.info(json.dumps({
             'type': 'save_augmentations',
             'timestamp': datetime.now().isoformat(),
-            'augmentation_algorithm': spec.algorithm_name,
+            'augmentation_algorithm': algorithm_name,
             'metadata_path': str(spec.augmentation_metadata_path),
             'augmentation_size': len(augmentation_list),
         }))
@@ -747,7 +872,7 @@ def _save_augmentation(spec : AugmentationSpec):
             logger.info(json.dumps({
                 'type': 'save_augmentations_journal',
                 'timestamp': datetime.now().isoformat(),
-                'augmentation_algorithm': spec.algorithm_name,
+                'augmentation_algorithm': algorithm_name,
                 'journal_path': str(spec.journal_path),
             }))
 
@@ -756,7 +881,7 @@ def _save_augmentation(spec : AugmentationSpec):
         logger.info(json.dumps({
             'type': 'finish_augmentation',
             'timestamp': datetime.now().isoformat(),
-            'augmentation_algorithm': spec.algorithm_name,
+            'augmentation_algorithm': algorithm_name,
         }))
         handlers = logger.handlers[:]
         for handler in handlers:
