@@ -5,7 +5,7 @@ import tempfile
 import json
 
 from echidna.data.mixtures import (
-    Mixture, MixturesJournal, MixtureSpec
+    Mixture, MixturesJournal, MixtureSpec, CategoryMix
 )
 from echidna.data.samples import SampleSpec
 
@@ -26,11 +26,10 @@ class TestMixtures(unittest.TestCase):
     def test_category_mix_include_other(self):
         mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_1'
         spec = MixtureSpec(
-            algorithm_name='category',
-            algorithm_params={
-                'mix_category_list': [['ct001'], ['ct002', 'ct003']],
-                'include_other': True,
-            },
+            algorithm=CategoryMix(
+                mix_category_list=[['ct001'], ['ct002', 'ct003']],
+                include_other=True,
+            ),
             seed=self.seed,
             mix_per_sample=2,
             sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
@@ -66,11 +65,10 @@ class TestMixtures(unittest.TestCase):
     def test_category_mix_exclude_other(self):
         mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_2'
         spec = MixtureSpec(
-            algorithm_name='category',
-            algorithm_params={
-                'mix_category_list': [['ct001'], ['ct002', 'ct003']],
-                'include_other': False,
-            },
+            algorithm=CategoryMix(
+                mix_category_list=[['ct001'], ['ct002', 'ct003']],
+                include_other=False,
+            ),
             seed=self.seed,
             mix_per_sample=2,
             sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
