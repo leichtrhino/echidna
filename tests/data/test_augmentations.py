@@ -7,7 +7,14 @@ import json
 from echidna.data.augmentations import (
     Augmentation,
     AugmentationsJournal,
-    AugmentationSpec
+    AugmentationSpec,
+    RandomAugmentation,
+    EntropyAugmentation,
+    FrequencyAugmentation,
+)
+from echidna.data.mixtures import (
+    MixAlgorithm,
+    CategoryMix,
 )
 from echidna.data.samples import (
     Sample,
@@ -31,18 +38,17 @@ class TestAugmentations(unittest.TestCase):
     def test_random_augmentation(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_1'
         spec = AugmentationSpec(
-            algorithm_name='random',
-            algorithm_params={
-                'source_sample_rate': 8000,
-                'target_sample_rate': 8000,
-                'waveform_length': int(8000 * 0.5),
+            algorithm=RandomAugmentation(
+                source_sample_rate=8000,
+                target_sample_rate=8000,
+                waveform_length=int(8000 * 0.5),
 
-                'normalize': True,
-                'scale_range': [0.1, 1.1],
-                'scale_point_range': [1, 5],
-                'time_stretch_range': [0.5, 1.5],
-                'pitch_shift_range': [0.5, 1.5],
-            },
+                normalize=True,
+                scale_range=[0.1, 1.1],
+                scale_point_range=[1, 5],
+                time_stretch_range=[0.5, 1.5],
+                pitch_shift_range=[0.5, 1.5],
+            ),
             seed=self.seed,
             augmentation_per_sample=2,
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
@@ -94,30 +100,27 @@ class TestAugmentations(unittest.TestCase):
     def test_entropy_augmentation_minscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_2'
         spec = AugmentationSpec(
-            algorithm_name='entropy',
-            algorithm_params={
-                'source_sample_rate': 8000,
-                'target_sample_rate': 8000,
-                'waveform_length': int(8000 * 0.5),
+            algorithm=EntropyAugmentation(
+                source_sample_rate=8000,
+                target_sample_rate=8000,
+                waveform_length=int(8000 * 0.5),
 
-                'normalize': True,
-                'scale_range': [0.1, 1.1],
-                'scale_point_range': [1, 5],
-                'time_stretch_range': [0.5, 1.5],
-                'pitch_shift_range': [0.5, 1.5],
+                normalize=True,
+                scale_range=[0.1, 1.1],
+                scale_point_range=[1, 5],
+                time_stretch_range=[0.5, 1.5],
+                pitch_shift_range=[0.5, 1.5],
 
-                'mixture_algorithm_name': 'category',
-                'mixture_algorithm_params': {
-                    'mix_category_list': [
+                mixture_algorithm=CategoryMix(
+                    mix_category_list=[
                         ['ct001'],
                         ['ct002', 'ct003']
                     ],
-                    'include_other': False,
-                },
-                'trials_per_augmentation': 10,
-                'separation_difficulty': 0.0,
-
-            },
+                    include_other=False,
+                ),
+                trials_per_augmentation=5,
+                separation_difficulty=0.0,
+            ),
             seed=self.seed,
             augmentation_per_sample=2,
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
@@ -162,30 +165,27 @@ class TestAugmentations(unittest.TestCase):
     def test_entropy_augmentation_maxscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_3'
         spec = AugmentationSpec(
-            algorithm_name='entropy',
-            algorithm_params={
-                'source_sample_rate': 8000,
-                'target_sample_rate': 8000,
-                'waveform_length': int(8000 * 0.5),
+            algorithm=EntropyAugmentation(
+                source_sample_rate=8000,
+                target_sample_rate=8000,
+                waveform_length=int(8000 * 0.5),
 
-                'normalize': True,
-                'scale_range': [0.1, 1.1],
-                'scale_point_range': [1, 5],
-                'time_stretch_range': [0.5, 1.5],
-                'pitch_shift_range': [0.5, 1.5],
+                normalize=True,
+                scale_range=[0.1, 1.1],
+                scale_point_range=[1, 5],
+                time_stretch_range=[0.5, 1.5],
+                pitch_shift_range=[0.5, 1.5],
 
-                'mixture_algorithm_name': 'category',
-                'mixture_algorithm_params': {
-                    'mix_category_list': [
+                mixture_algorithm=CategoryMix(
+                    mix_category_list=[
                         ['ct001'],
                         ['ct002', 'ct003']
                     ],
-                    'include_other': False,
-                },
-                'trials_per_augmentation': 10,
-                'separation_difficulty': 1.0,
-
-            },
+                    include_other=False,
+                ),
+                trials_per_augmentation=5,
+                separation_difficulty=1.0,
+            ),
             seed=self.seed,
             augmentation_per_sample=2,
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
@@ -230,30 +230,27 @@ class TestAugmentations(unittest.TestCase):
     def test_frequency_augmentation_minscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_3'
         spec = AugmentationSpec(
-            algorithm_name='frequency',
-            algorithm_params={
-                'source_sample_rate': 8000,
-                'target_sample_rate': 8000,
-                'waveform_length': int(8000 * 0.5),
+            algorithm=FrequencyAugmentation(
+                source_sample_rate=8000,
+                target_sample_rate=8000,
+                waveform_length=int(8000 * 0.5),
 
-                'normalize': True,
-                'scale_range': [0.1, 1.1],
-                'scale_point_range': [1, 5],
-                'time_stretch_range': [0.5, 1.5],
-                'pitch_shift_range': [0.5, 1.5],
+                normalize=True,
+                scale_range=[0.1, 1.1],
+                scale_point_range=[1, 5],
+                time_stretch_range=[0.5, 1.5],
+                pitch_shift_range=[0.5, 1.5],
 
-                'mixture_algorithm_name': 'category',
-                'mixture_algorithm_params': {
-                    'mix_category_list': [
+                mixture_algorithm=CategoryMix(
+                    mix_category_list=[
                         ['ct001'],
                         ['ct002', 'ct003']
                     ],
-                    'include_other': False,
-                },
-                'trials_per_augmentation': 5,
-                'separation_difficulty': 0.0,
-
-            },
+                    include_other=False,
+                ),
+                trials_per_augmentation=5,
+                separation_difficulty=0.0,
+            ),
             seed=self.seed,
             augmentation_per_sample=2,
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
@@ -297,30 +294,27 @@ class TestAugmentations(unittest.TestCase):
     def test_frequency_augmentation_maxscore(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_5'
         spec = AugmentationSpec(
-            algorithm_name='frequency',
-            algorithm_params={
-                'source_sample_rate': 8000,
-                'target_sample_rate': 8000,
-                'waveform_length': int(8000 * 0.5),
+            algorithm=FrequencyAugmentation(
+                source_sample_rate=8000,
+                target_sample_rate=8000,
+                waveform_length=int(8000 * 0.5),
 
-                'normalize': True,
-                'scale_range': [0.1, 1.1],
-                'scale_point_range': [1, 5],
-                'time_stretch_range': [0.5, 1.5],
-                'pitch_shift_range': [0.5, 1.5],
+                normalize=True,
+                scale_range=[0.1, 1.1],
+                scale_point_range=[1, 5],
+                time_stretch_range=[0.5, 1.5],
+                pitch_shift_range=[0.5, 1.5],
 
-                'mixture_algorithm_name': 'category',
-                'mixture_algorithm_params': {
-                    'mix_category_list': [
+                mixture_algorithm=CategoryMix(
+                    mix_category_list=[
                         ['ct001'],
                         ['ct002', 'ct003']
                     ],
-                    'include_other': False,
-                },
-                'trials_per_augmentation': 5,
-                'separation_difficulty': 1.0,
-
-            },
+                    include_other=False,
+                ),
+                trials_per_augmentation=5,
+                separation_difficulty=1.0,
+            ),
             seed=self.seed,
             augmentation_per_sample=2,
             sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
