@@ -210,21 +210,6 @@ def mix(data : tp.Dict[str, torch.Tensor],
     }
 
 
-def collate_fn(l : tp.List[tp.Tuple[tp.Dict[str, torch.Tensor], tp.Dict]]):
-    data_tuple, metadata_tuple = zip(*l)
-    collate_data = {
-        'waves': torch.stack([d['waves'] for d in data_tuple], dim=0),
-        'sheets': None
-    }
-    collate_metadata = {
-        'index': [d['index'] for d in metadata_tuple],
-        'sample': [d['sample'] for d in metadata_tuple],
-        'augmentation': [d['augmentation'] for d in metadata_tuple],
-        'mixture': [d['mixture'] for d in metadata_tuple],
-    }
-
-    return collate_data, collate_metadata
-
 class CompositeDataset(Dataset):
     def __init__(self, components : list):
         self.components = components

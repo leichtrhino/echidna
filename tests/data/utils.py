@@ -2,6 +2,7 @@
 import os
 import pathlib
 import math
+import random
 import torch
 import torchaudio
 
@@ -262,4 +263,44 @@ def prepare_datasources(tmpdir, seed):
         'D1': samplespec_d_1,
         'E1': samplespec_e_1,
     }
+
+class ToyDataset(torch.utils.data.Dataset):
+    def __init__(self, sample_size, val=False, seed=None):
+        self.sample_size = sample_size
+        self.factor = -1 if val else 1
+        random.seed(seed)
+        self.seed_list = [random.randrange(2**32) for _ in range(len(self))]
+
+    def __len__(self):
+        return self.sample_size
+
+    def __getitem__(self, idx):
+        torch.manual_seed(self.seed_list[idx])
+        data = {
+            'waves': torch.cat(
+                (torch.full((3, 1), self.factor * idx),
+                 torch.rand(3, 3999)),
+                dim=-1
+            ),
+            'sheets': None
+        }
+        metadata = {
+            'index': idx,
+            'sample': f'sample{idx}',
+            'augmentation': f'augmentation{idx}',
+            'mixture': f'mixture{idx}',
+        }
+        return data, metadata
+
+    def to_dict(self):
+        return {
+            'sample_size': self.sample_size,
+            'factor': self.factor,
+            'seed_list': self.seed_list,
+        }
+
+    @classmethod
+    def from_dict(cls, d : dict):
+        pass
+
 

@@ -6,6 +6,7 @@ import random
 import torch
 
 from ..data.datasets import Dataset
+from ..data.dataloaders import build_dataloader
 from ..models.models import Model
 from ..metrics import Loss
 from . import utils
@@ -209,7 +210,7 @@ def _validate(spec : ValidationSpec):
             'model_epoch': spec.model.get_epoch(),
         }))
 
-    validation_loader = utils.build_dataloader(
+    validation_loader = build_dataloader(
         spec.validation_dataset,
         spec.validation_sample_size,
         spec.batch_size,

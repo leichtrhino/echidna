@@ -8,6 +8,7 @@ import random
 import torch
 
 from ..data.datasets import Dataset
+from ..data.dataloaders import build_dataloader
 from ..models.checkpoints import Checkpoint
 from ..metrics.loss import Loss
 from . import utils
@@ -294,7 +295,7 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
         }))
 
 
-    training_loader = utils.build_dataloader(
+    training_loader = build_dataloader(
         spec.training_dataset,
         spec.training_sample_size,
         spec.batch_size,
@@ -344,7 +345,7 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
                 'training_epoch': training_epoch,
             }))
 
-        validation_loader = utils.build_dataloader(
+        validation_loader = build_dataloader(
             spec.validation_dataset,
             spec.validation_sample_size,
             spec.batch_size,
