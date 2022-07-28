@@ -1,7 +1,7 @@
 
 import torch
 
-from .loss import Loss
+from .loss import Loss, register_loss_class
 
 class _WaveformLoss(Loss):
     @property
@@ -45,6 +45,13 @@ class L1WaveformLoss(_WaveformLoss):
 class L2WaveformLoss(_WaveformLoss):
     def forward_no_reduction(self, s_pred, s_true):
         return torch.mean((s_pred - s_true) ** 2, dim=(1, 2))
+
+register_loss_class('l1_waveform', L1WaveformLoss)
+register_loss_class('l2_waveform', L2WaveformLoss)
+register_loss_class('negative_sdr', NegativeSDRLoss)
+register_loss_class('negative_sisdr', NegativeSISDRLoss)
+register_loss_class('negative_sdsdr', NegativeSDSDRLoss)
+
 
 def source_to_distortion_ratio(s_pred : torch.Tensor,
                                s_true : torch.Tensor,

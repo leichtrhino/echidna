@@ -3,48 +3,7 @@ import typing as tp
 from itertools import permutations
 import torch
 
-from .loss import Loss
-from .waveform import (
-    L1WaveformLoss,
-    L2WaveformLoss,
-    NegativeSDRLoss,
-    NegativeSISDRLoss,
-    NegativeSDSDRLoss,
-)
-from .spectrogram import (
-    L1SpectrogramLoss,
-    L2SpectrogramLoss,
-    SpectrogramConvergenceLoss,
-    SpectrogramLoss,
-)
-from .deepclustering import (
-    DeepClusteringLoss,
-    DeepLDALoss,
-    GraphLaplacianLoss,
-    WhitenedKMeansLoss,
-)
-
-_loss_map = {
-    'l1_waveform': L1WaveformLoss,
-    'l2_waveform': L2WaveformLoss,
-    'negative_sdr': NegativeSDRLoss,
-    'negative_sisdr': NegativeSISDRLoss,
-    'negative_sdsdr': NegativeSDSDRLoss,
-    'l1_spectrogram': L1SpectrogramLoss,
-    'l2_spectrogram': L2SpectrogramLoss,
-    'spectrogram_convergence': SpectrogramConvergenceLoss,
-    'spectrogram': SpectrogramLoss,
-    'deep_clustering': DeepClusteringLoss,
-    'deep_lda': DeepLDALoss,
-    'graph_laplacian': GraphLaplacianLoss,
-    'whitened_kmeans': WhitenedKMeansLoss,
-}
-_reverse_loss_map = dict((v, k) for k, v in _loss_map.items())
-
-def get_loss_name(loss : Loss):
-    if type(loss) not in _reverse_loss_map:
-        raise ValueError(f'{type(loss)} is unknown loss type')
-    return _reverse_loss_map[type(loss)]
+from .loss import Loss, register_loss_class, get_loss_name
 
 class CompositeLoss(Loss):
     """
@@ -74,15 +33,11 @@ class CompositeLoss(Loss):
     def domains(self):
         return set(dm for d in self.components for dm in d['func'].domains)
 
-    def to_dict(self):
-        for d in self.components:
-            if type(d['func']) not in _reverse_loss_map:
-                raise ValueError(f'{type(d["func"])} is invalid function')
+    def to_dict_args(self):
         return {
             'components': [
                 {
-                    'func': _reverse_loss_map[type(d['func'])],
-                    'param': d['func'].to_dict(),
+                    'func': d['func'].to_dict(),
                     'weight': d.get('weight', 1.0),
                 }
                 for d in self.components
@@ -92,18 +47,11 @@ class CompositeLoss(Loss):
         }
 
     @classmethod
-    def from_dict(cls, d : dict):
-        if not d.get('components') or type(d['components']) != list \
-           or any('func' not in e for e in d['components']):
-            raise ValueError('all elements in components must have func')
-        for e in d['components']:
-            if e['func'] not in _loss_map:
-                raise ValueError(f'{e["func"]} is invalid function')
-
+    def from_dict_args(cls, d : dict):
         return cls(
             components=[
                 {
-                    'func': _loss_map[e['func']].from_dict(e.get('param', {})),
+                    'func': Loss.from_dict(e['func']),
                     'weight': e.get('weight', 1.0)
                 }
                 for e in d['components']
@@ -142,7 +90,7 @@ class CompositeLoss(Loss):
 
             # append loss to sample and batch
             for li, lv in enumerate(loss.tolist()):
-                losses['sample'][li][_reverse_loss_map[type(loss_fn)]] = lv
+                losses['sample'][li][get_loss_name(type(loss_fn))] = lv
             if losses['batch'] is None:
                 losses['batch'] = weight * loss
             else:
@@ -212,3 +160,5 @@ class CompositeLoss(Loss):
         elif self.reduction == 'sum':
             raw['batch'] = raw['batch'].sum()
         return raw
+
+register_loss_class('composite', CompositeLoss)

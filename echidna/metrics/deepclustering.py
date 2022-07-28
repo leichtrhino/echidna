@@ -1,7 +1,7 @@
 
 import torch
 
-from .loss import Loss
+from .loss import Loss, register_loss_class
 
 class _EmbeddingLoss(Loss):
     def __init__(self,
@@ -23,7 +23,7 @@ class _EmbeddingLoss(Loss):
     def domains(self):
         return ('embd',)
 
-    def to_dict(self):
+    def to_dict_args(self):
         return {
             'label': self.label,
             'weight': self.weight,
@@ -31,7 +31,7 @@ class _EmbeddingLoss(Loss):
         }
 
     @classmethod
-    def from_dict(cls, d : dict):
+    def from_dict_args(cls, d : dict):
         return cls(
             label=d.get('label', 'argmax'),
             weight=d.get('weight', 'none'),
@@ -71,6 +71,12 @@ class GraphLaplacianLoss(_EmbeddingLoss):
 class WhitenedKMeansLoss(_EmbeddingLoss):
     def __init__(self, label='argmax', weight='none', reduction='mean'):
         super().__init__('whitened_kmeans', label, weight, reduction)
+
+register_loss_class('deep_clustering', DeepClusteringLoss)
+register_loss_class('deep_lda', DeepLDALoss)
+register_loss_class('graph_laplacian', GraphLaplacianLoss)
+register_loss_class('whitened_kmeans', WhitenedKMeansLoss)
+
 
 def deep_clustering_loss(embd : torch.Tensor,
                          label : torch.Tensor,

@@ -5,7 +5,7 @@ import json
 import torch
 
 from ..models.utils import match_length
-from ..metrics.composite import get_loss_name
+from ..metrics.loss import get_loss_name
 
 from . import trainings
 from . import validations
@@ -224,7 +224,7 @@ def process_batch(spec,
             loss_values = {
                 'batch': loss_value.mean(),
                 'sample': [
-                    {get_loss_name(loss_function): l}
+                    {get_loss_name(type(loss_function)): l}
                     for l in loss_value.tolist()
                 ]
             }

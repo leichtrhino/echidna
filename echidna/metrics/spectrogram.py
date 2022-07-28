@@ -2,7 +2,7 @@
 import math
 import torch
 
-from .loss import Loss
+from .loss import Loss, register_loss_class
 
 class _SpectrogramLoss(Loss):
     def __init__(self,
@@ -17,14 +17,14 @@ class _SpectrogramLoss(Loss):
     def domains(self):
         return ('waves',)
 
-    def to_dict(self):
+    def to_dict_args(self):
         return {
             'reduction': self.reduction,
             'fft_spec': self.fft_spec,
         }
 
     @classmethod
-    def from_dict(cls, d : dict):
+    def from_dict_args(cls, d : dict):
         return cls(
             fft_spec=d.get('fft_spec', [(512, 128), (1024, 256), (2048, 512)]),
             reduction=d['reduction']
@@ -94,7 +94,7 @@ class SpectrogramLoss(Loss):
     def domains(self):
         return ('waves',)
 
-    def to_dict(self):
+    def to_dict_args(self):
         return {
             'reduction': self.reduction,
             'fft_spec': self.fft_spec,
@@ -105,7 +105,7 @@ class SpectrogramLoss(Loss):
         }
 
     @classmethod
-    def from_dict(cls, d : dict):
+    def from_dict_args(cls, d : dict):
         return cls(
             fft_spec=d.get(
                 'fft_spec', [(512, 128), (1024, 256), (2048, 512)]),
@@ -133,6 +133,12 @@ class SpectrogramLoss(Loss):
             self.spectral_magnitude_log,
         )
         return raw
+
+register_loss_class('l1_spectrogram', L1SpectrogramLoss)
+register_loss_class('l2_spectrogram', L2SpectrogramLoss)
+register_loss_class('spectrogram_convergence', SpectrogramConvergenceLoss)
+register_loss_class('spectrogram', SpectrogramLoss)
+
 
 def multiscale_spectrogram_loss(
         s_pred : torch.Tensor,
