@@ -37,18 +37,17 @@ class TestComposite(unittest.TestCase):
         )
 
         # serialize
-        ld = loss_fn.to_dict()
+        ld = loss_fn.to_dict()['args']
         self.assertIn('components', ld.keys())
         self.assertEqual(len(ld['components']), 3)
         for fn in ld['components']:
             self.assertIn('func', fn)
-            self.assertIn('param', fn)
             self.assertIn('weight', fn)
         self.assertIn('permutation', ld.keys())
         self.assertIn('reduction', ld.keys())
 
         # deserialize
-        loss_d = CompositeLoss.from_dict(ld)
+        loss_d = CompositeLoss.from_dict({'type': 'composite', 'args': ld})
         self.assertEqual(len(loss_fn.components), len(loss_d.components))
         for fn1, fn2 in zip(loss_fn.components, loss_d.components):
             self.assertEqual(type(fn1['func']), type(fn2['func']))

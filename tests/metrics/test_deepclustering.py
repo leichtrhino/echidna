@@ -77,12 +77,13 @@ class TestDeepClusteringLoss(unittest.TestCase):
         loss = self.dc_class()
 
         ld = loss.to_dict()
+        ld_type, ld = ld['type'], ld['args']
         self.assertIn('label', ld.keys())
         self.assertEqual(ld['label'], loss.label)
         self.assertIn('weight', ld.keys())
         self.assertEqual(ld['weight'], loss.weight)
 
-        loss_d = self.dc_class.from_dict(ld)
+        loss_d = self.dc_class.from_dict({'type': ld_type, 'args': ld})
         self.assertEqual(loss.reduction, loss_d.reduction)
         self.assertEqual(loss.label, loss_d.label)
         self.assertEqual(loss.weight, loss_d.weight)

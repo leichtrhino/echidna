@@ -54,10 +54,11 @@ class TestL1SpectrogramLoss(unittest.TestCase):
         loss = self.loss_class()
 
         ld = loss.to_dict()
+        ld_type, ld = ld['type'], ld['args']
         self.assertIn('fft_spec', ld.keys())
         self.assertEqual(ld['fft_spec'], loss.fft_spec)
 
-        loss_d = self.loss_class.from_dict(ld)
+        loss_d = self.loss_class.from_dict({'type': ld_type, 'args': ld})
         self.assertEqual(loss.reduction, loss_d.reduction)
         self.assertEqual(loss.fft_spec, loss_d.fft_spec)
 
@@ -90,6 +91,7 @@ class TestSpectrogramLoss(TestL2SpectrogramLoss):
         loss = self.loss_class()
 
         ld = loss.to_dict()
+        ld_type, ld = ld['type'], ld['args']
         self.assertEqual(ld['reduction'], loss.reduction)
         self.assertEqual(ld['fft_spec'], loss.fft_spec)
         self.assertEqual(ld['spectral_convergence_weight'],
@@ -101,7 +103,7 @@ class TestSpectrogramLoss(TestL2SpectrogramLoss):
         self.assertEqual(ld['spectral_magnitude_log'],
                          loss.spectral_magnitude_log)
 
-        loss_d = self.loss_class.from_dict(ld)
+        loss_d = self.loss_class.from_dict({'type': ld_type, 'args': ld})
         self.assertEqual(loss_d.reduction, loss.reduction)
         self.assertEqual(loss_d.fft_spec, loss.fft_spec)
         self.assertEqual(loss_d.spectral_convergence_weight,

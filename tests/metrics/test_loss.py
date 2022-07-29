@@ -50,10 +50,10 @@ class TestLoss(unittest.TestCase):
         self.assertEqual(ToyLoss('none').domains, ('waves',))
 
     def test_serialize_ok(self):
-        ld = ToyLoss('none').to_dict()
-        self.assertEqual(ld, {'reduction': 'none'})
-        l = ToyLoss.from_dict(ld)
-        self.assertEqual(type(l), ToyLoss)
+        ld = Loss('none').to_dict()
+        self.assertEqual(ld, {'type': 'loss', 'args': {'reduction': 'none'}})
+        l = Loss.from_dict(ld)
+        self.assertEqual(type(l), Loss)
 
     def test_reduction_ng(self):
         a = torch.rand(3, 2, 4)
