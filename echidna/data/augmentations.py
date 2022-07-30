@@ -505,7 +505,7 @@ class EntropyAugmentation(AugmentationAlgorithm):
             subscore = []
             for mix_index in mix_indices:
                 mix_sg = [
-                    torch.sum(specgrams[mi], dim=0)
+                    torch.sum(specgrams[list(mi)], dim=0)
                     for mi in mix_index if len(mi) > 0
                 ]
                 total_sg = sum(mix_sg)
@@ -694,7 +694,7 @@ class FrequencyAugmentation(AugmentationAlgorithm):
             subscore = []
             for mix_index in mix_indices:
                 mix_waves = numpy.stack([
-                    waves[mi, :].sum(axis=0)
+                    waves[list(mi), :].sum(axis=0)
                     for mi in mix_index if len(mi) > 0
                 ])
                 f0, voiced_flag, voiced_prob = librosa.pyin(
