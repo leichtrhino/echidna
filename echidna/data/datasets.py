@@ -63,17 +63,17 @@ class BasicDataset(Dataset):
 
     def to_dict_args(self):
         return {
-            'samples_path': self.samples_metadata_path,
-            'augmentations_path': self.augmentations_metadata_path,
-            'mixtures_path': self.mixtures_metadata_path,
+            'samples_metadata_path': self.samples_metadata_path,
+            'augmentations_metadata_path': self.augmentations_metadata_path,
+            'mixtures_metadata_path': self.mixtures_metadata_path,
         }
 
     @classmethod
     def from_dict_args(cls, d : dict):
         return cls(
-            samples_metadata_path=d['samples_path'],
-            augmentations_metadata_path=d['augmentations_path'],
-            mixtures_metadata_path=d['mixtures_path'],
+            samples_metadata_path=d['samples_metadata_path'],
+            augmentations_metadata_path=d.get('augmentations_metadata_path'),
+            mixtures_metadata_path=d.get('mixtures_metadata_path'),
         )
 
     def __len__(self):
