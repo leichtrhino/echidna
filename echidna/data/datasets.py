@@ -43,23 +43,46 @@ class BasicDataset(Dataset):
         with open(samples_metadata_path, 'r') as fp:
             self.samples = Sample.from_list(json.load(fp))
 
-        with open(augmentations_metadata_path, 'r') as fp:
-            self.augmentations = sorted(Augmentation.from_list(json.load(fp)),
-                                        key=lambda e: (e.augmentation_index,
-                                                       e.sample_index))
+        if augmentations_metadata_path:
+            with open(augmentations_metadata_path, 'r') as fp:
+                self.augmentations = sorted(
+                    Augmentation.from_list(json.load(fp)),
+                    key=lambda e: (e.augmentation_index,
+                                   e.sample_index)
+                )
+        else:
+            self.augmentations = None
 
-        with open(mixtures_metadata_path, 'r') as fp:
-            self.mixtures = sorted(Mixture.from_list(json.load(fp)),
-                                   key=lambda e: (e.mixture_index,
-                                                  e.sample_index))
+        if mixtures_metadata_path:
+            with open(mixtures_metadata_path, 'r') as fp:
+                self.mixtures = sorted(
+                    Mixture.from_list(json.load(fp)),
+                    key=lambda e: (e.mixture_index,
+                                   e.sample_index)
+                )
+        else:
+            self.mixtures = None
 
         self.indices = []
-        for ai, a in enumerate(self.augmentations):
+        if self.augmentations and self.mixtures:
+            for ai, a in enumerate(self.augmentations):
+                for mi, m in enumerate(self.mixtures):
+                    if a.sample_index != m.sample_index:
+                        continue
+                    for ni, n in enumerate(m.mixture_indices):
+                        self.indices.append((a.sample_index, ai, mi, ni))
+        elif self.augmentations and not self.mixtures:
+            for ai, a in enumerate(self.augmentations):
+                self.indices.append((a.sample_index, ai, None, None))
+
+        elif not self.augmentations and self.mixtures:
             for mi, m in enumerate(self.mixtures):
-                if a.sample_index != m.sample_index:
-                    continue
                 for ni, n in enumerate(m.mixture_indices):
-                    self.indices.append((a.sample_index, ai, mi, ni))
+                    self.indices.append((m.sample_index, None, mi, ni))
+
+        elif not self.augmentations and not self.mixtures:
+            for si in range(len(self.samples)):
+                self.indices.append((si, None, None, None))
 
     def to_dict_args(self):
         return {
@@ -93,32 +116,38 @@ class BasicDataset(Dataset):
         )
 
         # augmentation
-        augmentation_metadata = self.augmentations[augmentation_index]
-        augmented_data = augment(
-            data,
-            sample_metadata,
-            normalize=augmentation_metadata.normalize,
+        if augmentation_index is not None:
+            augmentation_metadata = self.augmentations[augmentation_index]
+            data = augment(
+                data,
+                sample_metadata,
+                normalize=augmentation_metadata.normalize,
 
-            source_sample_rate=augmentation_metadata.source_sample_rate,
-            target_sample_rate=augmentation_metadata.target_sample_rate,
-            time_stretch_rates=augmentation_metadata.time_stretch_rates,
-            pitch_shift_rates=augmentation_metadata.pitch_shift_rates,
-            scale_amount_list=augmentation_metadata.scale_amount_list,
-            scale_fraction_list=augmentation_metadata.scale_fraction_list,
-            offsets=augmentation_metadata.offsets,
-            waveform_length=augmentation_metadata.waveform_length,
+                source_sample_rate=augmentation_metadata.source_sample_rate,
+                target_sample_rate=augmentation_metadata.target_sample_rate,
+                time_stretch_rates=augmentation_metadata.time_stretch_rates,
+                pitch_shift_rates=augmentation_metadata.pitch_shift_rates,
+                scale_amount_list=augmentation_metadata.scale_amount_list,
+                scale_fraction_list=augmentation_metadata.scale_fraction_list,
+                offsets=augmentation_metadata.offsets,
+                waveform_length=augmentation_metadata.waveform_length,
 
-            n_fft=augmentation_metadata.n_fft,
-            hop_length=augmentation_metadata.hop_length,
-            win_length=augmentation_metadata.win_length,
-        )
+                n_fft=augmentation_metadata.n_fft,
+                hop_length=augmentation_metadata.hop_length,
+                win_length=augmentation_metadata.win_length,
+            )
+        else:
+            augmentation_metadata = None
 
         # mixture
-        mixture_metadata = self.mixtures[mixture_index]
-        mixture_indices = mixture_metadata.mixture_indices[submix_index]
-        mixed_data = mix(data, mixture_indices)
+        if mixture_index is not None:
+            mixture_metadata = self.mixtures[mixture_index]
+            mixture_indices = mixture_metadata.mixture_indices[submix_index]
+            data = mix(data, mixture_indices)
+        else:
+            mixture_metadata = None
 
-        return mixed_data, \
+        return data, \
             {
                 'index': idx,
                 'sample': sample_metadata,
