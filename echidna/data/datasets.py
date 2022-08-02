@@ -242,9 +242,10 @@ def mix(data : tp.Dict[str, torch.Tensor],
 class CompositeDataset(Dataset):
     def __init__(self, components : list):
         self.components = components
-        self.idx_ulimit = [0]
+        self.idx_ulimit = []
         for c in self.components:
-            self.idx_ulimit.append(self.idx_ulimit[-1] + len(c))
+            self.idx_ulimit.append(
+                (self.idx_ulimit[-1] if self.idx_ulimit else 0) + len(c))
 
     def to_dict_args(self):
         return {'components': [c.to_dict() for c in self.components]}
@@ -258,11 +259,11 @@ class CompositeDataset(Dataset):
 
     def __getitem__(self, idx):
         ds_idx = bisect_left(self.idx_ulimit, idx)
-        idx_in_ds = idx - self.idx_ulimit[ds_idx]
+        idx_in_ds = idx - (self.idx_ulimit[ds_idx-1] if ds_idx > 0 else 0)
 
         data, metadata = self.components[ds_idx][idx_in_ds]
-        if 'index' in metadata:
-            metadata['index'] += self.idx_ulimit[ds_idx]
+        if 'index' in metadata and ds_idx > 0:
+            metadata['index'] += self.idx_ulimit[ds_idx-1]
         # NOTE: limitation: this information will be lost in
         #       the composite dataset of composite datasets
         metadata['dataset_index'] = ds_idx
