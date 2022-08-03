@@ -31,7 +31,8 @@ class CompositeLoss(Loss):
 
     @property
     def domains(self):
-        return set(dm for d in self.components for dm in d['func'].domains)
+        return list(
+            set(dm for d in self.components for dm in d['func'].domains))
 
     def to_dict_args(self):
         return {
