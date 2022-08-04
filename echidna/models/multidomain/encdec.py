@@ -45,6 +45,9 @@ class EncDecModel(torch.nn.Module):
         return self.decoder.forward_length(
             self.encoder.forward_length(l_in))
 
+    def forward_wave_channel(self) -> int:
+        return self.decoder.forward_feature_size()
+
     def reverse_wave_length(self, l_out : int) -> int:
         """
         Parameter

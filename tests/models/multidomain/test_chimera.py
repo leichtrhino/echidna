@@ -35,7 +35,7 @@ class TestChimeraNetModels(unittest.TestCase):
         y = chimera(x)
         self.assertEqual(
             y['waves'].shape,
-            (8, 2, chimera.forward_length(16000))
+            (8, 2, chimera.forward_wave_length(16000))
         )
         self.assertEqual(
             y['embd'].shape,

@@ -954,6 +954,9 @@ class DemucsDecoder(torch.nn.Module):
             l_zdec = d.reverse_length(l_zdec)
         return self.decoder.reverse_length(max(l_tdec, l_zdec))
 
+    def forward_feature_size(self):
+        return self.out_channel
+
     def parameter_list(self, base_lr):
         return [
             {'params': self.decoder.parameters()},

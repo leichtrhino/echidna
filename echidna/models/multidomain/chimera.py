@@ -40,10 +40,10 @@ class EmbeddingHead(torch.nn.Module):
         embd_head = embd_head / embd_head.norm(dim=-1, keepdim=True)
         return embd_head
 
-    def forward_embd_feature(self) -> int:
+    def forward_feature_size(self) -> int:
         return self.embd_feature
 
-    def forward_embd_dim(self) -> int:
+    def forward_feature_dim(self) -> int:
         return self.embd_dim
 
 
@@ -99,7 +99,7 @@ class ChimeraNet(torch.nn.Module):
             'embd': embd_head,
         }
 
-    def forward_length(self, l_in : int) -> int:
+    def forward_wave_length(self, l_in : int) -> int:
         """
         Parameter
         ---------
@@ -108,20 +108,23 @@ class ChimeraNet(torch.nn.Module):
         return self.decoder.forward_length(
             self.encoder.forward_length(l_in))
 
-    def reverse_length(self, l_out : int) -> int:
+    def reverse_wave_length(self, l_out : int) -> int:
         """
         Parameter
         ---------
         l_out : int
         """
         return self.encoder.reverse_length(
-            self.decoder_reverse_length(l_out))
+            self.decoder.reverse_length(l_out))
+
+    def forward_wave_channel(self) -> int:
+        return self.decoder.forward_feature_size()
 
     def forward_embd_feature(self) -> int:
         return self.embedding_head.forward_feature_size()
 
     def forward_embd_dim(self) -> int:
-        return self.embedding_head.forward_embd_dim()
+        return self.embedding_head.forward_feature_dim()
 
     def forward_embd_length(self, l_in : int) -> int:
         return self.encoder.forward_length(l_in)
