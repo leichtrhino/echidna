@@ -22,7 +22,7 @@ apps.data_mixtures.attach_parser(data_subparsers.add_parser('mixtures'))
 apps.train.attach_parser(subparsers.add_parser('train'))
 apps.validate.attach_parser(subparsers.add_parser('validate'))
 apps.separate.attach_parser(subparsers.add_parser('separate'))
-apps.separate.attach_parser(subparsers.add_parser('cluster'))
+apps.cluster.attach_parser(subparsers.add_parser('cluster'))
 apps.transcribe.attach_parser(subparsers.add_parser('transcribe'))
 
 args = parser.parse_args()

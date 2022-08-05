@@ -13,12 +13,18 @@ mixtures_dir = config_dir / 'mixtures'
 augmentations_dir = config_dir / 'augmentations'
 trainings_dir = config_dir / 'trainings'
 validations_dir = config_dir / 'validations'
+separations_dir = config_dir / 'separations'
+clusterings_dir = config_dir / 'clusterings'
+
 for d in (config_dir,
           sample_dir,
           mixtures_dir,
           augmentations_dir,
           trainings_dir,
-          validations_dir):
+          validations_dir,
+          separations_dir,
+          clusterings_dir,
+          ):
     if not d.exists():
         d.mkdir()
 
@@ -660,6 +666,130 @@ for model_type, model_epoch in itertools.product(
 
     yaml_path = \
         validations_conf_dir / f'baseline_{model_type}_{model_epoch}.yaml'
+    with open(yaml_path, 'w') as fp:
+        fp.write(yaml_content)
+
+########################################
+# prepare yaml for separation
+########################################
+template = '''# sample config file for separation
+# model
+model:
+  type: checkpoint
+  args:
+    checkpoint:
+      type: saved
+      args:
+        path: {checkpoint_path}
+
+# input/output params
+input: {input}
+output: {output}
+journal_pattern: {journal_pattern}
+log_pattern: {log_pattern}
+log_level: INFO
+
+sample_rate: 24000
+duration: 0.25
+overlap: 0.75
+permutation_invariant: no
+batch_size: 4
+device: cpu
+'''
+
+separation_conf_dir = config_dir / 'separations'
+separations_dir = root / 'separations'
+
+for model_type, model_epoch in itertools.product(
+        ['chimera'],
+        ['05', '10']
+):
+
+    separations_path = separations_dir / f'baseline_{model_type}'
+    separation_path = separations_dir / f'baseline_{model_type}'
+    journal_pattern = separations_path/'journals'/'{model_epoch:02d}.json'
+    log_pattern = separations_path/'logs'/'{model_epoch:02}.txt'
+    checkpoint_path = trainings_dir / \
+        f'baseline_{model_type}' / 'checkpoints' / f'{model_epoch}.tar'
+
+    input = datasources_dir/f'sin440long.wav'
+    output = f'''
+  - {separation_path/"result"/("out_"+model_epoch+"_1.wav")}
+  - {separation_path/"result"/("out_"+model_epoch+"_2.wav")}'''
+
+    yaml_content = template.format(
+        checkpoint_path=checkpoint_path,
+        input=input,
+        output=output,
+        journal_pattern=journal_pattern,
+        log_pattern=log_pattern,
+    )
+
+    yaml_path = \
+        separation_conf_dir / f'baseline_{model_type}_{model_epoch}.yaml'
+    with open(yaml_path, 'w') as fp:
+        fp.write(yaml_content)
+
+########################################
+# prepare yaml for cluster
+########################################
+template = '''# sample config file for clustering
+# model
+model:
+  type: checkpoint
+  args:
+    checkpoint:
+      type: saved
+      args:
+        path: {checkpoint_path}
+
+# input/output params
+input: {input}
+output: {output}
+journal_pattern: {journal_pattern}
+log_pattern: {log_pattern}
+log_level: INFO
+
+sample_rate: 24000
+duration: 0.25
+overlap: 0.75
+n_fft: 512
+hop_length: 128
+batch_size: 4
+device: cpu
+'''
+
+clustering_conf_dir = config_dir / 'clusterings'
+clusterings_dir = root / 'clusterings'
+
+for model_type, model_epoch in itertools.product(
+        ['chimera'],
+        ['05', '10']
+):
+
+    clusterings_path = clusterings_dir / f'baseline_{model_type}'
+    clustering_path = clusterings_dir / f'baseline_{model_type}'
+    journal_pattern = clusterings_path/'journals'/'{model_epoch:02d}.json'
+    log_pattern = clusterings_path/'logs'/'{model_epoch:02}.txt'
+    checkpoint_path = trainings_dir / \
+        f'baseline_{model_type}' / 'checkpoints' / f'{model_epoch}.tar'
+
+    input = datasources_dir/f'sin440long.wav'
+    output = f'''
+  - {clustering_path/"result"/("out_"+model_epoch+"_1.wav")}
+  - {clustering_path/"result"/("out_"+model_epoch+"_2.wav")}
+  - {clustering_path/"result"/("out_"+model_epoch+"_3.wav")}'''
+
+    yaml_content = template.format(
+        checkpoint_path=checkpoint_path,
+        input=input,
+        output=output,
+        journal_pattern=journal_pattern,
+        log_pattern=log_pattern,
+    )
+
+    yaml_path = \
+        clustering_conf_dir / f'baseline_{model_type}_{model_epoch}.yaml'
     with open(yaml_path, 'w') as fp:
         fp.write(yaml_content)
 

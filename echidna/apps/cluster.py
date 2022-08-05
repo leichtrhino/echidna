@@ -2,7 +2,7 @@
 import argparse
 
 from ..models.models import Model
-from ..procs.separations import ClusteringSpec
+from ..procs.clusterings import ClusteringSpec
 from .utils import make_config_action, make_structure_action
 
 def attach_parser(parser):
@@ -18,8 +18,8 @@ def attach_parser(parser):
             'sample_rate': {'type': 'integer'},
             'duration': {'type': ['number', 'null']},
             'overlap': {'type': ['number', 'null']},
-            'n_fft': {'type': 'int'},
-            'hop_length': {'type': 'int'},
+            'n_fft': {'type': 'integer'},
+            'hop_length': {'type': 'integer'},
             'batch_size': {'type': ['integer', 'null']},
             'device': {'type': ['string', 'null']},
         }
