@@ -32,3 +32,10 @@ python -m echidna validate -c demo/config/validations/baseline_encdec_10.yaml
 python -m echidna validate -c demo/config/validations/baseline_chimera_05.yaml
 python -m echidna validate -c demo/config/validations/baseline_chimera_10.yaml
 
+# separate
+python -m echidna separate -c demo/config/separations/baseline_chimera_05.yaml
+python -m echidna separate -c demo/config/separations/baseline_chimera_10.yaml
+
+# cluster
+python -m echidna cluster -c demo/config/separations/baseline_chimera_05.yaml
+python -m echidna cluster -c demo/config/separations/baseline_chimera_10.yaml
