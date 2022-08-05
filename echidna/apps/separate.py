@@ -36,20 +36,20 @@ def attach_parser(parser):
     group = parser.add_argument_group(title='input/output')
     group.add_argument('--input')
     group.add_argument('--output', nargs='+')
-    group.add_argument('--journal_pattern')
-    group.add_argument('--log_pattern')
-    group.add_argument('--log_level')
+    group.add_argument('--journal-pattern')
+    group.add_argument('--log-pattern')
+    group.add_argument('--log-level')
 
     # separation quality parameters
     group = parser.add_argument_group(title='separation quality parameters')
-    group.add_argument('--sample_rate', type=int)
+    group.add_argument('--sample-rate', type=int)
     group.add_argument('--duration', type=float)
     group.add_argument('--overlap', type=float)
-    group.add_argument('--permutation_invariant', type=bool)
+    group.add_argument('--permutation-invariant', type=bool)
 
     # separation process parameters
     group = parser.add_argument_group(title='separation process parameters')
-    group.add_argument('--batch_size', type=int)
+    group.add_argument('--batch-size', type=int)
     group.add_argument('--device', choices=('cpu', 'cuda'))
 
 

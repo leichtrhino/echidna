@@ -20,13 +20,15 @@ def _split(x : torch.Tensor,
     db = 20 * torch.log10(rms)
     nosilent_frame = db > -top_db
 
-    nosilent_frame = torch.cat((torch.zeros(1, dtype=bool),
-                                nosilent_frame,
-                                torch.zeros(1, dtype=bool)), dim=-1)
+    nosilent_frame = torch.cat((
+        torch.zeros(1, dtype=bool, device=x.device),
+        nosilent_frame,
+        torch.zeros(1, dtype=bool, device=x.device)
+    ), dim=-1)
     nosilent_samples = torch.nonzero(torch.diff(nosilent_frame, 1)) \
         * hop_length
     nosilent_samples = nosilent_samples.clamp(max=x.shape[-1])
-    return nosilent_samples.reshape(-1, 2)
+    return nosilent_samples.reshape(-1, 2).tolist()
 
 
 def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
@@ -39,8 +41,15 @@ def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
     # calculate activation from silence
     activations = _split(x, top_db, frame_length, hop_length)
 
+    if len(base_list) == 0:
+        base_list.append([0, x.shape[-1], []])
     if base_list[-1][1] is None:
         base_list[-1] = (base_list[-1][0], x.shape[-1], base_list[-1][2])
+    if base_list[-1][1] < x.shape[-1]:
+        if base_list[-1][2]: # activation exists at last
+            base_list.append((base_list[-1][1], x.shape[-1], []))
+        else: # activation does not exist at last
+            base_list[-1] = (base_list[-1][0], x.shape[-1], [])
 
     for a_f, a_t in activations:
         # find leftmost index
