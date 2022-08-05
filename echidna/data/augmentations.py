@@ -459,6 +459,29 @@ class EntropyAugmentation(AugmentationAlgorithm):
         mix_indices, _ = mixture_algorithm.mix_index(data=data,
                                                      metadata=metadata,
                                                      seed=seed)
+
+        # return plain augmentation if mix_indices does not exist
+        if len(mix_indices) == 0:
+            n_channels = data['waves'].shape[0]
+            params = {
+                'normalize': self.normalize,
+                'source_sample_rate': self.source_sample_rate,
+                'target_sample_rate': self.target_sample_rate,
+                'waveform_length': self.waveform_length,
+                'n_fft': self.n_fft,
+                'hop_length': self.hop_length,
+                'win_length': self.win_length,
+                'offsets': [0.0] * n_channels,
+                'time_stretch_rates': [1.0] * n_channels,
+                'pitch_shift_rates': [1.0] * n_channels,
+                'scale_amount_list': [[1.0]] * n_channels,
+                'scale_fraction_list': [[]] * n_channels,
+            }
+            algorithm_out = [
+                (params, None) for _ in range(n_augmentations)
+            ]
+            return algorithm_out
+
         random_ = random.Random(seed)
 
         # check the number of permutations of augmentations
@@ -489,6 +512,13 @@ class EntropyAugmentation(AugmentationAlgorithm):
                 hop_length=self.hop_length,
                 win_length=self.win_length
             )
+            if len(parameter_set_list) \
+               > n_augmentations * self.trials_per_augmentation**2:
+                indices = list(range(len(parameter_set_list)))
+                random_.shuffle(indices)
+                indices = indices[
+                    :n_augmentations * self.trials_per_augmentation**2]
+                parameter_set_list = [parameter_set_list[i] for i in indices]
 
         else: # if n_augmentations > total_augmentations
             # make n_augmentations*trials_per_augmentation
@@ -584,28 +614,28 @@ class EntropyAugmentation(AugmentationAlgorithm):
     def calculate_score(self,
                         wave,
                         mix_indices):
-        specgrams = torch.stft(
-            wave,
-            n_fft=self.n_fft,
-            hop_length=self.hop_length,
-            win_length=self.win_length,
-            return_complex=True,
-        ).abs().clamp(min=1e-3) ** 2
+        specgrams = torch.stack([
+            torch.stft(
+                w,
+                n_fft=self.n_fft,
+                hop_length=self.hop_length,
+                win_length=self.win_length,
+                return_complex=True,
+            ).abs().clamp(min=1e-3) ** 2
+            for w in wave
+        ], dim=0)
 
-        subscore = []
-        for mix_index in mix_indices:
-            mix_sg = [
-                torch.sum(specgrams[list(mi)], dim=0)
-                for mi in mix_index if len(mi) > 0
-            ]
-            total_sg = sum(mix_sg)
-            score = sum(
-                torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
-                for sg in mix_sg
-            ) / total_sg.numel()
-            subscore.append(score.item())
-
-        return sorted(subscore)[len(subscore) // 2]
+        mix_index = max(mix_indices, key=lambda m: sum(map(len, m)))
+        mix_sg = [
+            torch.sum(specgrams[list(mi)], dim=0)
+            for mi in mix_index if len(mi) > 0
+        ]
+        total_sg = sum(mix_sg)
+        score = sum(
+            torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
+            for sg in mix_sg
+        ) / total_sg.numel()
+        return score.item()
 
     def score_difficulty_order(self):
         return 'asc'
@@ -703,53 +733,29 @@ class FrequencyAugmentation(EntropyAugmentation):
                         waves,
                         mix_indices):
 
+        if type(waves) == list:
+            waves = torch.stack(waves)
         waves = waves.numpy()
-        subscore = []
-        for mix_index in mix_indices:
-            mix_waves = numpy.stack([
-                waves[list(mi), :].sum(axis=0)
-                for mi in mix_index if len(mi) > 0
-            ])
-            f0, voiced_flag, voiced_prob = librosa.pyin(
-                mix_waves,
-                fmin=librosa.note_to_hz('C2'),
-                fmax=librosa.note_to_hz('C7'),
-                sr=self.target_sample_rate,
-                frame_length=self.win_length,
-            )
-            f0 = numpy.nan_to_num(f0, nan=0.0)
-            score = sum(
-                numpy.abs(f0_a - f0_b).sum().item()
-                for f0_a, f0_b in combinations(f0, 2)
-            ) / (len(f0)*(len(f0)-1)/2 * f0.shape[-1])
-            subscore.append(score)
 
-        return sorted(subscore)[len(subscore) // 2]
+        mix_index = max(mix_indices, key=lambda m: sum(map(len, m)))
+        mix_waves = numpy.stack([
+            waves[list(mi), :].sum(axis=0)
+            for mi in mix_index if len(mi) > 0
+        ])
+        f0, voiced_flag, voiced_prob = librosa.pyin(
+            mix_waves,
+            fmin=librosa.note_to_hz('C2'),
+            fmax=librosa.note_to_hz('C7'),
+            sr=self.target_sample_rate,
+            frame_length=self.win_length,
+        )
+        f0 = numpy.nan_to_num(f0, nan=0.0)
+        score = sum(
+            numpy.abs(f0_a - f0_b).sum().item()
+            for f0_a, f0_b in combinations(f0, 2)
+        ) / (len(f0)*(len(f0)-1)/2 * f0.shape[-1])
 
-
-
-
-        specgrams = torch.stft(
-            wave,
-            n_fft=self.n_fft,
-            hop_length=self.hop_length,
-            win_length=self.win_length,
-            return_complex=True,
-        ).abs().clamp(min=1e-3) ** 2
-
-        subscore = []
-        for mix_index in mix_indices:
-            mix_sg = [
-                torch.sum(specgrams[list(mi)], dim=0)
-                for mi in mix_index if len(mi) > 0
-            ]
-            total_sg = sum(mix_sg)
-            score = sum(
-                torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
-                for sg in mix_sg
-            ) / total_sg.numel()
-            subscore.append(score.item())
-
+        return score
 
     def score_difficulty_order(self):
         return 'desc'
@@ -1100,7 +1106,7 @@ def _make_param_set_cartesian_product(
             'scale_fraction_list': scale_fraction_list,
         }
         augment_param = dict(**common_params, **individual_params)
-        waves = torch.stack(wave_list, dim=0)
+        waves = wave_list
         augmentation_param_list.append((augment_param, waves))
 
     return augmentation_param_list
