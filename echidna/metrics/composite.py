@@ -100,6 +100,15 @@ class CompositeLoss(Loss):
         return losses
 
     def forward_no_reduction(self, y_pred : dict, y_true : dict):
+        if type(y_pred) == torch.Tensor:
+            if len(self.domains) > 1:
+                raise TypeError(f'invalid prediction for multidomain metric')
+            y_pred = {self.domains[0]: y_pred}
+        if type(y_true) == torch.Tensor:
+            if len(self.domains) > 1:
+                raise TypeError(f'invalid true for multidomain metric')
+            y_true = {self.domains[0]: y_true}
+
         if type(y_pred) != dict or any(d not in y_pred for d in self.domains):
             raise ValueError(f'y_pred does not contain {self.domains}')
         if type(y_true) != dict or any(d not in y_true for d in self.domains):
