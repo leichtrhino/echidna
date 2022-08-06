@@ -27,7 +27,8 @@ class Loss(torch.nn.Module):
     def from_dict(cls, d : dict):
         loss_type = d['type']
         loss_class = _loss_map[loss_type]
-        return loss_class.from_dict_args(d['args'])
+        args = d.get('args', None) or {}
+        return loss_class.from_dict_args(args)
 
     @classmethod
     def from_dict_args(cls, d : dict):
