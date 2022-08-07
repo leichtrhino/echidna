@@ -6,6 +6,7 @@ import torch
 
 from ..models.utils import match_length
 from ..metrics.loss import get_loss_name
+from ..metrics.composite import CompositeLoss
 
 from . import trainings
 from . import validations
@@ -211,7 +212,7 @@ def process_batch(spec,
             logger.info(json.dumps(event_dict))
 
         # compute loss
-        if len(loss_function.domains) > 1:
+        if type(loss_function) == CompositeLoss:
             loss_value = loss_function.forward_no_reduction(pred, source)
             loss_values = {
                 'batch': loss_value['batch'].mean(),
