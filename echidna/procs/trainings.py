@@ -248,10 +248,11 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
     # get log path and initialize log handler
     logger = None
     if spec.log_pattern:
+        model_epoch_at_end = spec.checkpoint.get_epoch() + 1
         pattern_dict ={
             # from specification
             'model': spec.checkpoint.get_model_class(),
-            'model_epoch': spec.checkpoint.get_epoch(),
+            'model_epoch': model_epoch_at_end,
             'optimizer': spec.checkpoint.get_optimizer_class(),
             'lr': spec.checkpoint.get_torch_optimizer().defaults['lr'],
             'scheduler': spec.checkpoint.get_scheduler_class(),
