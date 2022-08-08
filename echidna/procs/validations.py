@@ -1,5 +1,6 @@
 
 from datetime import datetime
+import os
 import logging
 import json
 import random
@@ -196,6 +197,8 @@ def _validate(spec : ValidationSpec):
         logger = logging.getLogger(__name__)
         log_path = spec.log_pattern.format(**pattern_dict)
         logger.setLevel(spec.log_level)
+        if not os.path.isdir(os.path.dirname(log_path)):
+            os.makedirs(os.path.dirname(log_path), exist_ok=True)
         handler = logging.FileHandler(log_path)
         handler.setFormatter(
             logging.Formatter('[%(levelname)s] %(message)s'))
@@ -277,6 +280,8 @@ def _validate(spec : ValidationSpec):
             log_path=log_path,
             spec=spec,
         )
+        if not os.path.isdir(os.path.dirname(journal_path)):
+            os.makedirs(os.path.dirname(journal_path), exist_ok=True)
         with open(journal_path, 'w') as fp:
             json.dump(journal.to_dict(), fp)
 

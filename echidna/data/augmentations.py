@@ -764,7 +764,7 @@ def _save_augmentation(spec : AugmentationSpec):
     logger = None
     if spec.log_path:
         if not os.path.exists(os.path.dirname(spec.log_path)):
-            os.makedirs(os.path.dirname(spec.log_path))
+            os.makedirs(os.path.dirname(spec.log_path), exist_ok=True)
         logger = logging.getLogger(__name__)
         logger.setLevel(spec.log_level)
         handler = logging.FileHandler(str(spec.log_path))

@@ -565,7 +565,7 @@ def _save_single_sample(args):
     # save
     dirname = os.path.dirname(data_path)
     if not os.path.isdir(dirname):
-        os.makedirs(dirname)
+        os.makedirs(dirname, exist_ok=True)
     torch.save({
         'waves': torch.stack(crop_waves),
         'sheets': crop_sheets,

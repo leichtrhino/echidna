@@ -1,6 +1,7 @@
 
 import typing as tp
 import inspect
+import os
 from datetime import datetime
 import logging
 import json
@@ -264,6 +265,8 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
         logger = logging.getLogger(__name__)
         log_path = spec.log_pattern.format(**pattern_dict)
         logger.setLevel(spec.log_level)
+        if not os.path.isdir(os.path.dirname(log_path)):
+            os.makedirs(os.path.dirname(log_path), exist_ok=True)
         handler = logging.FileHandler(log_path)
         handler.setFormatter(
             logging.Formatter('[%(levelname)s] %(message)s'))
@@ -422,6 +425,8 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
 
     # save checkpoint
     checkpoint_path = spec.checkpoint_pattern.format(**pattern_dict)
+    if not os.path.isdir(os.path.dirname(checkpoint_path)):
+        os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
     spec.checkpoint.save_torch_checkpoint(checkpoint_path)
 
     logger.info(json.dumps({
@@ -449,6 +454,8 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
             log_path=log_path,
             spec=spec,
         )
+        if not os.path.isdir(os.path.dirname(journal_path)):
+            os.makedirs(os.path.dirname(journal_path), exist_ok=True)
         with open(journal_path, 'w') as fp:
             json.dump(journal.to_dict(), fp)
 
