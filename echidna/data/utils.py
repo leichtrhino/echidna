@@ -34,7 +34,7 @@ def _split(x : torch.Tensor,
 def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
                      x : torch.Tensor,
                      tag : str,
-                     top_db : float=60,
+                     top_db : float=30,
                      frame_length : int=2048,
                      hop_length : int=512) -> tp.List[tp.Tuple[int, int, str]]:
     # initial state of activation_list is [(0, length, [])]

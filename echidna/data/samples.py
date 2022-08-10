@@ -554,7 +554,8 @@ def _save_single_sample(args):
         for ds, w in zip(datasources, waves)
     ]
     for i, (a, w) in enumerate(zip(source_activations, waves)):
-        merge_activation(a, w, i)
+        top_db = 60 if target_db is None else -target_db*10
+        merge_activation(a, w, i, top_db=top_db)
 
     # choose activation
     track_activation = dict()
