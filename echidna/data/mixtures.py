@@ -197,6 +197,7 @@ class CategoryMix(MixAlgorithm):
     def __init__(self,
                  mix_category_list : tp.List[tp.Union[str, tp.List[str]]],
                  include_other : bool=True,
+                 collapse_zero : bool=True,
                  check_duplicate : bool=True):
         self.mix_categories = []
         all_categories = set()
@@ -218,11 +219,13 @@ class CategoryMix(MixAlgorithm):
                 self.mix_categories[i].append(c)
                 all_categories.add(c)
         self.include_other = include_other
+        self.collapse_zero = collapse_zero
 
     def to_dict_args(self):
         return {
             'mix_category_list': self.mix_categories,
             'include_other': self.include_other,
+            'collapse_zero': self.collapse_zero,
         }
 
     @classmethod
@@ -230,6 +233,7 @@ class CategoryMix(MixAlgorithm):
         return cls(
             mix_category_list=d['mix_category_list'],
             include_other=d.get('include_other', True),
+            collapse_zero=d.get('collapse_zero', True),
         )
 
     def mix_index(self,
@@ -260,7 +264,7 @@ class CategoryMix(MixAlgorithm):
                 (list(combinations(bi, r)) for r in range(1, len(bi)+1)),
                 []
             )
-            if len(comb_index) == 0:
+            if len(comb_index) == 0 and not self.collapse_zero:
                 comb_index.append([])
             mix_index.append(comb_index)
 

@@ -29,6 +29,7 @@ class TestMixtures(unittest.TestCase):
             algorithm=CategoryMix(
                 mix_category_list=[['ct001'], ['ct002', 'ct003']],
                 include_other=True,
+                collapse_zero=False,
             ),
             seed=self.seed,
             mix_per_sample=2,
@@ -109,3 +110,39 @@ class TestMixtures(unittest.TestCase):
                               {'start_mixing', 'made_mixture',
                                'save_mixtures', 'save_mixtures_journal',
                                'finish_mixing'})
+
+    def test_category_mix_collapse_zero(self):
+        mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_3'
+        spec = MixtureSpec(
+            algorithm=CategoryMix(
+                mix_category_list=[['ct001'], ['ct002', 'ct003']],
+                include_other=True,
+                collapse_zero=True,
+            ),
+            seed=self.seed,
+            mix_per_sample=2,
+            sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
+            mixture_metadata_path=mix_dir/'d1'/'metadata.json',
+            journal_path=mix_dir/'d1'/'journal.json',
+            log_path=None,
+            log_level=None,
+            jobs=None
+        )
+        spec.save_mixture()
+
+        # load metadata
+        with open(spec.mixture_metadata_path, 'r') as fp:
+            mixtures = Mixture.from_list(json.load(fp))
+
+        self.assertEqual(len(mixtures), 2)
+        for m in mixtures:
+            self.assertEqual(m.sample_index, 0)
+            self.assertEqual(m.mixture_indices, [])
+
+        # load journal
+        with open(spec.journal_path, 'r') as fp:
+            journal = MixturesJournal.from_dict(json.load(fp))
+
+        self.assertEqual(journal.metadata_path, 'metadata.json')
+        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
+
