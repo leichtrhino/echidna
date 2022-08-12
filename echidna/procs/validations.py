@@ -242,7 +242,8 @@ def _validate(spec : ValidationSpec):
             step_journal.sample_indices = metadata['index']
         validation_step_journals.append(step_journal)
 
-    validation_loss = sum(j.batch_loss for j in validation_step_journals) \
+    validation_loss = sum(j.batch_loss * len(j.sample_indices)
+                          for j in validation_step_journals) \
         / sum(len(j.sample_losses) for j in validation_step_journals)
 
     if logger:
