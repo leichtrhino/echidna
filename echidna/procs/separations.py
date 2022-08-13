@@ -207,6 +207,7 @@ def _separate(spec : SeparationSpec):
             'model_class': spec.model.get_class(),
             'model_epoch': spec.model.get_epoch(),
             'input': spec.input,
+            'waveform_length': x.shape,
         }))
 
     # 1. find output_waveform per sample
@@ -284,6 +285,7 @@ def _separate(spec : SeparationSpec):
                     'model_epoch': spec.model.get_epoch(),
                     'proceeded_samples':
                     in_channel_i * len(sample[0]) + batch_end_i,
+                    'sample_shape': tuple(s_hat.shape),
                 }))
 
         if spec.duration:
@@ -297,6 +299,16 @@ def _separate(spec : SeparationSpec):
             aligned_channel = torch.cat(out_windows, dim=-1)
         out_tensors.append(aligned_channel)
 
+        if logger:
+            logger.debug(json.dumps({
+                'type': 'separate_progress',
+                'timestamp': datetime.now().isoformat(),
+                'model_class': spec.model.get_class(),
+                'model_epoch': spec.model.get_epoch(),
+                'proceeded_channel': in_channel_i,
+                'channel_shape': tuple(aligned_channel.shape),
+            }))
+
     s_hats = torch.stack(out_tensors)
     left = (s_hats.shape[-1] - orig_length) // 2
     s_hats = s_hats[..., left:left+orig_length]
@@ -308,6 +320,7 @@ def _separate(spec : SeparationSpec):
             'model_class': spec.model.get_class(),
             'model_epoch': spec.model.get_epoch(),
             'proceeded_samples': len(sample) * len(sample[0]),
+            'waveform_shape': tuple(s_hats.shape),
         }))
 
     # save
