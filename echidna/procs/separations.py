@@ -247,6 +247,15 @@ def _separate(spec : SeparationSpec):
         sample = split_into_windows(padded_x, in_sample_len, sample_hop_len)
     else:
         sample = x.unsqueeze(1)
+        in_sample_len = model.reverse_wave_length(orig_length)
+        if in_sample_len > orig_length:
+            expand_left = (in_sample_len - orig_length) // 2
+            expand_right = in_sample_len - (expand_left + orig_length)
+            sample = torch.cat((
+                torch.zeros(*sample.shape[:-1], expand_left),
+                sample,
+                torch.zeros(*sample.shape[:-1], expand_right)
+            ), dim=-1)
 
     if logger:
         logger.info(json.dumps({
