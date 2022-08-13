@@ -65,8 +65,11 @@ class TestSeparation(unittest.TestCase):
         spec.separate()
 
         # check output
+        x, _ = torchaudio.load(pathlib.Path(self.tmpdir.name)/'input.wav')
         for o in output:
             self.assertTrue(pathlib.Path(o).exists)
+            y, _ = torchaudio.load(o)
+            self.assertEqual(x.shape[-1], y.shape[-1])
 
         # check journal and log
         if with_journal_and_log:
