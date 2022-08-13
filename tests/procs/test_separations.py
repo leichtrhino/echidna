@@ -15,6 +15,8 @@ class TestSeparation(unittest.TestCase):
         self.tmpdir = tempfile.TemporaryDirectory()
         input = pathlib.Path(self.tmpdir.name) / 'input.wav'
         torchaudio.save(str(input), torch.zeros(1, 16000), sample_rate=8000)
+        input_2 = pathlib.Path(self.tmpdir.name) / 'input_2.wav'
+        torchaudio.save(str(input), torch.zeros(2, 24240), sample_rate=8000)
 
     def tearDown(self):
         self.tmpdir.cleanup()
@@ -24,7 +26,9 @@ class TestSeparation(unittest.TestCase):
                          with_windowing=False,
                          permutation_invariant=False,
                          with_journal_and_log=True,
-                         use_chimera=False):
+                         use_chimera=False,
+                         multi_channel=False,
+                         ):
         if with_journal_and_log:
             journal_pattern = str(pathlib.Path(self.tmpdir.name)
                                   / name / 'journal_1.json')
@@ -94,4 +98,15 @@ class TestSeparation(unittest.TestCase):
         self._test_separation(name='chimera',
                               with_windowing=True,
                               use_chimera=True)
+
+    def test_separation_window_multichannel(self):
+        self._test_separation(name='window_2',
+                              with_windowing=True,
+                              multi_channel=True)
+
+
+    def test_separation_nowindow_multichannel(self):
+        self._test_separation(name='nowindow_2',
+                              with_windowing=False,
+                              multi_channel=True)
 
