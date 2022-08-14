@@ -1,4 +1,6 @@
 __pycache__/
-*.wav
-*.log
+demo/config/
+demo/data/
+demo/trainings/
+demo/validations/
 
