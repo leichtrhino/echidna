@@ -1,0 +1,45 @@
+echidna.datasets package
+========================
+
+Submodules
+----------
+
+echidna.datasets.datasets module
+--------------------------------
+
+.. automodule:: echidna.datasets.datasets
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+echidna.datasets.mixer module
+-----------------------------
+
+.. automodule:: echidna.datasets.mixer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+echidna.datasets.sampler module
+-------------------------------
+
+.. automodule:: echidna.datasets.sampler
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+echidna.datasets.transforms module
+----------------------------------
+
+.. automodule:: echidna.datasets.transforms
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: echidna.datasets
+   :members:
+   :undoc-members:
+   :show-inheritance:

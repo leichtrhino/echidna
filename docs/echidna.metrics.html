@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>echidna.metrics package &#8212; echidna  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="echidna.models package" href="echidna.models.html" />
+    <link rel="prev" title="echidna.data package" href="echidna.data.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="echidna.models.html" title="echidna.models package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="echidna.data.html" title="echidna.data package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">echidna  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="echidna.html" accesskey="U">echidna package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">echidna.metrics package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="echidna-metrics-package">
+<h1>echidna.metrics package<a class="headerlink" href="#echidna-metrics-package" title="Permalink to this headline">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-echidna.metrics.composite">
+<span id="echidna-metrics-composite-module"></span><h2>echidna.metrics.composite module<a class="headerlink" href="#module-echidna.metrics.composite" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.composite.</span></span><span class="sig-name descname"><span class="pre">CompositeLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.metrics.loss.Loss" title="echidna.metrics.loss.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.loss.Loss</span></code></a></p>
+<p>NOTE: reduction attribute of each loss is ignored</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.components">
+<span class="sig-name descname"><span class="pre">components</span></span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of dictionary that contains func,
+param(optional), weight(optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.domains">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domains</span></span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.domains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.composite.CompositeLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.composite.CompositeLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-echidna.metrics.deepclustering">
+<span id="echidna-metrics-deepclustering-module"></span><h2>echidna.metrics.deepclustering module<a class="headerlink" href="#module-echidna.metrics.deepclustering" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.DeepClusteringLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.deepclustering.</span></span><span class="sig-name descname"><span class="pre">DeepClusteringLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'argmax'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.deepclustering.DeepClusteringLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.deepclustering._EmbeddingLoss</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.DeepClusteringLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.deepclustering.DeepClusteringLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.DeepLDALoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.deepclustering.</span></span><span class="sig-name descname"><span class="pre">DeepLDALoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'argmax'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.deepclustering.DeepLDALoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.deepclustering._EmbeddingLoss</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.DeepLDALoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.deepclustering.DeepLDALoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.GraphLaplacianLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.deepclustering.</span></span><span class="sig-name descname"><span class="pre">GraphLaplacianLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'argmax'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.deepclustering.GraphLaplacianLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.deepclustering._EmbeddingLoss</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.GraphLaplacianLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.deepclustering.GraphLaplacianLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.WhitenedKMeansLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.deepclustering.</span></span><span class="sig-name descname"><span class="pre">WhitenedKMeansLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'argmax'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.deepclustering.WhitenedKMeansLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.deepclustering._EmbeddingLoss</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.WhitenedKMeansLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.deepclustering.WhitenedKMeansLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.metrics.deepclustering.deep_clustering_loss">
+<span class="sig-prename descclassname"><span class="pre">echidna.metrics.deepclustering.</span></span><span class="sig-name descname"><span class="pre">deep_clustering_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'deep_clustering'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.deepclustering.deep_clustering_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>loss functions for deep clustering
+embd: (batch_size, <a href="#id1"><span class="problematic" id="id2">*</span></a>, embd_dim)
+label: (batch_size, <a href="#id3"><span class="problematic" id="id4">*</span></a>, label_dim)
+weight: (batch_size, <a href="#id5"><span class="problematic" id="id6">*</span></a>)</p>
+</dd></dl>
+
+</section>
+<section id="module-echidna.metrics.loss">
+<span id="echidna-metrics-loss-module"></span><h2>echidna.metrics.loss module<a class="headerlink" href="#module-echidna.metrics.loss" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.loss.</span></span><span class="sig-name descname"><span class="pre">Loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.domains">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domains</span></span><a class="headerlink" href="#echidna.metrics.loss.Loss.domains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.Loss.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.loss.Loss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.loss.Loss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.metrics.loss.get_loss_class">
+<span class="sig-prename descclassname"><span class="pre">echidna.metrics.loss.</span></span><span class="sig-name descname"><span class="pre">get_loss_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.get_loss_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.metrics.loss.get_loss_name">
+<span class="sig-prename descclassname"><span class="pre">echidna.metrics.loss.</span></span><span class="sig-name descname"><span class="pre">get_loss_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.get_loss_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.metrics.loss.register_loss_class">
+<span class="sig-prename descclassname"><span class="pre">echidna.metrics.loss.</span></span><span class="sig-name descname"><span class="pre">register_loss_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.loss.register_loss_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-echidna.metrics.spectrogram">
+<span id="echidna-metrics-spectrogram-module"></span><h2>echidna.metrics.spectrogram module<a class="headerlink" href="#module-echidna.metrics.spectrogram" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.L1SpectrogramLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.spectrogram.</span></span><span class="sig-name descname"><span class="pre">L1SpectrogramLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(512,</span> <span class="pre">128),</span> <span class="pre">(1024,</span> <span class="pre">256),</span> <span class="pre">(2048,</span> <span class="pre">512)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.L1SpectrogramLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.spectrogram._SpectrogramLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.L1SpectrogramLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.L1SpectrogramLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.L1SpectrogramLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.spectrogram.L1SpectrogramLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.L2SpectrogramLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.spectrogram.</span></span><span class="sig-name descname"><span class="pre">L2SpectrogramLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(512,</span> <span class="pre">128),</span> <span class="pre">(1024,</span> <span class="pre">256),</span> <span class="pre">(2048,</span> <span class="pre">512)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.L2SpectrogramLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.spectrogram._SpectrogramLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.L2SpectrogramLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.L2SpectrogramLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.L2SpectrogramLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.spectrogram.L2SpectrogramLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramConvergenceLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.spectrogram.</span></span><span class="sig-name descname"><span class="pre">SpectrogramConvergenceLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(512,</span> <span class="pre">128),</span> <span class="pre">(1024,</span> <span class="pre">256),</span> <span class="pre">(2048,</span> <span class="pre">512)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramConvergenceLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.spectrogram._SpectrogramLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramConvergenceLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramConvergenceLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramConvergenceLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramConvergenceLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.spectrogram.</span></span><span class="sig-name descname"><span class="pre">SpectrogramLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(512,</span> <span class="pre">128),</span> <span class="pre">(1024,</span> <span class="pre">256),</span> <span class="pre">(2048,</span> <span class="pre">512)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_convergence_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_magnitude_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_magnitude_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_magnitude_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.metrics.loss.Loss" title="echidna.metrics.loss.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.loss.Loss</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramLoss.domains">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domains</span></span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramLoss.domains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramLoss.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramLoss.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramLoss.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramLoss.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.SpectrogramLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.spectrogram.SpectrogramLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.metrics.spectrogram.multiscale_spectrogram_loss">
+<span class="sig-prename descclassname"><span class="pre">echidna.metrics.spectrogram.</span></span><span class="sig-name descname"><span class="pre">multiscale_spectrogram_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fft_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[(512,</span> <span class="pre">128),</span> <span class="pre">(1024,</span> <span class="pre">256),</span> <span class="pre">(2048,</span> <span class="pre">512)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_convergence_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_magnitude_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_magnitude_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_magnitude_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.metrics.spectrogram.multiscale_spectrogram_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>loss function for multiscale spectrogram
+s_pred: (batch_size, <a href="#id7"><span class="problematic" id="id8">*</span></a>, waveform_length)
+s_true: (batch_size, <a href="#id9"><span class="problematic" id="id10">*</span></a>, waveform_length)</p>
+</dd></dl>
+
+</section>
+<section id="module-echidna.metrics.waveform">
+<span id="echidna-metrics-waveform-module"></span><h2>echidna.metrics.waveform module<a class="headerlink" href="#module-echidna.metrics.waveform" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.L1WaveformLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.waveform.</span></span><span class="sig-name descname"><span class="pre">L1WaveformLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.L1WaveformLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.waveform._WaveformLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.L1WaveformLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.L1WaveformLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.L1WaveformLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.waveform.L1WaveformLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.L2WaveformLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.waveform.</span></span><span class="sig-name descname"><span class="pre">L2WaveformLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.L2WaveformLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.waveform._WaveformLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.L2WaveformLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.L2WaveformLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.L2WaveformLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.waveform.L2WaveformLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSDRLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.waveform.</span></span><span class="sig-name descname"><span class="pre">NegativeSDRLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.NegativeSDRLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.waveform._WaveformLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSDRLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.NegativeSDRLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSDRLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.waveform.NegativeSDRLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSDSDRLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.waveform.</span></span><span class="sig-name descname"><span class="pre">NegativeSDSDRLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.NegativeSDSDRLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.waveform._WaveformLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSDSDRLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.NegativeSDSDRLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSDSDRLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.waveform.NegativeSDSDRLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSISDRLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.metrics.waveform.</span></span><span class="sig-name descname"><span class="pre">NegativeSISDRLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.NegativeSISDRLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.metrics.waveform._WaveformLoss</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSISDRLoss.forward_no_reduction">
+<span class="sig-name descname"><span class="pre">forward_no_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.metrics.waveform.NegativeSISDRLoss.forward_no_reduction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.NegativeSISDRLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.metrics.waveform.NegativeSISDRLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.metrics.waveform.source_to_distortion_ratio">
+<span class="sig-prename descclassname"><span class="pre">echidna.metrics.waveform.</span></span><span class="sig-name descname"><span class="pre">source_to_distortion_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_invariant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_dependent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.metrics.waveform.source_to_distortion_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>loss function for source to distortion ratio
+s_pred: (batch_size, <a href="#id11"><span class="problematic" id="id12">*</span></a>, waveform_length)
+s_true: (batch_size, <a href="#id13"><span class="problematic" id="id14">*</span></a>, waveform_length)</p>
+</dd></dl>
+
+</section>
+<section id="module-echidna.metrics">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.metrics" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">echidna.metrics package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-echidna.metrics.composite">echidna.metrics.composite module</a></li>
+<li><a class="reference internal" href="#module-echidna.metrics.deepclustering">echidna.metrics.deepclustering module</a></li>
+<li><a class="reference internal" href="#module-echidna.metrics.loss">echidna.metrics.loss module</a></li>
+<li><a class="reference internal" href="#module-echidna.metrics.spectrogram">echidna.metrics.spectrogram module</a></li>
+<li><a class="reference internal" href="#module-echidna.metrics.waveform">echidna.metrics.waveform module</a></li>
+<li><a class="reference internal" href="#module-echidna.metrics">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="echidna.data.html"
+                          title="previous chapter">echidna.data package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="echidna.models.html"
+                          title="next chapter">echidna.models package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/echidna.metrics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="echidna.models.html" title="echidna.models package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="echidna.data.html" title="echidna.data package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">echidna  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="echidna.html" >echidna package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">echidna.metrics package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, LeichtRhino.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>

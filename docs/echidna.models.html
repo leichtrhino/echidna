@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>echidna.models package &#8212; echidna  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="echidna.models.core package" href="echidna.models.core.html" />
+    <link rel="prev" title="echidna.metrics package" href="echidna.metrics.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="echidna.models.core.html" title="echidna.models.core package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="echidna.metrics.html" title="echidna.metrics package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">echidna  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="echidna.html" accesskey="U">echidna package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">echidna.models package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="echidna-models-package">
+<h1>echidna.models package<a class="headerlink" href="#echidna-models-package" title="Permalink to this headline">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="echidna.models.core.html">echidna.models.core package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.baseline">echidna.models.core.baseline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.commonlayers">echidna.models.core.commonlayers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.convtasnet">echidna.models.core.convtasnet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.demucs">echidna.models.core.demucs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.waveunet">echidna.models.core.waveunet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="echidna.models.multidomain.html">echidna.models.multidomain package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.cerberus">echidna.models.multidomain.cerberus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.chimera">echidna.models.multidomain.chimera module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.encdec">echidna.models.multidomain.encdec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-echidna.models.checkpoints">
+<span id="echidna-models-checkpoints-module"></span><h2>echidna.models.checkpoints module<a class="headerlink" href="#module-echidna.models.checkpoints" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">Checkpoint</span></span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_epoch">
+<span class="sig-name descname"><span class="pre">get_epoch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_model_class">
+<span class="sig-name descname"><span class="pre">get_model_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_model_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_model_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_model_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_model_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_optimizer_class">
+<span class="sig-name descname"><span class="pre">get_optimizer_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_optimizer_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_optimizer_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_optimizer_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_optimizer_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_scheduler_class">
+<span class="sig-name descname"><span class="pre">get_scheduler_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_scheduler_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_scheduler_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_scheduler_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_scheduler_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_torch_model">
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_torch_optimizer">
+<span class="sig-name descname"><span class="pre">get_torch_optimizer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_torch_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.get_torch_scheduler">
+<span class="sig-name descname"><span class="pre">get_torch_scheduler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.get_torch_scheduler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.save_torch_checkpoint">
+<span class="sig-name descname"><span class="pre">save_torch_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.save_torch_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save checkpoint</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">InitialCheckpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.checkpoints.Checkpoint</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_optimizer_class">
+<span class="sig-name descname"><span class="pre">get_optimizer_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_optimizer_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_optimizer_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_optimizer_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_optimizer_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_scheduler_class">
+<span class="sig-name descname"><span class="pre">get_scheduler_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_scheduler_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_scheduler_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_scheduler_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_scheduler_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_torch_optimizer">
+<span class="sig-name descname"><span class="pre">get_torch_optimizer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_torch_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.get_torch_scheduler">
+<span class="sig-name descname"><span class="pre">get_torch_scheduler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.get_torch_scheduler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">SavedCheckpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.checkpoints.Checkpoint</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_optimizer_class">
+<span class="sig-name descname"><span class="pre">get_optimizer_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_optimizer_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_optimizer_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_optimizer_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_optimizer_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_scheduler_class">
+<span class="sig-name descname"><span class="pre">get_scheduler_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_scheduler_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_scheduler_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_torch_optimizer">
+<span class="sig-name descname"><span class="pre">get_torch_optimizer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_torch_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.get_torch_scheduler">
+<span class="sig-name descname"><span class="pre">get_torch_scheduler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.get_torch_scheduler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.get_optimizer_class">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">get_optimizer_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.get_optimizer_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.checkpoints.get_scheduler_class">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">get_scheduler_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.get_scheduler_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-echidna.models.models">
+<span id="echidna-models-models-module"></span><h2>echidna.models.models module<a class="headerlink" href="#module-echidna.models.models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">CheckpointModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.CheckpointModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.models.Model</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.CheckpointModel.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.get_class">
+<span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#echidna.models.models.CheckpointModel.get_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.get_epoch">
+<span class="sig-name descname"><span class="pre">get_epoch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.models.CheckpointModel.get_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>get epoch of the model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.get_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#echidna.models.models.CheckpointModel.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model hyperparaemters to give model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.get_torch_model">
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#echidna.models.models.CheckpointModel.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>get parameters of its model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.CheckpointModel.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.models.InitialModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">InitialModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">klass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.InitialModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.models.Model</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.InitialModel.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.InitialModel.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.InitialModel.get_class">
+<span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#echidna.models.models.InitialModel.get_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.InitialModel.get_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#echidna.models.models.InitialModel.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model hyperparaemters to give model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.InitialModel.get_torch_model">
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.InitialModel.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>get parameters of its model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.InitialModel.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.InitialModel.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.models.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><a class="headerlink" href="#echidna.models.models.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.Model.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.get_class">
+<span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#echidna.models.models.Model.get_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.get_epoch">
+<span class="sig-name descname"><span class="pre">get_epoch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.models.Model.get_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>get epoch of model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.get_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#echidna.models.models.Model.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model hyperparaemters to give model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.get_torch_model">
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#echidna.models.models.Model.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>get parameters of its model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.save_torch_model">
+<span class="sig-name descname"><span class="pre">save_torch_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.Model.save_torch_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.Model.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.Model.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.Model.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">SavedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.models.Model</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel.from_dict_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.from_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel.get_class">
+<span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.get_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel.get_epoch">
+<span class="sig-name descname"><span class="pre">get_epoch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.get_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>get epoch of model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel.get_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>get model hyperparaemters to give model_class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel.get_torch_model">
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>get parameters of its model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.models.SavedModel.to_dict_args">
+<span class="sig-name descname"><span class="pre">to_dict_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.to_dict_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.models.get_model_class">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">get_model_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.get_model_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.models.register_model_class">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">register_model_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">klass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.register_model_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-echidna.models.nest">
+<span id="echidna-models-nest-module"></span><h2>echidna.models.nest module<a class="headerlink" href="#module-echidna.models.nest" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.BaselineChimeraNet">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">BaselineChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.BaselineChimeraNet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.BaselineEncDecModel">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">BaselineEncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.BaselineEncDecModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-echidna.models.utils">
+<span id="echidna-models-utils-module"></span><h2>echidna.models.utils module<a class="headerlink" href="#module-echidna.models.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.utils.generate_dft_matrix">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">generate_dft_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.utils.generate_dft_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.utils.init_conv_weight">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_conv_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.nn.modules.conv.Conv1d</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#echidna.models.utils.init_conv_weight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.utils.init_lstm_weight">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_lstm_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lstm_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.nn.modules.rnn.LSTM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.utils.init_lstm_weight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.utils.init_module">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#echidna.models.utils.init_module" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.utils.match_length">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">match_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.utils.match_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-echidna.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">echidna.models package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-echidna.models.checkpoints">echidna.models.checkpoints module</a></li>
+<li><a class="reference internal" href="#module-echidna.models.models">echidna.models.models module</a></li>
+<li><a class="reference internal" href="#module-echidna.models.nest">echidna.models.nest module</a></li>
+<li><a class="reference internal" href="#module-echidna.models.utils">echidna.models.utils module</a></li>
+<li><a class="reference internal" href="#module-echidna.models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="echidna.metrics.html"
+                          title="previous chapter">echidna.metrics package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="echidna.models.core.html"
+                          title="next chapter">echidna.models.core package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/echidna.models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="echidna.models.core.html" title="echidna.models.core package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="echidna.metrics.html" title="echidna.metrics package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">echidna  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="echidna.html" >echidna package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">echidna.models package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, LeichtRhino.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>
