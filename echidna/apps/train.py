@@ -9,7 +9,7 @@ from .utils import make_config_action, make_structure_action
 
 def attach_parser(parser):
     config_schema = {
-        'tyue': 'object',
+        'type': 'object',
         'properties': {
             'checkpoint': {'type': 'object'},
 
