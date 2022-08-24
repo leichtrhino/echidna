@@ -459,6 +459,29 @@ class EntropyAugmentation(AugmentationAlgorithm):
         mix_indices, _ = mixture_algorithm.mix_index(data=data,
                                                      metadata=metadata,
                                                      seed=seed)
+
+        # return plain augmentation if mix_indices does not exist
+        if len(mix_indices) == 0:
+            n_channels = data['waves'].shape[0]
+            params = {
+                'normalize': self.normalize,
+                'source_sample_rate': self.source_sample_rate,
+                'target_sample_rate': self.target_sample_rate,
+                'waveform_length': self.waveform_length,
+                'n_fft': self.n_fft,
+                'hop_length': self.hop_length,
+                'win_length': self.win_length,
+                'offsets': [0.0] * n_channels,
+                'time_stretch_rates': [1.0] * n_channels,
+                'pitch_shift_rates': [1.0] * n_channels,
+                'scale_amount_list': [[1.0]] * n_channels,
+                'scale_fraction_list': [[]] * n_channels,
+            }
+            algorithm_out = [
+                (params, None) for _ in range(n_augmentations)
+            ]
+            return algorithm_out
+
         random_ = random.Random(seed)
 
         # check the number of permutations of augmentations
