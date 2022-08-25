@@ -512,6 +512,13 @@ class EntropyAugmentation(AugmentationAlgorithm):
                 hop_length=self.hop_length,
                 win_length=self.win_length
             )
+            if len(parameter_set_list) \
+               > n_augmentations * self.trials_per_augmentation**2:
+                indices = list(range(len(parameter_set_list)))
+                random_.shuffle(indices)
+                indices = indices[
+                    :n_augmentations * self.trials_per_augmentation**2]
+                parameter_set_list = [parameter_set_list[i] for i in indices]
 
         else: # if n_augmentations > total_augmentations
             # make n_augmentations*trials_per_augmentation
