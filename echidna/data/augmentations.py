@@ -614,28 +614,28 @@ class EntropyAugmentation(AugmentationAlgorithm):
     def calculate_score(self,
                         wave,
                         mix_indices):
-        specgrams = torch.stft(
-            wave,
-            n_fft=self.n_fft,
-            hop_length=self.hop_length,
-            win_length=self.win_length,
-            return_complex=True,
-        ).abs().clamp(min=1e-3) ** 2
+        specgrams = torch.stack([
+            torch.stft(
+                w,
+                n_fft=self.n_fft,
+                hop_length=self.hop_length,
+                win_length=self.win_length,
+                return_complex=True,
+            ).abs().clamp(min=1e-3) ** 2
+            for w in wave
+        ], dim=0)
 
-        subscore = []
-        for mix_index in mix_indices:
-            mix_sg = [
-                torch.sum(specgrams[list(mi)], dim=0)
-                for mi in mix_index if len(mi) > 0
-            ]
-            total_sg = sum(mix_sg)
-            score = sum(
-                torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
-                for sg in mix_sg
-            ) / total_sg.numel()
-            subscore.append(score.item())
-
-        return sorted(subscore)[len(subscore) // 2]
+        mix_index = max(mix_indices, key=lambda m: sum(map(len, m)))
+        mix_sg = [
+            torch.sum(specgrams[list(mi)], dim=0)
+            for mi in mix_index if len(mi) > 0
+        ]
+        total_sg = sum(mix_sg)
+        score = sum(
+            torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
+            for sg in mix_sg
+        ) / total_sg.numel()
+        return score.item()
 
     def score_difficulty_order(self):
         return 'asc'
