@@ -733,53 +733,29 @@ class FrequencyAugmentation(EntropyAugmentation):
                         waves,
                         mix_indices):
 
+        if type(waves) == list:
+            waves = torch.stack(waves)
         waves = waves.numpy()
-        subscore = []
-        for mix_index in mix_indices:
-            mix_waves = numpy.stack([
-                waves[list(mi), :].sum(axis=0)
-                for mi in mix_index if len(mi) > 0
-            ])
-            f0, voiced_flag, voiced_prob = librosa.pyin(
-                mix_waves,
-                fmin=librosa.note_to_hz('C2'),
-                fmax=librosa.note_to_hz('C7'),
-                sr=self.target_sample_rate,
-                frame_length=self.win_length,
-            )
-            f0 = numpy.nan_to_num(f0, nan=0.0)
-            score = sum(
-                numpy.abs(f0_a - f0_b).sum().item()
-                for f0_a, f0_b in combinations(f0, 2)
-            ) / (len(f0)*(len(f0)-1)/2 * f0.shape[-1])
-            subscore.append(score)
 
-        return sorted(subscore)[len(subscore) // 2]
+        mix_index = max(mix_indices, key=lambda m: sum(map(len, m)))
+        mix_waves = numpy.stack([
+            waves[list(mi), :].sum(axis=0)
+            for mi in mix_index if len(mi) > 0
+        ])
+        f0, voiced_flag, voiced_prob = librosa.pyin(
+            mix_waves,
+            fmin=librosa.note_to_hz('C2'),
+            fmax=librosa.note_to_hz('C7'),
+            sr=self.target_sample_rate,
+            frame_length=self.win_length,
+        )
+        f0 = numpy.nan_to_num(f0, nan=0.0)
+        score = sum(
+            numpy.abs(f0_a - f0_b).sum().item()
+            for f0_a, f0_b in combinations(f0, 2)
+        ) / (len(f0)*(len(f0)-1)/2 * f0.shape[-1])
 
-
-
-
-        specgrams = torch.stft(
-            wave,
-            n_fft=self.n_fft,
-            hop_length=self.hop_length,
-            win_length=self.win_length,
-            return_complex=True,
-        ).abs().clamp(min=1e-3) ** 2
-
-        subscore = []
-        for mix_index in mix_indices:
-            mix_sg = [
-                torch.sum(specgrams[list(mi)], dim=0)
-                for mi in mix_index if len(mi) > 0
-            ]
-            total_sg = sum(mix_sg)
-            score = sum(
-                torch.sum(-sg/total_sg * torch.log2(sg/total_sg))
-                for sg in mix_sg
-            ) / total_sg.numel()
-            subscore.append(score.item())
-
+        return score
 
     def score_difficulty_order(self):
         return 'desc'
