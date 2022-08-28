@@ -1106,7 +1106,7 @@ def _make_param_set_cartesian_product(
             'scale_fraction_list': scale_fraction_list,
         }
         augment_param = dict(**common_params, **individual_params)
-        waves = torch.stack(wave_list, dim=0)
+        waves = wave_list
         augmentation_param_list.append((augment_param, waves))
 
     return augmentation_param_list
