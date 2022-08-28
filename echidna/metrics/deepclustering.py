@@ -46,7 +46,10 @@ class _EmbeddingLoss(Loss):
             device = e_true.device
             label = torch.eye(C, device=device)[e_true.argmax(dim=-1)]
         elif self.label == 'softmax':
-            label = e_true.softmax(dim=-1)
+            label = torch.nn.functional.normalize(
+                e_true.softmax(dim=-1),
+                dim=-1,
+            )
 
         weight = None
         if self.weight == 'magnitude_ratio':
