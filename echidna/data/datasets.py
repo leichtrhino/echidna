@@ -152,7 +152,8 @@ class BasicDataset(Dataset):
                 'index': idx,
                 'sample': sample_metadata,
                 'augmentation': augmentation_metadata,
-                'mixture': mixture_metadata
+                'mixture': mixture_metadata,
+                'submix_index': submix_index,
             }
 
 
