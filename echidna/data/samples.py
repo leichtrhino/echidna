@@ -393,6 +393,8 @@ def _save_sample(spec : SampleSpec):
         }))
 
     if spec.journal_path:
+        if not os.path.exists(os.path.dirname(spec.journal_path)):
+            os.makedirs(os.path.dirname(spec.journal_path))
         journals = SamplesJournal(
             process_start=process_start,
             process_finish=process_finish,
