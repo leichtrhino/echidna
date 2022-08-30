@@ -12,7 +12,7 @@ import torch
 import torchaudio
 import numpy
 
-from .transforms import Resample, MultiPointScale
+from .transforms import Resample, TimeStretch, MultiPointScale
 from .utils import merge_activation
 
 class Datasource(object):
@@ -502,7 +502,6 @@ def _save_single_sample(args):
                   and source_i < len(ds_list):
                 ds = ds_list[source_i]
                 source_i += 1
-                selected_ds.append(ds)
                 # load wav and concat
                 w, orig_sr = torchaudio.load(ds.wave_path)
                 w = w.mean(dim=0)
@@ -513,6 +512,24 @@ def _save_single_sample(args):
                         fractions=[],
                         normalize=True
                     )(w)
+                # if no activation is found, skip this datasource
+                activation = [(0, w.shape[-1], [])]
+                top_db = 60 if target_db is None else -target_db*10
+                merge_activation(activation, w, 'tag', top_db=top_db)
+                if all(not tags for _, _, tags in activation):
+                    continue
+                if ds.track is None:
+                    # shrink silence
+                    w = torch.cat([
+                        w[..., s:t] if tags else
+                        w[..., s:t] if t-s < sample_rate * 1.0 else
+                        torch.cat((
+                            w[..., s:s+int(sample_rate*1.0)//2],
+                            w[..., t-int(sample_rate*1.0)//2:t],
+                        ), dim=-1)
+                        for s, t, tags in activation
+                    ], dim=-1)
+                selected_ds.append(ds)
                 wave = w if wave is None else torch.cat((wave, w), dim=-1)
                 # load midi
                 if ds.sheet_path:
@@ -520,10 +537,11 @@ def _save_single_sample(args):
                     raise NotImplementedError()
 
             # append
-            waves.append(wave)
-            sheets.append(sheet)
-            datasources.append(selected_ds)
-            source_num += 1
+            if selected_ds:
+                waves.append(wave)
+                sheets.append(sheet)
+                datasources.append(selected_ds)
+                source_num += 1
 
     # calculate activation
     track_activations = dict(
