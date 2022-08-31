@@ -563,24 +563,33 @@ def _save_single_sample(args):
             (end-start)*(10**(len(tags)-1)) if len(tags) else 0
             for start, end, tags in a
         ]
-        track_activation[k] =\
-            random.choices(a, weights=weights, k=1)[0]
+        if len(weights) == 0 or sum(weights) <= 0:
+            track_activation[k] = None
+        else:
+            track_activation[k] =\
+                random.choices(a, weights=weights, k=1)[0]
 
     source_activation = []
     for i, (ds, a) \
         in enumerate(zip(datasources, source_activations)):
         if i not in set(tag for _, _, tags in a for tag in tags):
             source_activation.append(None)
-        elif ds[0] in track_activations:
-            source_activation.append(track_activation[ds[0]])
+        elif ds[0].track in track_activations:
+            source_activation.append(
+                track_activation[ds[0].track]
+                if i in track_activation[ds[0].track][2] else None
+            )
         else:
             weights = [
                 end - start if len(tags) > 0 else 0
                 for start, end, tags in a
             ]
-            source_activation.append(
-                random.choices(a, weights=weights, k=1)[0]
-            )
+            if len(weights) == 0 or sum(weights) <= 0:
+                source_activation.append(None)
+            else:
+                source_activation.append(
+                    random.choices(a, weights=weights, k=1)[0]
+                )
 
     # crop waveforms and sheets
     crop_waves = []
