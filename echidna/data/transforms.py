@@ -266,7 +266,7 @@ class MultiPointScale(torch.nn.Module):
         if self.normalize:
             x /= torch.max(
                 torch.max(x.abs(), dim=-1, keepdims=True)[0],
-                torch.ones(*x.shape[:-1], 1, device=x.device) * 0.1
+                torch.ones(*x.shape[:-1], 1, device=x.device) * 0.05
             )
         return scale_rate * x
 
