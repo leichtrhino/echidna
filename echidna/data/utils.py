@@ -20,13 +20,15 @@ def _split(x : torch.Tensor,
     db = 20 * torch.log10(rms)
     nosilent_frame = db > -top_db
 
-    nosilent_frame = torch.cat((torch.zeros(1, dtype=bool),
-                                nosilent_frame,
-                                torch.zeros(1, dtype=bool)), dim=-1)
+    nosilent_frame = torch.cat((
+        torch.zeros(1, dtype=bool, device=x.device),
+        nosilent_frame,
+        torch.zeros(1, dtype=bool, device=x.device)
+    ), dim=-1)
     nosilent_samples = torch.nonzero(torch.diff(nosilent_frame, 1)) \
         * hop_length
     nosilent_samples = nosilent_samples.clamp(max=x.shape[-1])
-    return nosilent_samples.reshape(-1, 2)
+    return nosilent_samples.reshape(-1, 2).tolist()
 
 
 def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
