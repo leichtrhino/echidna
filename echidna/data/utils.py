@@ -41,8 +41,15 @@ def merge_activation(base_list : tp.List[tp.Tuple[int, int, tp.List[str]]],
     # calculate activation from silence
     activations = _split(x, top_db, frame_length, hop_length)
 
+    if len(base_list) == 0:
+        base_list.append([0, x.shape[-1], []])
     if base_list[-1][1] is None:
         base_list[-1] = (base_list[-1][0], x.shape[-1], base_list[-1][2])
+    if base_list[-1][1] < x.shape[-1]:
+        if base_list[-1][2]: # activation exists at last
+            base_list.append((base_list[-1][1], x.shape[-1], []))
+        else: # activation does not exist at last
+            base_list[-1] = (base_list[-1][0], x.shape[-1], [])
 
     for a_f, a_t in activations:
         # find leftmost index
