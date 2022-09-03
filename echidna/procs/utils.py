@@ -112,7 +112,7 @@ def process_batch(spec,
                 'model_class': model_class,
                 'model_epoch': model_epoch,
                 'step': step,
-                'indices': metadata['index'],
+                'indices': metadata['index'][sample_i:sample_i_end],
             }
             if type(spec) == trainings.TrainingSpec:
                 event_dict['training_epoch'] = epoch
@@ -230,7 +230,8 @@ def process_batch(spec,
                 ]
             }
 
-        batch_loss += loss_values['batch'].item()
+        batch_loss += loss_values['batch'].item() \
+            * (sample_i_end - sample_i) / batch_size
         sample_losses.extend(loss_values['sample'])
         if logger:
             event_dict = {
@@ -299,7 +300,7 @@ def process_batch(spec,
             }
             if type(spec) == trainings.TrainingSpec:
                 event_dict['training_epoch'] = epoch
-            logger.info(json.dumps(event_dict))
+            logger.debug(json.dumps(event_dict))
 
     # build step journal
     step_journal = StepJournal(datetime.now(),
