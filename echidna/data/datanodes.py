@@ -260,3 +260,19 @@ class DataNode(object):
                     stack.append(c)
 
 
+class EmptyNode(DataNode):
+    @property
+    def super_type(self):
+        return 'empty'
+
+    @classmethod
+    def from_dict_args(cls,
+                       obj : dict,
+                       context : dict=None):
+        return cls()
+
+    def to_dict_args(self):
+        return None
+
+add_datanode_cls('empty', EmptyNode)
+
