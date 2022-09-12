@@ -320,10 +320,9 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
     for step, (data, metadata) in enumerate(training_loader, 1):
         step_journal = utils.process_batch(
             spec, training_epoch, step, data, metadata, logger)
-        step_journal.sample_indices = metadata['index']
         training_step_journals.append(step_journal)
 
-    training_loss = sum(j.batch_loss * len(j.sample_indices)
+    training_loss = sum(j.batch_loss * len(j.sample_metadata)
                         for j in training_step_journals) \
         / sum(len(j.sample_losses) for j in training_step_journals)
 
@@ -364,10 +363,9 @@ def _train_epoch(spec : TrainingSpec, training_epoch):
             with torch.no_grad():
                 step_journal = utils.process_batch(
                     spec, training_epoch, step, data, metadata, logger)
-            step_journal.sample_indices = metadata['index']
             validation_step_journals.append(step_journal)
 
-        validation_loss = sum(j.batch_loss * len(j.sample_indices)
+        validation_loss = sum(j.batch_loss * len(j.sample_metadata)
                               for j in validation_step_journals)\
             / sum(len(j.sample_losses) for j in validation_step_journals)
 

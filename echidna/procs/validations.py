@@ -239,10 +239,9 @@ def _validate(spec : ValidationSpec):
         with torch.no_grad():
             step_journal = utils.process_batch(
                 spec, None, step, data, metadata, logger)
-            step_journal.sample_indices = metadata['index']
         validation_step_journals.append(step_journal)
 
-    validation_loss = sum(j.batch_loss * len(j.sample_indices)
+    validation_loss = sum(j.batch_loss * len(j.sample_metadata)
                           for j in validation_step_journals) \
         / sum(len(j.sample_losses) for j in validation_step_journals)
 

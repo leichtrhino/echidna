@@ -4,6 +4,7 @@ import typing as tp
 import json
 import torch
 
+from ..data.datanodes import DataNode
 from ..models.utils import match_length
 from ..metrics.loss import get_loss_name
 from ..metrics.composite import CompositeLoss
@@ -18,20 +19,23 @@ class StepJournal(object):
                  sample_losses : list,
                  batch_loss : float,
                  total_grad : float=None,
-                 sample_indices : list=None):
+                 sample_metadata : list=None):
         self.process_at = process_at
         self.step = step
         self.sample_losses = sample_losses
         self.batch_loss = batch_loss
         self.total_grad = total_grad
-        self.sample_indices = sample_indices
+        self.sample_metadata = sample_metadata
 
     def to_dict(self):
         return {
             'process_at': self.process_at.isoformat(),
             'step': self.step,
             'sample_losses': self.sample_losses,
-            'sample_indices': self.sample_indices,
+            'sample_metadata': [
+                [_m.to_dict() for _m in m]
+                for m in self.sample_metadata
+            ],
             'batch_loss': self.batch_loss,
             'total_grad': self.total_grad
         }
@@ -42,7 +46,10 @@ class StepJournal(object):
             process_at=datetime.fromisoformat(d['process_at']),
             step=d['step'],
             sample_losses=d['sample_losses'],
-            sample_indices=d.get('sample_indices'),
+            sample_metadata=[
+                [DataNode.from_dict(_m) for _m in m]
+                for m in d.get('sample_metadata')
+            ] if d.get('sample_metadata') else None,
             batch_loss=d['batch_loss'],
             total_grad=d.get('total_grad'),
         )
@@ -112,7 +119,7 @@ def process_batch(spec,
                 'model_class': model_class,
                 'model_epoch': model_epoch,
                 'step': step,
-                'indices': metadata['index'][sample_i:sample_i_end],
+                'metadata': [[_m.to_dict() for _m in m] for m in metadata],
             }
             if type(spec) == trainings.TrainingSpec:
                 event_dict['training_epoch'] = epoch
@@ -308,7 +315,7 @@ def process_batch(spec,
                                sample_losses=sample_losses,
                                batch_loss=batch_loss,
                                total_grad=grad_norm,
-                               sample_indices=metadata['index'])
+                               sample_metadata=metadata)
     if logger:
         event_dict = {
             'type': 'end_step',
