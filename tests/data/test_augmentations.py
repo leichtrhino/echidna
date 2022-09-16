@@ -1,25 +1,16 @@
 
+import os
 import unittest
 import pathlib
 import tempfile
 import json
 
 from echidna.data.augmentations import (
-    Augmentation,
-    AugmentationsJournal,
+    AugmentationNode,
+    AugmentationSetJournal,
     AugmentationSpec,
-    RandomAugmentation,
-    EntropyAugmentation,
-    FrequencyAugmentation,
 )
-from echidna.data.mixtures import (
-    MixAlgorithm,
-    CategoryMix,
-)
-from echidna.data.samples import (
-    Sample,
-    SampleSpec
-)
+from echidna.data.datanodes import DataNode
 
 from .utils import prepare_datasources
 
@@ -38,21 +29,19 @@ class TestAugmentations(unittest.TestCase):
     def test_random_augmentation(self):
         aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_1'
         spec = AugmentationSpec(
-            algorithm=RandomAugmentation(
-                source_sample_rate=8000,
-                target_sample_rate=8000,
-                waveform_length=int(8000 * 0.5),
+            source_sample_rate=8000,
+            target_sample_rate=8000,
+            waveform_length=int(8000 * 0.5),
 
-                normalize=True,
-                scale_range=[0.1, 1.1],
-                scale_point_range=[1, 5],
-                time_stretch_range=[0.5, 1.5],
-                pitch_shift_range=[0.5, 1.5],
-            ),
+            scale_range=[0.1, 1.1],
+            scale_point_range=[1, 5],
+            time_stretch_range=[0.5, 1.5],
+            pitch_shift_range=[0.5, 1.5],
+
+            input_metadata_path=self.sample_dir/'e1'/'metadata.json',
+            output_metadata_path=aug_dir/'e1'/'metadata.json',
             seed=self.seed,
-            augmentation_per_sample=2,
-            sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
-            augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
+            augmentation_per_parent=2,
             journal_path=aug_dir/'e1'/'journal.json',
             log_path=aug_dir/'e1'/'log.txt',
             log_level='DEBUG',
@@ -61,27 +50,38 @@ class TestAugmentations(unittest.TestCase):
         spec.save_augmentation()
 
         # load metadata
-        with open(spec.augmentation_metadata_path, 'r') as fp:
-            augmentations = Augmentation.from_list(json.load(fp))
+        with open(spec.output_metadata_path, 'r') as fp:
+            rootnode = DataNode.from_dict(
+                json.load(fp),
+                context={
+                    'rel_path': os.path.dirname(spec.input_metadata_path),
+                }
+            )
+        self.assertEqual(len(rootnode), 2)
 
-        self.assertEqual(len(augmentations), 2)
-        for a in augmentations:
-            self.assertEqual(a.sample_index, 0)
+        for a in rootnode.list_leaf_node():
             self.assertEqual(a.source_sample_rate, 8000)
             self.assertEqual(a.target_sample_rate, 8000)
             self.assertEqual(a.waveform_length, int(8000 * 0.5))
-            self.assertEqual(len(a.offsets), 3)
-            self.assertEqual(a.offsets[0], a.offsets[1]) # sync check
-            self.assertEqual(len(a.time_stretch_rates), 3)
-            self.assertEqual(a.time_stretch_rates[0],
-                             a.time_stretch_rates[1]) # sync check
-            self.assertEqual(len(a.pitch_shift_rates), 3)
-            self.assertEqual(len(a.scale_amount_list), 3)
-            self.assertEqual(len(a.scale_fraction_list), 3)
+            self.assertEqual(len(a.channel_augmentations), 3)
+            self.assertEqual( # sync check
+                a.channel_augmentations[0].offset,
+                a.channel_augmentations[1].offset
+            )
+            self.assertEqual( # sync check
+                a.channel_augmentations[0].time_stretch_rate,
+                a.channel_augmentations[1].time_stretch_rate
+            )
+
+        # load data
+        for data, metadata in rootnode:
+            self.assertEqual(len(data), 3)
+            for d in data:
+                self.assertEqual(d['wave'].shape, (int(8000 * 0.5),))
 
         # load journal
         with open(spec.journal_path, 'r') as fp:
-            journal = AugmentationsJournal.from_dict(json.load(fp))
+            journal = AugmentationSetJournal.from_dict(json.load(fp))
 
         self.assertEqual(journal.metadata_path, 'metadata.json')
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())
@@ -96,327 +96,4 @@ class TestAugmentations(unittest.TestCase):
                                'save_augmentations',
                                'save_augmentations_journal',
                                'finish_augmentation',})
-
-    def test_entropy_augmentation_minscore(self):
-        aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_2'
-        spec = AugmentationSpec(
-            algorithm=EntropyAugmentation(
-                source_sample_rate=8000,
-                target_sample_rate=8000,
-                waveform_length=int(8000 * 0.5),
-
-                normalize=True,
-                scale_range=[0.1, 1.1],
-                scale_point_range=[1, 5],
-                time_stretch_range=[0.5, 1.5],
-                pitch_shift_range=[0.5, 1.5],
-
-                mixture_algorithm=CategoryMix(
-                    mix_category_list=[
-                        ['ct001'],
-                        ['ct002', 'ct003']
-                    ],
-                    include_other=False,
-                ),
-                trials_per_augmentation=5,
-                separation_difficulty=0.0,
-            ),
-            seed=self.seed,
-            augmentation_per_sample=2,
-            sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
-            augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
-            journal_path=aug_dir/'e1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_augmentation()
-
-        # load metadata
-        with open(spec.augmentation_metadata_path, 'r') as fp:
-            augmentations = Augmentation.from_list(json.load(fp))
-
-        self.assertEqual(len(augmentations), 2)
-        for a in augmentations:
-            self.assertEqual(a.sample_index, 0)
-            self.assertEqual(a.source_sample_rate, 8000)
-            self.assertEqual(a.target_sample_rate, 8000)
-            self.assertEqual(a.waveform_length, int(8000 * 0.5))
-            self.assertEqual(len(a.offsets), 3)
-            self.assertEqual(a.offsets[0], a.offsets[1]) # sync check
-            self.assertEqual(len(a.time_stretch_rates), 3)
-            self.assertEqual(a.time_stretch_rates[0],
-                             a.time_stretch_rates[1]) # sync check
-            self.assertEqual(len(a.pitch_shift_rates), 3)
-            self.assertEqual(len(a.scale_amount_list), 3)
-            self.assertEqual(len(a.scale_fraction_list), 3)
-
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = AugmentationsJournal.from_dict(json.load(fp))
-
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-        for j in journal.augmentation_journals:
-            self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['score_stats']['min'])
-
-
-    def test_entropy_augmentation_maxscore(self):
-        aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_3'
-        spec = AugmentationSpec(
-            algorithm=EntropyAugmentation(
-                source_sample_rate=8000,
-                target_sample_rate=8000,
-                waveform_length=int(8000 * 0.5),
-
-                normalize=True,
-                scale_range=[0.1, 1.1],
-                scale_point_range=[1, 5],
-                time_stretch_range=[0.5, 1.5],
-                pitch_shift_range=[0.5, 1.5],
-
-                mixture_algorithm=CategoryMix(
-                    mix_category_list=[
-                        ['ct001'],
-                        ['ct002', 'ct003']
-                    ],
-                    include_other=False,
-                ),
-                trials_per_augmentation=5,
-                separation_difficulty=1.0,
-            ),
-            seed=self.seed,
-            augmentation_per_sample=2,
-            sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
-            augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
-            journal_path=aug_dir/'e1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_augmentation()
-
-        # load metadata
-        with open(spec.augmentation_metadata_path, 'r') as fp:
-            augmentations = Augmentation.from_list(json.load(fp))
-
-        self.assertEqual(len(augmentations), 2)
-        for a in augmentations:
-            self.assertEqual(a.sample_index, 0)
-            self.assertEqual(a.source_sample_rate, 8000)
-            self.assertEqual(a.target_sample_rate, 8000)
-            self.assertEqual(a.waveform_length, int(8000 * 0.5))
-            self.assertEqual(len(a.offsets), 3)
-            self.assertEqual(a.offsets[0], a.offsets[1]) # sync check
-            self.assertEqual(len(a.time_stretch_rates), 3)
-            self.assertEqual(a.time_stretch_rates[0],
-                             a.time_stretch_rates[1]) # sync check
-            self.assertEqual(len(a.pitch_shift_rates), 3)
-            self.assertEqual(len(a.scale_amount_list), 3)
-            self.assertEqual(len(a.scale_fraction_list), 3)
-
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = AugmentationsJournal.from_dict(json.load(fp))
-
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-        for j in journal.augmentation_journals:
-            self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['score_stats']['max'])
-
-    def test_entropy_augmentation_cartesian(self):
-        aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_6'
-        spec = AugmentationSpec(
-            algorithm=EntropyAugmentation(
-                source_sample_rate=8000,
-                target_sample_rate=8000,
-                waveform_length=int(8000 * 0.5),
-
-                normalize=True,
-                scale_range=[0.1, 1.1],
-                scale_point_range=[1, 5],
-                time_stretch_range=[0.5, 1.5],
-                pitch_shift_range=[0.5, 1.5],
-
-                mixture_algorithm=CategoryMix(
-                    mix_category_list=[
-                        ['ct001'],
-                        ['ct002', 'ct003']
-                    ],
-                    include_other=False,
-                ),
-                trials_per_augmentation=5,
-                separation_difficulty=1.0,
-                select_cartesian_product=True,
-            ),
-            seed=self.seed,
-            augmentation_per_sample=8,
-            sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
-            augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
-            journal_path=aug_dir/'e1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_augmentation()
-
-        # load metadata
-        with open(spec.augmentation_metadata_path, 'r') as fp:
-            augmentations = Augmentation.from_list(json.load(fp))
-
-        self.assertEqual(len(augmentations), 8)
-        for a in augmentations:
-            self.assertEqual(a.sample_index, 0)
-            self.assertEqual(a.source_sample_rate, 8000)
-            self.assertEqual(a.target_sample_rate, 8000)
-            self.assertEqual(a.waveform_length, int(8000 * 0.5))
-            self.assertEqual(len(a.offsets), 3)
-            self.assertEqual(a.offsets[0], a.offsets[1]) # sync check
-            self.assertEqual(len(a.time_stretch_rates), 3)
-            self.assertEqual(a.time_stretch_rates[0],
-                             a.time_stretch_rates[1]) # sync check
-            self.assertEqual(len(a.pitch_shift_rates), 3)
-            self.assertEqual(len(a.scale_amount_list), 3)
-            self.assertEqual(len(a.scale_fraction_list), 3)
-
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = AugmentationsJournal.from_dict(json.load(fp))
-
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-        for j in journal.augmentation_journals:
-            self.assertGreater(j.algorithm_out['score'],
-                               j.algorithm_out['score_stats']['mean'])
-
-
-    def test_frequency_augmentation_minscore(self):
-        aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_3'
-        spec = AugmentationSpec(
-            algorithm=FrequencyAugmentation(
-                source_sample_rate=8000,
-                target_sample_rate=8000,
-                waveform_length=int(8000 * 0.5),
-
-                normalize=True,
-                scale_range=[0.1, 1.1],
-                scale_point_range=[1, 5],
-                time_stretch_range=[0.5, 1.5],
-                pitch_shift_range=[0.5, 1.5],
-
-                mixture_algorithm=CategoryMix(
-                    mix_category_list=[
-                        ['ct001'],
-                        ['ct002', 'ct003']
-                    ],
-                    include_other=False,
-                ),
-                trials_per_augmentation=5,
-                separation_difficulty=0.0,
-            ),
-            seed=self.seed,
-            augmentation_per_sample=2,
-            sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
-            augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
-            journal_path=aug_dir/'e1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_augmentation()
-
-        # load metadata
-        with open(spec.augmentation_metadata_path, 'r') as fp:
-            augmentations = Augmentation.from_list(json.load(fp))
-
-        self.assertEqual(len(augmentations), 2)
-        for a in augmentations:
-            self.assertEqual(a.sample_index, 0)
-            self.assertEqual(a.source_sample_rate, 8000)
-            self.assertEqual(a.target_sample_rate, 8000)
-            self.assertEqual(a.waveform_length, int(8000 * 0.5))
-            self.assertEqual(len(a.offsets), 3)
-            self.assertEqual(a.offsets[0], a.offsets[1]) # sync check
-            self.assertEqual(len(a.time_stretch_rates), 3)
-            self.assertEqual(a.time_stretch_rates[0],
-                             a.time_stretch_rates[1]) # sync check
-            self.assertEqual(len(a.pitch_shift_rates), 3)
-            self.assertEqual(len(a.scale_amount_list), 3)
-            self.assertEqual(len(a.scale_fraction_list), 3)
-
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = AugmentationsJournal.from_dict(json.load(fp))
-
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-        for j in journal.augmentation_journals:
-            self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['score_stats']['min'])
-
-    def test_frequency_augmentation_maxscore(self):
-        aug_dir = pathlib.Path(self.tmpdir.name) / 'augmentation_5'
-        spec = AugmentationSpec(
-            algorithm=FrequencyAugmentation(
-                source_sample_rate=8000,
-                target_sample_rate=8000,
-                waveform_length=int(8000 * 0.5),
-
-                normalize=True,
-                scale_range=[0.1, 1.1],
-                scale_point_range=[1, 5],
-                time_stretch_range=[0.5, 1.5],
-                pitch_shift_range=[0.5, 1.5],
-
-                mixture_algorithm=CategoryMix(
-                    mix_category_list=[
-                        ['ct001'],
-                        ['ct002', 'ct003']
-                    ],
-                    include_other=False,
-                ),
-                trials_per_augmentation=5,
-                separation_difficulty=1.0,
-            ),
-            seed=self.seed,
-            augmentation_per_sample=2,
-            sample_metadata_path=self.sample_dir/'e1'/'metadata.json',
-            augmentation_metadata_path=aug_dir/'e1'/'metadata.json',
-            journal_path=aug_dir/'e1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_augmentation()
-
-        # load metadata
-        with open(spec.augmentation_metadata_path, 'r') as fp:
-            augmentations = Augmentation.from_list(json.load(fp))
-
-        self.assertEqual(len(augmentations), 2)
-        for a in augmentations:
-            self.assertEqual(a.sample_index, 0)
-            self.assertEqual(a.source_sample_rate, 8000)
-            self.assertEqual(a.target_sample_rate, 8000)
-            self.assertEqual(a.waveform_length, int(8000 * 0.5))
-            self.assertEqual(len(a.offsets), 3)
-            self.assertEqual(a.offsets[0], a.offsets[1]) # sync check
-            self.assertEqual(len(a.time_stretch_rates), 3)
-            self.assertEqual(a.time_stretch_rates[0],
-                             a.time_stretch_rates[1]) # sync check
-            self.assertEqual(len(a.pitch_shift_rates), 3)
-            self.assertEqual(len(a.scale_amount_list), 3)
-            self.assertEqual(len(a.scale_fraction_list), 3)
-
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = AugmentationsJournal.from_dict(json.load(fp))
-
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-        for j in journal.augmentation_journals:
-            self.assertEqual(j.algorithm_out['score'],
-                             j.algorithm_out['score_stats']['max'])
 
