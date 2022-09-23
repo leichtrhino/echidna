@@ -1,5 +1,6 @@
 
 from pathlib import Path
+import json
 import itertools
 import torch
 import torchaudio
@@ -86,10 +87,24 @@ with open(datasources_dir / 'datasource_track.csv', 'w') as fp:
 ########################################
 yaml_template = '''# sample config file for data samples
 datasources: {datasources}
-fold:
-{folds}
+fold: {folds}
 sample_size: 16
-source_per_category: 2
+category_map:
+  c001:
+    sources:
+      c001:
+        weight: 1.0
+    max_samples: null
+  c002:
+    sources:
+      c002:
+        weight: 1.0
+    max_samples: null
+  c003:
+    sources:
+      c003:
+        weight: 1.0
+    max_samples: null
 sample_rate: 48000
 duration: 1.0
 target_db: {target_db}
@@ -103,77 +118,34 @@ jobs: 4
 '''
 
 samples_conf_dir = config_dir / 'samples'
-samples_dir = data_dir / 'samples'
 datasources_dir = data_dir / 'datasources'
 for samples_name, params in [
         ('notrack_training', {
             'datasources': datasources_dir / 'datasource_notrack.csv',
-            'folds': '  - \'01\'\n  - \'02\'',
+            'folds': '[\'01\', \'02\']',
             'target_db': '-0.5',
         }),
         ('notrack_validation', {
             'datasources': datasources_dir / 'datasource_notrack.csv',
-            'folds': '  - \'03\'',
+            'folds': '[\'03\']',
             'target_db': '-0.5',
         }),
         ('track_training', {
             'datasources': datasources_dir / 'datasource_track.csv',
-            'folds': '  - \'01\'\n  - \'02\'',
+            'folds': '[\'01\', \'02\']',
             'target_db': '-0.1',
         }),
         ('track_validation', {
             'datasources': datasources_dir / 'datasource_track.csv',
-            'folds': '  - \'03\'',
+            'folds': '[\'03\']',
             'target_db': '-0.1',
         }),
 ]:
     yaml_path = samples_conf_dir / f'{samples_name}.yaml'
-    params['metadata_path'] = samples_dir / samples_name / 'metadata.json'
-    params['data_dir'] = samples_dir / samples_name / 'data'
-    params['journal_path'] = samples_dir / samples_name / 'journal.json'
-    params['log_path'] = samples_dir / samples_name / 'log'
-    with open(yaml_path, 'w') as fp:
-        fp.write(yaml_template.format(**params))
-
-########################################
-# prepare yaml for mixtures
-########################################
-yaml_template = '''# sample config file for data mixtures
-algorithm:
-  type: category
-  args:
-    mix_category_list:
-      -
-        - 'c001'
-        - 'c002'
-    include_other: yes
-seed: 01410343
-mix_per_sample: 1
-sample_metadata_path: {sample_metadata_path}
-mixture_metadata_path: {mixture_metadata_path}
-journal_path: {journal_path}
-log_path: {log_path}
-log_level: INFO
-jobs: 4
-'''
-
-mixtures_conf_dir = config_dir / 'mixtures'
-samples_dir = data_dir / 'samples'
-mixtures_dir = data_dir / 'mixtures'
-for mixtures_name, params in [
-        ('notrack_training', {}),
-        ('notrack_validation', {}),
-        ('track_training', {}),
-        ('track_validation', {}),
-]:
-    yaml_path = mixtures_conf_dir / f'{mixtures_name}.yaml'
-
-    params['sample_metadata_path'] \
-        = samples_dir / mixtures_name / 'metadata.json'
-    params['mixture_metadata_path'] \
-        = mixtures_dir / mixtures_name / 'metadata.json'
-    params['journal_path'] = mixtures_dir / mixtures_name / 'journal.json'
-    params['log_path'] = mixtures_dir / mixtures_name / 'log'
+    params['metadata_path'] = data_dir / f'{samples_name}_samples_metadata.json'
+    params['data_dir'] = data_dir / f'{samples_name}'
+    params['journal_path'] = data_dir / f'{samples_name}_samples_journal.json'
+    params['log_path'] = data_dir / f'{samples_name}_samples_log.txt'
     with open(yaml_path, 'w') as fp:
         fp.write(yaml_template.format(**params))
 
@@ -182,146 +154,89 @@ for mixtures_name, params in [
 # prepare yaml for augmentations
 ########################################
 yaml_template = '''# sample config file for data augmentations
-algorithm:
-  type: random
-  args:
-    source_sample_rate: 48000
-    target_sample_rate: 24000
-    waveform_length: 24000
-    normalize: no
-{transform_params}    n_fft: 2048
-    hop_length: 512
-    win_length: 2048
+source_sample_rate: 48000
+target_sample_rate: 24000
+waveform_length: 24000
+{transform_params}
+n_fft: 2048
+hop_length: 512
+win_length: 2048
 seed: 01410343
-augmentation_per_sample: 10
-sample_metadata_path: {sample_metadata_path}
-augmentation_metadata_path: {augmentation_metadata_path}
+augmentation_per_parent: 10
+input_metadata_path: {sample_metadata_path}
+output_metadata_path: {augmentation_metadata_path}
 journal_path: {journal_path}
 log_path: {log_path}
 log_level: INFO
 jobs: 4
 '''
 
-with_transform = '''
-    scale_range:
-      - 0.6
-      - 1.4
-    scale_point_range:
-      - 2
-      - 5
-    time_stretch_range:
-      - 0.8
-      - 1.2
-    pitch_shift_range:
-      - 0.8
-      - 1.2
-'''
+with_transform = '''scale_range: [0.6, 1.4]
+scale_point_range: [2, 5]
+time_stretch_range: [0.8, 1.2]
+pitch_shift_range: [0.8, 1.2]'''
 
-without_transform = '''
-    scale_range:
-      - 1.0
-      - 1.0
-    scale_point_range:
-      - 1
-      - 1
-    time_stretch_range:
-      - 1.0
-      - 1.0
-    pitch_shift_range:
-      - 1.0
-      - 1.0
-'''
-
+without_transform = '''scale_range: [1.0, 1.0]
+scale_point_range: [1, 1]
+time_stretch_range: [1.0, 1.0]
+pitch_shift_range: [1.0, 1.0]'''
 
 augmentations_conf_dir = config_dir / 'augmentations'
-samples_dir = data_dir / 'samples'
-augmentations_dir = data_dir / 'augmentations'
-augmentation_type = 'random'
 for samples_name, params in [
         ('notrack_training', {'transform_params': with_transform}),
         ('track_training', {'transform_params': with_transform}),
         ('notrack_validation', {'transform_params': without_transform}),
         ('track_validation', {'transform_params': without_transform}),
 ]:
-    augmentation_data_dir = \
-        augmentations_dir / f'{samples_name}_{augmentation_type}'
     yaml_path = \
-        augmentations_conf_dir / f'{samples_name}_{augmentation_type}.yaml'
-
+        augmentations_conf_dir / f'{samples_name}_random.yaml'
     params['sample_metadata_path'] = \
-        samples_dir / samples_name / 'metadata.json'
+        data_dir / f'{samples_name}_samples_metadata.json'
     params['augmentation_metadata_path'] = \
-        augmentation_data_dir / 'metadata.json'
-    params['journal_path'] = augmentation_data_dir / 'journal.json'
-    params['log_path'] = augmentation_data_dir / 'log'
+        data_dir / f'{samples_name}_augmentations_metadata.json'
+    params['journal_path'] = data_dir / f'{samples_name}_augmentations_journal.json'
+    params['log_path'] = data_dir / f'{samples_name}_augmentations_log.txt'
     with open(yaml_path, 'w') as fp:
         fp.write(yaml_template.format(**params))
 
-# for easy augmentation
-yaml_template = '''# sample config file for data augmentations
-algorithm:
-  type: entropy
-  args:
-    source_sample_rate: 48000
-    target_sample_rate: 24000
-    waveform_length: 24000
-    normalize: no
-    scale_range:
-      - 0.6
-      - 1.4
-    scale_point_range:
-      - 2
-      - 5
-    time_stretch_range:
-      - 0.8
-      - 1.2
-    pitch_shift_range:
-      - 0.8
-      - 1.2
-    mixture_algorithm:
-      type: category
-      args:
-        mix_category_list:
-          -
-            - 'c001'
-            - 'c002'
-        include_other: yes
-    trials_per_augmentation: 10
-    separation_difficulty: {separation_difficulty}
-    n_fft: 2048
-    hop_length: 512
-    win_length: 2048
+########################################
+# prepare yaml for mixtures
+########################################
+yaml_template = '''# sample config file for data mixtures
+mix_category_list:
+  -
+    category: ['c001', 'c002']
+    min_channel: 1
+    max_channel: null
+  -
+    category: ['other']
+    min_channel: 1
+    max_channel: null
 seed: 01410343
-augmentation_per_sample: 10
-sample_metadata_path: {sample_metadata_path}
-augmentation_metadata_path: {augmentation_metadata_path}
+mix_per_parent: null
+input_metadata_path: {augmentation_metadata_path}
+output_metadata_path: {mixture_metadata_path}
 journal_path: {journal_path}
 log_path: {log_path}
 log_level: INFO
 jobs: 4
 '''
 
-augmentations_conf_dir = config_dir / 'augmentations'
-samples_dir = data_dir / 'samples'
-augmentations_dir = data_dir / 'augmentations'
-for samples_name, separation_difficulty in itertools.product(
-        ['notrack_training', 'track_training'],
-        ['easy', 'hard']
-):
-    augmentation_data_dir = \
-        augmentations_dir / f'{samples_name}_{separation_difficulty}'
-    yaml_path = \
-        augmentations_conf_dir / f'{samples_name}_{separation_difficulty}.yaml'
+mixtures_conf_dir = config_dir / 'mixtures'
+for mixtures_name, params in [
+        ('notrack_training', {}),
+        ('notrack_validation', {}),
+        ('track_training', {}),
+        ('track_validation', {}),
+]:
+    yaml_path = mixtures_conf_dir / f'{mixtures_name}.yaml'
 
-    params = {}
-    params['sample_metadata_path'] = \
-        samples_dir / samples_name / 'metadata.json'
-    params['augmentation_metadata_path'] = \
-        augmentation_data_dir / 'metadata.json'
-    params['journal_path'] = augmentation_data_dir / 'journal.json'
-    params['log_path'] = augmentation_data_dir / 'log'
-    params['separation_difficulty'] = 0.0 if separation_difficulty == 'easy' \
-        else 1.0
+    params['augmentation_metadata_path'] \
+        = data_dir / f'{mixtures_name}_augmentations_metadata.json'
+    params['mixture_metadata_path'] \
+        = data_dir / f'{mixtures_name}_mixtures_metadata.json'
+    params['journal_path'] = data_dir / f'{mixtures_name}_mixtures_journal.json'
+    params['log_path'] = data_dir / f'{mixtures_name}_mixtures_log.txt'
     with open(yaml_path, 'w') as fp:
         fp.write(yaml_template.format(**params))
 
@@ -395,17 +310,7 @@ checkpoint_saved = '''  type: saved
     path: {checkpoint_path}
 '''
 
-dataset_template = '''  type: composite
-  args:
-    components:
-{dataset_components}'''
-
-basic_dataset_template = '''      -
-        type: basic
-        args:
-          samples_metadata_path: {samples_metadata_path}
-          augmentations_metadata_path: {augmentations_metadata_path}
-          mixtures_metadata_path: {mixtures_metadata_path}'''
+dataset_template = '''  metadata_path_list: {metadata_path_list}'''
 
 loss_chimera = '''  type: composite
   args:
@@ -484,77 +389,31 @@ jobs: 0
 
 trainings_conf_dir = config_dir / 'trainings'
 samples_dir = data_dir / 'samples'
-augmentations_dir = data_dir / 'augmentations'
 mixtures_dir = data_dir / 'mixtures'
 trainings_dir = root / 'trainings'
 
-validation_dataset = dataset_template.format(
-    dataset_components
-    = basic_dataset_template.format(
-        samples_metadata_path
-        = samples_dir/'notrack_validation'/'metadata.json',
-        augmentations_metadata_path
-        = augmentations_dir/'notrack_validation_random'/'metadata.json',
-        mixtures_metadata_path
-        = mixtures_dir/'notrack_validation'/'metadata.json',
-    ) + '\n'
-    + basic_dataset_template.format(
-        samples_metadata_path
-        = samples_dir/'track_validation'/'metadata.json',
-        augmentations_metadata_path
-        = augmentations_dir/'track_validation_random'/'metadata.json',
-        mixtures_metadata_path
-        = mixtures_dir/'track_validation'/'metadata.json',
-    )
+training_dataset = dataset_template.format(
+    metadata_path_list=json.dumps([
+        str(data_dir / 'notrack_training_mixtures_metadata.json'),
+        str(data_dir / 'track_training_mixtures_metadata.json'),
+    ])
 )
 
-training_datasets = dict((k, dataset_template.format(
-    dataset_components
-    = basic_dataset_template.format(
-        samples_metadata_path
-        = samples_dir/'notrack_training'/'metadata.json',
-        augmentations_metadata_path
-        = augmentations_dir/'notrack_training_random'/'metadata.json',
-        mixtures_metadata_path
-        = mixtures_dir/'notrack_training'/'metadata.json',
-    ) + '\n'
-    + basic_dataset_template.format(
-        samples_metadata_path
-        = samples_dir/'track_training'/'metadata.json',
-        augmentations_metadata_path
-        = augmentations_dir/'track_training_random'/'metadata.json',
-        mixtures_metadata_path
-        = mixtures_dir/'track_training'/'metadata.json',
-    ) + '\n'
-    + basic_dataset_template.format(
-        samples_metadata_path
-        = samples_dir/'notrack_training'/'metadata.json',
-        augmentations_metadata_path
-        = augmentations_dir/f'notrack_training_{k}'/'metadata.json',
-        mixtures_metadata_path
-        = mixtures_dir/'notrack_training'/'metadata.json',
-    ) + '\n'
-    + basic_dataset_template.format(
-        samples_metadata_path
-        = samples_dir/'track_training'/'metadata.json',
-        augmentations_metadata_path
-        = augmentations_dir/f'track_training_{k}'/'metadata.json',
-        mixtures_metadata_path
-        = mixtures_dir/'track_training'/'metadata.json',
-    )
-)) for k in ('easy', 'hard'))
+validation_dataset = dataset_template.format(
+    metadata_path_list=json.dumps([
+        str(data_dir / 'notrack_validation_mixtures_metadata.json'),
+        str(data_dir / 'track_validation_mixtures_metadata.json'),
+    ])
+)
 
 for model_type, train_type in itertools.product(
         ['encdec', 'chimera'],
         ['easy', 'hard']
 ):
-
-
     trainings_path = trainings_dir / f'baseline_{model_type}'
     checkpoint_pattern = trainings_path/'checkpoints'/'{model_epoch:02d}.tar'
     journal_pattern = trainings_path/'journals'/'{model_epoch:02d}.json'
     log_pattern = trainings_path/'logs'/'{model_epoch:02}.txt'
-    training_dataset = training_datasets[train_type]
 
     if model_type == 'encdec':
         checkpoint = checkpoint_encdec
@@ -627,8 +486,6 @@ jobs: 0
 
 validations_conf_dir = config_dir / 'validations'
 samples_dir = data_dir / 'samples'
-augmentations_dir = data_dir / 'augmentations'
-mixtures_dir = data_dir / 'mixtures'
 trainings_dir = root / 'trainings'
 validations_dir = root / 'validations'
 
