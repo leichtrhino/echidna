@@ -9,6 +9,9 @@ def _split(x : torch.Tensor,
            frame_length,
            hop_length):
 
+    if x.shape[-1] <= frame_length // 2:
+        return []
+
     powerspecgram = torch.stft(
         x,
         n_fft=frame_length,

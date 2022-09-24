@@ -66,7 +66,7 @@ class TestStep(unittest.TestCase):
             seed=1410343
         )))
         self.assertEqual(type(data), dict)
-        self.assertEqual(type(metadata), dict)
+        self.assertEqual(type(metadata), tuple)
 
         logger = logging.getLogger(name)
         logger.setLevel(logging.DEBUG)
@@ -102,9 +102,6 @@ class TestStep(unittest.TestCase):
                 )
             else:
                 self.assertEqual(l.keys(), {'l1_waveform'})
-        # journal has specified sample_indices
-        self.assertEqual(
-            step_journal.sample_indices, list(range(batch_size)))
 
         true_event_types = ['start_step'] \
             + ['get_samples', 'compute_inference',
@@ -214,7 +211,7 @@ class TestStep(unittest.TestCase):
             seed=1410343
         )))
         self.assertEqual(type(data), dict)
-        self.assertEqual(type(metadata), dict)
+        self.assertEqual(type(metadata), tuple)
 
         logger = logging.getLogger(name)
         logger.setLevel(logging.DEBUG)
@@ -250,9 +247,6 @@ class TestStep(unittest.TestCase):
                 )
             else:
                 self.assertEqual(l.keys(), {'l1_waveform'})
-        # journal has specified sample_indices
-        self.assertEqual(
-            step_journal.sample_indices, list(range(batch_size)))
 
         true_event_types = ['start_step'] \
             + ['get_samples', 'compute_inference',

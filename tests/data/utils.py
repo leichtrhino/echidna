@@ -62,8 +62,20 @@ def prepare_datasources(tmpdir, seed):
         datasources=datasources_a,
         fold=None,
         sample_size=1,
-        source_per_category=1,
-        source_by_category=None,
+        category_map={
+            'ct001': {
+                'max_samples': 2,
+                'sources': {
+                    'ct001': {'weight': 1.0},
+                }
+            },
+            'ct002': {
+                'max_samples': 2,
+                'sources': {
+                    'ct002': {'weight': 1.0},
+                }
+            },
+        },
         sample_rate=8000,
         duration=1.5,
         target_db=None,
@@ -72,38 +84,6 @@ def prepare_datasources(tmpdir, seed):
         data_dir=sample_dir/'a1',
         journal_path=sample_dir/'a1'/'journal.json',
         log_path=sample_dir/'a1'/'log.txt',
-        log_level='DEBUG',
-    )
-    samplespec_a_2 = samples.SampleSpec(
-        datasources=datasources_a,
-        fold=None,
-        sample_size=1,
-        source_per_category=2,
-        source_by_category=None,
-        sample_rate=8000,
-        duration=1.5,
-        target_db=None,
-        seed=seed,
-        metadata_path=sample_dir/'a2'/'metadata.json',
-        data_dir=sample_dir/'a2',
-        journal_path=sample_dir/'a2'/'journal.json',
-        log_path=sample_dir/'a2'/'log.txt',
-        log_level='DEBUG',
-    )
-    samplespec_a_3 = samples.SampleSpec(
-        datasources=datasources_a,
-        fold=None,
-        sample_size=1,
-        source_per_category=1,
-        source_by_category={'ct001': 2},
-        sample_rate=8000,
-        duration=1.5,
-        target_db=None,
-        seed=seed,
-        metadata_path=sample_dir/'a3'/'metadata.json',
-        data_dir=sample_dir/'a3',
-        journal_path=sample_dir/'a3'/'journal.json',
-        log_path=sample_dir/'a3'/'log.txt',
         log_level='DEBUG',
     )
 
@@ -127,8 +107,14 @@ def prepare_datasources(tmpdir, seed):
         datasources=datasources_b,
         fold='fl001',
         sample_size=1,
-        source_per_category=1,
-        source_by_category=None,
+        category_map={
+            'ct001': {
+                'max_samples': 1,
+                'sources': {
+                    'ct001': {'weight': 1.0},
+                }
+            },
+        },
         sample_rate=8000,
         duration=1.5,
         target_db=None,
@@ -174,8 +160,20 @@ def prepare_datasources(tmpdir, seed):
         datasources=datasources_c,
         fold=None,
         sample_size=1,
-        source_per_category=2,
-        source_by_category=None,
+        category_map={
+            'ct001': {
+                'max_samples': 2,
+                'sources': {
+                    'ct001': {'weight': 1.0},
+                }
+            },
+            'ct002': {
+                'max_samples': 2,
+                'sources': {
+                    'ct002': {'weight': 1.0},
+                }
+            },
+        },
         sample_rate=8000,
         duration=1.5,
         target_db=None,
@@ -222,8 +220,26 @@ def prepare_datasources(tmpdir, seed):
         datasources=datasources_d,
         fold=None,
         sample_size=1,
-        source_per_category=1,
-        source_by_category=None,
+        category_map={
+            'ct001': {
+                'max_samples': 2,
+                'sources': {
+                    'ct001': {'weight': 1.0},
+                }
+            },
+            'ct002': {
+                'max_samples': 2,
+                'sources': {
+                    'ct002': {'weight': 1.0},
+                }
+            },
+            'ct003': {
+                'max_samples': 2,
+                'sources': {
+                    'ct003': {'weight': 1.0},
+                }
+            },
+        },
         sample_rate=8000,
         duration=1.5,
         target_db=None,
@@ -270,8 +286,26 @@ def prepare_datasources(tmpdir, seed):
         datasources=datasources_e,
         fold=None,
         sample_size=1,
-        source_per_category=2,
-        source_by_category=None,
+        category_map={
+            'ct001': {
+                'max_samples': 2,
+                'sources': {
+                    'ct001': {'weight': 1.0},
+                }
+            },
+            'ct002': {
+                'max_samples': 2,
+                'sources': {
+                    'ct002': {'weight': 1.0},
+                }
+            },
+            'ct003': {
+                'max_samples': 2,
+                'sources': {
+                    'ct003': {'weight': 1.0},
+                }
+            },
+        },
         sample_rate=8000,
         duration=1.5,
         target_db=None,
@@ -285,8 +319,6 @@ def prepare_datasources(tmpdir, seed):
 
     return {
         'A1': samplespec_a_1,
-        'A2': samplespec_a_2,
-        'A3': samplespec_a_3,
         'B1': samplespec_b_1,
         'C2': samplespec_c_2,
         'D1': samplespec_d_1,
@@ -305,20 +337,17 @@ class ToyDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         torch.manual_seed(self.seed_list[idx])
-        data = {
-            'waves': torch.cat(
-                (torch.full((3, 1), self.factor * idx),
-                 torch.rand(3, 3999)),
-                dim=-1
-            ),
-            'sheets': None
-        }
-        metadata = {
-            'index': idx,
-            'sample': f'sample{idx}',
-            'augmentation': f'augmentation{idx}',
-            'mixture': f'mixture{idx}',
-        }
+        data = [
+            {
+                'wave': torch.cat([
+                    torch.full((1,), self.factor * idx),
+                    torch.rand(3999)
+                ], dim=-1),
+                'sheet': None,
+            }
+            for _ in range(3)
+        ]
+        metadata = []
         return data, metadata
 
     def to_dict(self):

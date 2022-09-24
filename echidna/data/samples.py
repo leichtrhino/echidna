@@ -14,6 +14,7 @@ import numpy
 
 from .transforms import Resample, TimeStretch, MultiPointScale
 from .utils import merge_activation
+from .datanodes import DataNode, EmptyNode, add_datanode_cls
 
 class Datasource(object):
     """
@@ -65,26 +66,26 @@ class Datasource(object):
             'fold': self.fold,
         }
 
-class Sample(object):
+class Channel(object):
     def __init__(self,
                  path : str,
-                 categories : tp.List[str],
-                 tracks : tp.List[str],
-                 folds : str,
+                 category : str,
+                 track : str,
+                 fold : str,
                  sample_rate : int):
         self.path = path
-        self.categories = categories
-        self.tracks = tracks
-        self.folds = folds
+        self.category = category
+        self.track = track
+        self.fold = fold
         self.sample_rate = sample_rate
 
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
             path=d['path'],
-            categories=d['categories'],
-            tracks=d.get('tracks', [None] * len(d['categories'])),
-            folds=d.get('folds', [None] * len(d['categories'])),
+            category=d['category'],
+            track=d.get('track', None),
+            fold=d.get('fold', None),
             sample_rate=d['sample_rate'],
         )
 
@@ -95,11 +96,56 @@ class Sample(object):
     def to_dict(self):
         return {
             'path': str(self.path) if self.path else None,
-            'categories': self.categories,
-            'tracks': self.tracks,
-            'folds': self.folds,
+            'category': self.category,
+            'track': self.track,
+            'fold': self.fold,
             'sample_rate': self.sample_rate,
         }
+
+class SampleNode(DataNode):
+    def __init__(self, channels, rel_path, children=None, metrics=None, device='cpu'):
+        super().__init__(children, metrics)
+        self.channels = channels
+        self.rel_path = rel_path
+        self.device = device
+
+    def process_partial(self, channel_index):
+        if channel_index is None:
+            channel_index = list(range(self.sample.channels))
+        return [
+            dict(
+                (k, v.to(self.device) if v is not None else None)
+                for k, v in torch.load(
+                        os.path.join(self.rel_path, self.channels[ci].path)
+                ).items()
+            )
+            for ci in channel_index
+        ]
+
+    def require_channel_index_partial(self):
+        return list(range(len(self.channels)))
+
+    @property
+    def super_type(self):
+        return 'source'
+
+    @classmethod
+    def from_dict_args(cls,
+                       obj : dict,
+                       context : dict=None):
+        return cls(
+            channels=[Channel.from_dict(c) for c in obj['channels']],
+            rel_path=context.get('rel_path', ''),
+            device=context.get('device') or 'cpu',
+        )
+
+    def to_dict_args(self):
+        return {
+            'channels': [c.to_dict() for c in self.channels],
+        }
+
+add_datanode_cls('sample', SampleNode)
+
 
 class SampleSpec(object):
     """
@@ -109,19 +155,35 @@ class SampleSpec(object):
     ----------
     datasources : list
         list of Datasource objects
+    fold : str
     sample_size : int
-    source_per_category : int
+    category_map : dict
+        key: target category name
+        value: dict of
+            'max_channels': int (default: 1)
+            'sources': dict of following:
+                key: source category name (c.f. datasource)
+                value: source selector configuration:
+                    'weight': float (default: 1.0)
+
     sample_rate : int
     duration : float
+    target_db : float
     seed : int
+
+    metadata_path : str
+    data_dir : str
+    journal_path : str
+    log_path : str
+    log_level : str
+    jobs : int
     """
 
     def __init__(self,
                  datasources : tp.List[Datasource],
                  fold : str,
                  sample_size : int,
-                 source_per_category : int,
-                 source_by_category : dict,
+                 category_map : dict,
                  sample_rate : int,
                  duration : float,
                  target_db : float,
@@ -131,13 +193,34 @@ class SampleSpec(object):
                  journal_path : str,
                  log_path : str,
                  log_level : str,
-                 jobs : int=None):
+                 jobs : int=None,
+                 device : str='cpu'):
+
+        if type(category_map) != dict:
+            raise ValueError('type of category map must be dict')
+        for k1, v1 in category_map.items():
+            if type(v1) != dict:
+                raise ValueError('type of values of category map must be dict')
+            if 'sources' not in v1 or type(v1['sources']) != dict or\
+               not v1['sources']:
+                raise ValueError('value of category map must include source')
+            if 'max_samples' not in v1:
+                v1['max_samples'] = 1
+
+            for k2, v2 in v1['sources'].items():
+                if v2 is not None and type(v2) != dict:
+                    raise ValueError('type of values of values of '
+                                     'category map must be dict or None')
+                if v2 is None:
+                    v2 = dict()
+                    v1[k2] = v2
+                if 'weight' not in v2:
+                    v2['max_samples'] = 1.0
 
         self.datasources = datasources
         self.fold = fold
         self.sample_size = sample_size
-        self.source_per_category = source_per_category
-        self.source_by_category = source_by_category
+        self.category_map = category_map
         self.sample_rate = sample_rate
         self.duration = duration
         self.target_db = target_db
@@ -148,6 +231,7 @@ class SampleSpec(object):
         self.log_path = log_path
         self.log_level = log_level
         self.jobs = jobs
+        self.device = device
 
     @classmethod
     def from_dict(cls, d : tp.Dict):
@@ -155,8 +239,7 @@ class SampleSpec(object):
             datasources=[Datasource.from_dict(s) for s in d['datasources']],
             fold=d['fold'],
             sample_size=d['sample_size'],
-            source_per_category=d['source_per_category'],
-            source_by_category=d.get('source_by_category'),
+            category_map=d['category_map'],
             sample_rate=d['sample_rate'],
             duration=d['duration'],
             target_db=d.get('target_db'),
@@ -167,6 +250,7 @@ class SampleSpec(object):
             log_path=d.get('log_path'),
             log_level=d.get('log_level'),
             jobs=d.get('jobs', None),
+            device=d.get('device') or 'cpu',
         )
 
     def to_dict(self):
@@ -174,8 +258,7 @@ class SampleSpec(object):
             'datasources': [s.to_dict() for s in self.datasources],
             'fold': self.fold,
             'sample_size': self.sample_size,
-            'source_per_category': self.source_per_category,
-            'source_by_category': self.source_by_category,
+            'category_map': self.category_map,
             'sample_rate': self.sample_rate,
             'duration': self.duration,
             'target_db': self.target_db,
@@ -186,10 +269,64 @@ class SampleSpec(object):
             'log_path': str(self.log_path) if self.log_path else None,
             'log_level': self.log_level,
             'jobs': self.jobs,
+            'device': self.device,
         }
 
     def save_samples(self):
         _save_sample(self)
+
+
+class ChannelJournal(object):
+    """
+    Journal class for a channel
+
+    Attributes
+    ----------
+    created_at : datetime
+    seed : int
+    datasources : tp.List[str]
+    length : int
+    offset : int
+    channel : Channel
+    """
+    def __init__(self,
+                 created_at : datetime,
+                 seed : int,
+                 datasources : tp.List[str],
+                 length : int,
+                 offset : int,
+                 channel : Channel):
+        self.created_at = created_at
+        self.seed = seed
+        self.datasources = datasources
+        self.length = length
+        self.offset = offset
+        self.channel = channel
+
+    @classmethod
+    def from_dict(cls, d : tp.Dict):
+        return cls(
+            created_at=datetime.fromisoformat(d['created_at']),
+            seed=d['seed'],
+            datasources=[
+                Datasource.from_dict(ds)
+                for ds in d.get('datasources', [])
+            ],
+            length=d['length'],
+            offset=d['offset'],
+            channel=Channel.from_dict(d['channel']),
+        )
+
+    def to_dict(self):
+        return {
+            'created_at': self.created_at.isoformat(),
+            'seed': self.seed,
+            'datasources': [ds.to_dict() for ds in self.datasources],
+            'length': self.length,
+            'offset': self.offset,
+            'channel': self.channel.to_dict(),
+        }
+
 
 class SampleJournal(object):
     """
@@ -199,24 +336,18 @@ class SampleJournal(object):
     ----------
     created_at : datetime
     seed : int
-    datasources : tp.List[tp.List[str]]
-    length : int
-    offsets : tp.List[int]
-    sample : Sample)
+    channel_journals : tp.List[ChannelJournal]
+    sample : Sample
     """
 
     def __init__(self,
                  created_at : datetime,
                  seed : int,
-                 datasources : tp.List[tp.List[str]],
-                 length : int,
-                 offsets : tp.List[int],
-                 sample : Sample):
+                 channel_journals : tp.List[ChannelJournal],
+                 sample : SampleNode):
         self.created_at = created_at
         self.seed = seed
-        self.datasources = datasources
-        self.offsets = offsets
-        self.length = length
+        self.channel_journals = channel_journals
         self.sample = sample
 
     @classmethod
@@ -224,25 +355,22 @@ class SampleJournal(object):
         return cls(
             created_at=datetime.fromisoformat(d['created_at']),
             seed=d['seed'],
-            datasources=d.get('datasources', []),
-            length=d['length'],
-            offsets=d['offsets'],
-            sample=Sample.from_dict(d['sample'])
+            channel_journals=[
+                ChannelJournal.from_dict(j) for j in d['channel_journals']],
+            sample=SampleNode.from_dict(d['sample'])
         )
 
     def to_dict(self):
         return {
             'created_at': self.created_at.isoformat(),
             'seed': self.seed,
-            'datasources': self.datasources,
-            'length': self.length,
-            'offsets': self.offsets,
+            'channel_journals':[j.to_dict() for j in self.channel_journals],
             'sample': self.sample.to_dict(),
         }
 
-class SamplesJournal(object):
+class SampleSetJournal(object):
     """
-    Journal class of samples
+    Journal class of sample set
 
     Attributes
     ----------
@@ -251,8 +379,7 @@ class SamplesJournal(object):
     metadata_path : str
     spec : SampleSpecification
     seed : int
-    samples : tp.List[SampleJournal])
-
+    sample_journals : tp.List[SampleJournal])
     """
     def __init__(self,
                  process_start : datetime,
@@ -289,7 +416,7 @@ class SamplesJournal(object):
         return {
             'process_start': self.process_start.isoformat(),
             'process_finish': self.process_finish.isoformat(),
-            'metadata_path': str(self.metadata_path) if self.metadata_path else None,
+            'metadata_path': str(self.metadata_path),
             'log_path': str(self.log_path) if self.log_path else None,
             'seed': self.seed,
             'spec': self.spec.to_dict(),
@@ -324,21 +451,22 @@ def _save_sample(spec : SampleSpec):
 
     # args for worker function
     random_ = random.Random(spec.seed)
-    rel_paths = [
-        os.path.join(f'{i//1000:03d}', f'{i%1000:03d}.pth')
+    rel_path_prefixs = [
+        os.path.join(f'{i//1000:03d}', f'{i%1000:03d}')
         for i in range(spec.sample_size)
     ]
     args = [(
+        sample_i,
         datasources,
-        spec.source_per_category,
-        spec.source_by_category,
+        spec.category_map,
         spec.sample_rate,
         spec.duration,
         spec.target_db,
         spec.metadata_path,
-        os.path.join(spec.data_dir, rel_path),
+        os.path.join(spec.data_dir, rel_path_prefix),
         random_.randrange(2**32), # seed
-    ) for rel_path in rel_paths]
+        spec.device,
+    ) for sample_i, rel_path_prefix in enumerate(rel_path_prefixs)]
 
     # create map function
     if spec.jobs is not None:
@@ -352,8 +480,7 @@ def _save_sample(spec : SampleSpec):
             'type': 'start_sampling',
             'timestamp': datetime.now().isoformat(),
             'sample_size': spec.sample_size,
-            'source_per_category': spec.source_per_category,
-            'source_by_category': spec.source_by_category,
+            'category_map': spec.category_map,
             'sample_rate': spec.sample_rate,
             'duration': spec.duration,
             'seed': spec.seed,
@@ -361,17 +488,17 @@ def _save_sample(spec : SampleSpec):
         }))
 
     # sample
-    metadata_list = []
-    journal_list = []
-    for metadata, journal in map_fn(_save_single_sample, args):
-        metadata_list.append(metadata)
-        journal_list.append(journal)
+    metadata_list = [None for _ in range(len(args))]
+    journal_list = [None for _ in range(len(args))]
+    for sample_i, metadata, journal in map_fn(_save_single_sample, args):
+        metadata_list[sample_i] = metadata
+        journal_list[sample_i] = journal
         if logger:
             logger.info(json.dumps({
                 'type': 'made_sample',
                 'timestamp': datetime.now().isoformat(),
-                'sample_path': journal.sample.path,
-                'channels': len(journal.sample.categories),
+                'sample_i': sample_i,
+                'channel_size': len(metadata.channels)
             }))
 
     # close map function
@@ -381,8 +508,9 @@ def _save_sample(spec : SampleSpec):
     process_finish = datetime.now()
 
     # save metadata
+    metadata = EmptyNode(children=metadata_list)
     with open(spec.metadata_path, 'w') as fp:
-        json.dump([m.to_dict() for m in metadata_list], fp)
+        json.dump(metadata.to_dict(), fp)
 
     if logger:
         logger.info(json.dumps({
@@ -395,7 +523,7 @@ def _save_sample(spec : SampleSpec):
     if spec.journal_path:
         if not os.path.exists(os.path.dirname(spec.journal_path)):
             os.makedirs(os.path.dirname(spec.journal_path))
-        journals = SamplesJournal(
+        journals = SampleSetJournal(
             process_start=process_start,
             process_finish=process_finish,
             metadata_path=os.path.relpath(
@@ -438,19 +566,18 @@ def _save_single_sample(args):
     Parameters
     ----------
     datasources : tp.List[Datasource],
-    source_per_category : int,
-    source_by_category : dict,
+    category_map : dict,
     sample_rate : int,
     duration : float,
     target_db : float,
     metadata_path : str,
-    data_path : str,
+    data_path_prefix : str,
     rel_path : str,
     seed : int
     """
-    datasources, source_per_category, source_by_category, \
+    sample_i, datasources, category_map, \
         sample_rate, duration, target_db, \
-        metadata_path, data_path, seed = args
+        metadata_path, data_path_prefix, seed, device = args
     wavelength = int(sample_rate * duration)
 
     random.seed(seed)
@@ -468,42 +595,56 @@ def _save_single_sample(args):
     else:
         track = random.choice([t for t in tracks.keys() if t is not None])
 
-    # calculate category list
-    categories = dict()
+    # calculate source category list
+    source_categories = dict()
     for ds in tracks[track] \
         + (tracks.get(None, []) if track is not None else []):
-        if ds.category not in categories:
-            categories[ds.category] = []
-        categories[ds.category].append(ds)
-
-    for ds_list in categories.values():
+        if ds.category not in source_categories:
+            source_categories[ds.category] = []
+        source_categories[ds.category].append(ds)
+    for ds_list in source_categories.values():
         random.shuffle(ds_list)
+    source_category_index = dict((k, 0) for k in source_categories)
 
     # loop
     waves = []
     sheets = []
     datasources = []
-    for category, ds_list in categories.items():
-        if type(source_by_category) == dict and \
-           source_by_category.get(category, 0) > 0:
-            max_category_num = source_by_category[category]
-        else:
-            max_category_num = source_per_category
-        source_i = 0
+    target_categories = []
+    for target_category, category_config in category_map.items():
+
+        s_categories = category_config['sources']
+        max_category_num = category_config.get('max_samples') or 1
+
         source_num = 0
         # NOTE: Lagging could be occur if tracked and no-tracked waves
         # are in single category
         while source_num < max_category_num \
-              and source_i < len(ds_list):
+              and any(source_category_index[c] < len(source_categories[c])
+                      for c in s_categories):
+
             wave = None
             sheet = None
             selected_ds = []
             while (wave is None or wave.shape[-1] < wavelength) \
-                  and source_i < len(ds_list):
-                ds = ds_list[source_i]
-                source_i += 1
+                  and any(source_category_index[c] < len(source_categories[c])
+                          for c in s_categories):
+                # select source
+                c_population = [
+                    c for c in s_categories
+                    if source_category_index[c] < len(source_categories[c])
+                ]
+                c_weights = [
+                    s_categories[c].get('weight', 1.0) for c in c_population
+                ]
+                c = random.choices(c_population, c_weights, k=1)[0]
+                ds_list = source_categories[c]
+                ds = ds_list[source_category_index[c]]
+                source_category_index[c] += 1
+
                 # load wav and concat
                 w, orig_sr = torchaudio.load(ds.wave_path)
+                w = w.to(device)
                 w = w.mean(dim=0)
                 w = Resample(orig_sr, sample_rate)(w)
                 if target_db is not None:
@@ -522,10 +663,10 @@ def _save_single_sample(args):
                     # shrink silence
                     w = torch.cat([
                         w[..., s:t] if tags else
-                        w[..., s:t] if t-s < sample_rate * 1.0 else
+                        w[..., s:t] if t-s < sample_rate * 0.5 else
                         torch.cat((
-                            w[..., s:s+int(sample_rate*1.0)//2],
-                            w[..., t-int(sample_rate*1.0)//2:t],
+                            w[..., s:s+int(sample_rate*0.5)//2],
+                            w[..., t-int(sample_rate*0.5)//2:t],
                         ), dim=-1)
                         for s, t, tags in activation
                     ], dim=-1)
@@ -541,6 +682,7 @@ def _save_single_sample(args):
                 waves.append(wave)
                 sheets.append(sheet)
                 datasources.append(selected_ds)
+                target_categories.append(target_category)
                 source_num += 1
 
     # calculate activation
@@ -618,34 +760,52 @@ def _save_single_sample(args):
         crop_offsets.append(offset)
 
     # save
-    dirname = os.path.dirname(data_path)
+    dirname = os.path.dirname(data_path_prefix)
     if not os.path.isdir(dirname):
         os.makedirs(dirname, exist_ok=True)
-    torch.save({
-        'waves': torch.stack(crop_waves),
-        'sheets': crop_sheets,
-    }, data_path)
+    for c_i, (crop_wave, crop_sheet) in \
+        enumerate(zip(crop_waves, crop_sheets)):
+        torch.save({
+            'wave': crop_wave.to('cpu'),
+            'sheet': crop_sheet,
+        }, str(data_path_prefix)+f'.{c_i:02d}.pth')
 
     # create metadata
-    sample_metadata = Sample(
-        path=os.path.relpath(data_path, os.path.dirname(metadata_path)),
-        categories=[dss[0].category for dss in crop_datasources],
-        tracks=[dss[0].track for dss in crop_datasources],
-        folds=[dss[0].fold for dss in crop_datasources],
-        sample_rate=sample_rate
+    channel_metadata_list = []
+    channel_journal_list = []
+    for c_i, (dss, offset) in enumerate(zip(crop_datasources, crop_offsets)):
+        channel_metadata = Channel(
+            path=os.path.relpath(
+                str(data_path_prefix)+f'.{c_i:02d}.pth',
+                os.path.dirname(metadata_path)
+            ),
+            category=target_categories[c_i],
+            track=dss[0].track,
+            fold=dss[0].fold,
+            sample_rate=sample_rate,
+        )
+        channel_journal = ChannelJournal(
+            created_at=datetime.now(),
+            seed=seed,
+            datasources=dss,
+            length=wavelength,
+            offset=offset,
+            channel=channel_metadata,
+        )
+        channel_metadata_list.append(channel_metadata)
+        channel_journal_list.append(channel_journal)
+
+    sample_metadata = SampleNode(
+        channels=channel_metadata_list,
+        rel_path=os.path.dirname(metadata_path),
     )
 
-    journal_metadata = SampleJournal(
+    sample_journal = SampleJournal(
         created_at=datetime.now(),
         seed=seed,
-        datasources=[
-            [ds.id for ds in dss]
-            for dss in crop_datasources
-        ],
-        length=wavelength,
-        offsets=crop_offsets,
+        channel_journals=channel_journal_list,
         sample=sample_metadata,
     )
 
-    return sample_metadata, journal_metadata
+    return sample_i, sample_metadata, sample_journal
 

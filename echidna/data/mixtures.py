@@ -11,79 +11,90 @@ from itertools import product, combinations
 
 import torch
 
-from .samples import Sample
+from .utils import merge_activation
+from .datanodes import DataNode, add_datanode_cls
 
 logger = logging.getLogger(__name__)
 
-class Mixture(object):
-    def __init__(self,
-                 sample_index : int,
-                 mixture_index : int,
-                 mixture_indices : tp.List[tp.List[tp.List[int]]]):
-        self.sample_index = sample_index
-        self.mixture_index = mixture_index
-        self.mixture_indices = mixture_indices
+class MixNode(DataNode):
+    def __init__(self, mix_index, children=None, metrics=None):
+        super().__init__(children, metrics)
+        self.mix_index = mix_index
+
+    def process_partial(self, data):
+        out_data = []
+        for i in self.mix_index:
+            wave = sum(data[_i]['wave'] for _i in i) if len(i) > 0 \
+                else torch.zeros_like(data[0]['wave'])
+            sheet = None
+            out_data.append({
+                'wave': wave,
+                'sheet': sheet,
+            })
+
+        return out_data
+
+    @property
+    def super_type(self):
+        return 'filter'
+
+    def require_channel_index_partial(self):
+        return sorted(set([
+            i for si in self.mix_index for i in si
+        ]))
 
     @classmethod
-    def from_dict(cls, d : tp.Dict):
-        return cls(
-            sample_index=d['sample_index'],
-            mixture_index=d['mixture_index'],
-            mixture_indices=d['mixture_indices'])
+    def from_dict_args(cls,
+                       obj : dict,
+                       context : dict=None):
+        return cls(mix_index=obj['mix_index'])
 
-    @classmethod
-    def from_list(cls, d : tp.List):
-        return [cls.from_dict(d_) for d_ in d]
-
-    def to_dict(self):
+    def to_dict_args(self):
         return {
-            'sample_index': self.sample_index,
-            'mixture_index': self.mixture_index,
-            'mixture_indices': self.mixture_indices
+            'mix_index': self.mix_index,
         }
 
-class MixtureJournal(object):
+add_datanode_cls('mixture', MixNode)
+
+class MixJournal(object):
     def __init__(self,
-                 mixture : Mixture,
                  created_at : datetime,
                  seed : int,
-                 algorithm_out : tp.Dict[str, object]):
-        self.mixture = mixture
+                 mix_list : tp.List[MixNode],
+                 ):
         self.created_at = created_at
         self.seed = seed
-        self.algorithm_out = algorithm_out
+        self.mix_list = mix_list
 
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            mixture=Mixture.from_dict(d['mixture']),
             created_at=datetime.fromisoformat(d['created_at']),
             seed=d['seed'],
-            algorithm_out=d.get('algorithm_out', None),
+            mix_list=[MixNode.from_dict(m) for m in d['mix_list']],
         )
 
     def to_dict(self):
         return {
-            'mixture': self.mixture.to_dict(),
             'created_at': self.created_at.isoformat(),
             'seed': self.seed,
-            'algorithm_out': self.algorithm_out,
+            'mix_list': [m.to_dict() for m in self.mix_list],
         }
 
-class MixturesJournal(object):
+class MixSetJournal(object):
     def __init__(self,
                  process_start : datetime,
                  process_finish : datetime,
                  metadata_path : str,
                  log_path : str,
                  spec,
-                 mixture_journals : tp.List[MixtureJournal]):
+                 mix_journals : tp.List[MixJournal]):
         self.process_start = process_start
         self.process_finish = process_finish
         self.metadata_path = metadata_path
         self.log_path = log_path
         self.spec = spec
-        self.mixture_journals = mixture_journals
+        self.mix_journals = mix_journals
 
     @classmethod
     def from_dict(cls, d : tp.Dict):
@@ -92,11 +103,11 @@ class MixturesJournal(object):
             process_finish=datetime.fromisoformat(d['process_finish']),
             metadata_path=d['metadata_path'],
             log_path=d.get('log_path'),
-            spec=MixtureSpec.from_dict(d['spec']),
-            mixture_journals=[
-                MixtureJournal.from_dict(j)
-                for j in d['mixture_journals']
-            ]
+            spec=MixSetSpec.from_dict(d['spec']),
+            mix_journals=[
+                MixJournal.from_dict(j) if j else None
+                for j in d['mix_journals']
+            ] if d.get('mix_journals') else None
         )
 
     def to_dict(self):
@@ -106,195 +117,99 @@ class MixturesJournal(object):
             'metadata_path': str(self.metadata_path) if self.metadata_path else None,
             'log_path': str(self.log_path) if self.log_path else None,
             'spec': self.spec.to_dict(),
-            'mixture_journals': [j.to_dict() for j in self.mixture_journals]
+            'mix_journals': [
+                j.to_dict() if j else None for j in self.mix_journals
+            ] if self.mix_journals else None
         }
 
+class MixSetSpec(object):
+    """
+    mix_category_list : list
+        [
+            {
+                'category': ['category1', 'category2'],
+                'min_channel': 1,
+                'max_channel': 3,
+            },
+            {
+                'category': ['category1', 'category3'],
+                'min_channel': 1,
+                'max_channel': 3,
+            },
+            {
+                'category': ['other'],
+                'min_channel': 1,
+                'max_channel': 3,
+            },
+        ]
+    """
 
-
-class MixtureSpec(object):
     def __init__(self,
-                 algorithm,
+                 input_metadata_path : str,
+                 output_metadata_path : str,
+                 mix_category_list : list,
+                 mix_per_parent : int,
                  seed : int,
-                 mix_per_sample : int,
-                 sample_metadata_path : str,
-                 mixture_metadata_path : str,
                  journal_path : str,
                  log_path : str,
-                 log_level : str,
-                 jobs : int=None):
-        self.algorithm = algorithm
+                 log_level : str='INFO',
+                 jobs : int=None,
+                 device : str='cpu'):
+        self.input_metadata_path = input_metadata_path
+        self.output_metadata_path = output_metadata_path
+        self.mix_category_list = mix_category_list
+        self.mix_per_parent = mix_per_parent
         self.seed = seed
-        self.mix_per_sample = mix_per_sample
-        self.sample_metadata_path = sample_metadata_path
-        self.mixture_metadata_path = mixture_metadata_path
         self.journal_path = journal_path
         self.log_level = log_level
         self.log_path = log_path
         self.jobs = jobs
+        self.device = device
 
     @classmethod
     def from_dict(cls, d : tp.Dict):
         return cls(
-            algorithm=MixAlgorithm.from_dict(d['algorithm']),
-            seed=d['seed'],
-            mix_per_sample=d['mix_per_sample'],
-            sample_metadata_path=d['sample_metadata_path'],
-            mixture_metadata_path=d['mixture_metadata_path'],
-            journal_path=d['journal_path'],
+            input_metadata_path=d['input_metadata_path'],
+            output_metadata_path=d['output_metadata_path'],
+            mix_category_list=d['mix_category_list'],
+            mix_per_parent=d.get('mix_per_parent', 1),
+            seed=d.get('seed', 0),
+            journal_path=d.get('journal_path'),
+            log_level=d.get('log_level', 'INFO'),
             log_path=d.get('log_path'),
-            log_level=d.get('log_level'),
-            jobs=d.get('jobs', None)
+            jobs=d.get('jobs', None),
+            device=d.get('device') or 'cpu',
         )
 
     def to_dict(self):
         return {
-            'algorithm': self.algorithm.to_dict(),
+            'input_metadata_path': str(self.input_metadata_path)
+            if self.input_metadata_path else None,
+            'output_metadata_path': str(self.output_metadata_path)
+            if self.output_metadata_path else None,
+            'mix_category_list': self.mix_category_list,
+            'mix_per_parent': self.mix_per_parent,
             'seed': self.seed,
-            'mix_per_sample': self.mix_per_sample,
-            'sample_metadata_path': str(self.sample_metadata_path)
-            if self.sample_metadata_path else None,
-            'mixture_metadata_path': str(self.mixture_metadata_path)
-            if self.mixture_metadata_path else None,
             'journal_path': str(self.journal_path)
             if self.journal_path else None,
+            'log_level': self.log_level,
             'log_path': str(self.log_path)
             if self.log_path else None,
-            'log_level': self.log_level,
-            'jobs': self.jobs
+            'jobs': self.jobs,
+            'device': self.device,
         }
 
     def save_mixture(self):
         _save_mixture(self)
 
-class MixAlgorithm(object):
-    def to_dict(self):
-        return {
-            'type': _reverse_mix_algorithms[type(self)],
-            'args': self.to_dict_args(),
-        }
 
-    def to_dict_args(self):
-        raise NotImplementedError()
-
-    @classmethod
-    def from_dict(cls, d : dict):
-        mx_type = d['type']
-        mx_class = get_mix_algorithm(mx_type)
-        return mx_class.from_dict_args(d['args'])
-
-    def mix_index(self,
-                  data : tp.Dict[str, torch.Tensor],
-                  metadata : Sample,
-                  seed : int,
-                  ) -> tp.Tuple[tp.List[tp.List[tp.List[int]]],
-                                tp.Dict[str, str]]:
-        """
-        # mix_samples, mix_out, mix_in
-        """
-        raise NotImplementedError()
-
-class CategoryMix(MixAlgorithm):
-    def __init__(self,
-                 mix_category_list : tp.List[tp.Union[str, tp.List[str]]],
-                 include_other : bool=True,
-                 collapse_zero : bool=True,
-                 check_duplicate : bool=True):
-        self.mix_categories = []
-        all_categories = set()
-        for i, l in enumerate(mix_category_list):
-            self.mix_categories.append([])
-            if type(l) == str:
-                if l in all_categories:
-                    logger.warning(f'category {l} at {i} duplicates')
-                    if check_duplicate:
-                        raise ValueError(f'category {l} at {i} duplicates')
-                self.mix_categories[i].append(l)
-                all_categories.add(l)
-                continue
-            for j, c in enumerate(l):
-                if c in all_categories:
-                    logger.warning(f'category {c} at {i} duplicates')
-                    if check_duplicate:
-                        raise ValueError(f'category {c} at {i} duplicates')
-                self.mix_categories[i].append(c)
-                all_categories.add(c)
-        self.include_other = include_other
-        self.collapse_zero = collapse_zero
-
-    def to_dict_args(self):
-        return {
-            'mix_category_list': self.mix_categories,
-            'include_other': self.include_other,
-            'collapse_zero': self.collapse_zero,
-        }
-
-    @classmethod
-    def from_dict_args(cls, d : dict):
-        return cls(
-            mix_category_list=d['mix_category_list'],
-            include_other=d.get('include_other', True),
-            collapse_zero=d.get('collapse_zero', True),
-        )
-
-    def mix_index(self,
-                  data : tp.Dict[str, torch.Tensor],
-                  metadata : Sample,
-                  seed : int,
-                  ) -> tp.Tuple[tp.List[tp.List[tp.List[int]]],
-                                tp.Dict[str, str]]:
-        """
-        # mix_samples, mix_out, mix_in
-        """
-        base_index = [[] for _ in range(len(self.mix_categories))]
-        if self.include_other:
-            base_index.append([])
-
-        for i, c in enumerate(metadata.categories):
-            is_other = True
-            for j, ds in enumerate(self.mix_categories):
-                if c in ds:
-                    base_index[j].append(i)
-                    is_other = False
-            if self.include_other and is_other:
-                base_index[-1].append(i)
-
-        mix_index = []
-        for bi in base_index:
-            comb_index = sum(
-                (list(combinations(bi, r)) for r in range(1, len(bi)+1)),
-                []
-            )
-            if len(comb_index) == 0 and not self.collapse_zero:
-                comb_index.append([])
-            mix_index.append(comb_index)
-
-        return list(product(*mix_index)), dict()
-
-def register_mix_algorithm(name : str,
-                           algorithm : tp.Type):
-    _mix_algorithms[name] = algorithm
-    _reverse_mix_algorithms[algorithm] = name
-
-def get_mix_algorithm(name : str):
-    if name not in _mix_algorithms:
-        raise ValueError(f'{name} is not registered as a mix algorithm')
-    return _mix_algorithms[name]
-
-_mix_algorithms = {
-    'category': CategoryMix
-}
-_reverse_mix_algorithms = dict((v, k) for k, v in _mix_algorithms.items())
-
-
-def _save_mixture(spec : MixtureSpec):
+def _save_mixture(spec : MixSetSpec):
     """
     """
 
     process_start = datetime.now()
-    # setup algorithm
-    algorithm = spec.algorithm
-    algorithm_name = algorithm.to_dict()['type']
 
+    # setup seed
     random_ = random.Random(spec.seed)
 
     # prepare log
@@ -310,24 +225,26 @@ def _save_mixture(spec : MixtureSpec):
         logger.addHandler(handler)
 
     # load metadata
-    with open(spec.sample_metadata_path, 'r') as fp:
-        metadata_list = Sample.from_list(json.load(fp))
+    with open(spec.input_metadata_path, 'r') as fp:
+        datanode = DataNode.from_dict(
+            json.load(fp),
+            context={
+                'rel_path': os.path.dirname(spec.input_metadata_path),
+                'device': spec.device,
+            },
+        )
+    chain_lists = [
+        datanode.get_single_chain(i) for i in range(len(datanode))
+    ]
 
     # prepare arguments
-    args = [
-        (
-            sample_i,
-            spec.mix_per_sample, # mix_n
-            algorithm,
-            os.path.join(
-                os.path.dirname(spec.sample_metadata_path),
-                metadata.path
-            ), #data_path,
-            metadata,
-            random_.randrange(2**32), #seed,
-        )
-        for sample_i, metadata in enumerate(metadata_list)
-    ]
+    args = [(
+        sample_i,
+        chain_list,
+        spec.mix_category_list,
+        spec.mix_per_parent,
+        random_.randrange(2**32), #seed,
+    ) for sample_i, chain_list in enumerate(chain_lists)]
 
     # map func
     if spec.jobs is not None:
@@ -340,70 +257,71 @@ def _save_mixture(spec : MixtureSpec):
         logger.info(json.dumps({
             'type': 'start_mixing',
             'timestamp': datetime.now().isoformat(),
-            'mix_algorithm': algorithm_name,
-            'sample_size': len(metadata_list),
-            'mix_per_sample': spec.mix_per_sample,
-            'seed': spec.seed,
-            'jobs': spec.jobs,
+            'input_sample_size': len(chain_lists),
         }))
 
     # iterate over dataset and find mixtures
-    mixture_list = []
-    journal_list = []
-    for mixtures, journals in map_fn(_make_mixtures_for_sample, args):
-        mixture_list.extend(mixtures)
-        journal_list.extend(journals)
+    mixture_list = [None for _ in range(len(chain_lists))]
+    journal_list = [None for _ in range(len(chain_lists))]
+    for i, mixtures, journals in map_fn(_make_mixtures_for_sample, args):
+        mixture_list[i] = mixtures
+        journal_list[i] = journals
         if logger:
-            for mixture in mixtures:
-                logger.info(json.dumps({
-                    'type': 'made_mixture',
-                    'timestamp': datetime.now().isoformat(),
-                    'mix_algorithm': algorithm_name,
-                    'sample_index': mixture.sample_index,
-                    'mixture_index': mixture.mixture_index,
-                    'mixture_size': len(mixture.mixture_indices),
-                }))
+            logger.info(json.dumps({
+                'type': 'made_mixture',
+                'timestamp': datetime.now().isoformat(),
+                'sample_index': i,
+                'mixture_size': len(mixtures or []),
+            }))
 
     # close map function
     if spec.jobs is not None:
         pool.close()
 
+    # append all mixtures to leaf node
+    leaf_nodes = datanode.list_leaf_node()
+    assert len(leaf_nodes) == len(mixture_list)
+    for n, m in zip(leaf_nodes, mixture_list):
+        if not m:
+            continue
+        n.children = m
+        for _m in m:
+            _m.parent = n
+    datanode.balance_by_remove()
+
     process_finish = datetime.now()
 
     # save metadata
-    if not os.path.exists(os.path.dirname(spec.mixture_metadata_path)):
-        os.makedirs(os.path.dirname(spec.mixture_metadata_path))
-    with open(spec.mixture_metadata_path, 'w') as fp:
-        json.dump([m.to_dict() for m in mixture_list], fp)
+    if not os.path.exists(os.path.dirname(spec.output_metadata_path)):
+        os.makedirs(os.path.dirname(spec.output_metadata_path))
+    with open(spec.output_metadata_path, 'w') as fp:
+        json.dump(datanode.to_dict(), fp)
 
     if logger:
         logger.info(json.dumps({
             'type': 'save_mixtures',
             'timestamp': datetime.now().isoformat(),
-            'mix_algorithm': algorithm_name,
-            'metadata_path': str(spec.mixture_metadata_path),
-            'mixture_size': len(mixture_list),
-            'mixture_sample_size': sum(
-                len(m.mixture_indices) for m in mixture_list),
+            'output_path': str(spec.output_metadata_path),
+            'mixture_size': len(datanode),
         }))
 
     # save journal
     if spec.journal_path is not None:
         if not os.path.exists(os.path.dirname(spec.journal_path)):
             os.makedirs(os.path.dirname(spec.journal_path))
-        mixtures_journal = MixturesJournal(
+        mixtures_journal = MixSetJournal(
             process_start=process_start,
             process_finish=process_finish,
             metadata_path=os.path.relpath(
-                spec.mixture_metadata_path,
+                spec.output_metadata_path,
                 os.path.dirname(spec.journal_path)
             ),
             log_path=os.path.relpath(
-                spec.mixture_metadata_path,
+                spec.output_metadata_path,
                 os.path.dirname(spec.log_path)
             ) if spec.log_path else None,
             spec=spec,
-            mixture_journals=journal_list,
+            mix_journals=journal_list,
         )
         with open(spec.journal_path, 'w') as fp:
             json.dump(mixtures_journal.to_dict(), fp)
@@ -412,7 +330,6 @@ def _save_mixture(spec : MixtureSpec):
             logger.info(json.dumps({
                 'type': 'save_mixtures_journal',
                 'timestamp': datetime.now().isoformat(),
-                'mix_algorithm': algorithm_name,
                 'journal_path': str(spec.journal_path),
             }))
 
@@ -421,32 +338,110 @@ def _save_mixture(spec : MixtureSpec):
         logger.info(json.dumps({
             'type': 'finish_mixing',
             'timestamp': datetime.now().isoformat(),
-            'mix_algorithm': algorithm_name,
         }))
         handlers = logger.handlers[:]
         for handler in handlers:
             logger.removeHandler(handler)
             handler.close()
 
+
 def _make_mixtures_for_sample(args):
-    sample_i, mix_n, algorithm, data_path, metadata, seed = args
-    data = torch.load(data_path)
+    sample_i, node_list, mix_category_list, mix_per_parent, seed = args
 
-    mixtures = []
-    journals = []
-    for mix_i in range(mix_n):
-        mixture_indices, aux_out = algorithm.mix_index(data,
-                                                   metadata,
-                                                   seed)
-        mixture = Mixture(sample_index=sample_i,
-                          mixture_index=mix_i,
-                          mixture_indices=mixture_indices)
-        journal = MixtureJournal(mixture=mixture,
-                                 created_at=datetime.now(),
-                                 seed=seed,
-                                 algorithm_out=aux_out)
-        mixtures.append(mixture)
-        journals.append(journal)
+    data, metadata = DataNode.process_single_chain(node_list)
+    if metadata[0].super_type != 'source':
+        logger.error(json.dumps({
+            'type': 'InvalidNodeType',
+            'messge': 'the first element of chain is not source',
+            'sample_i': sample_i,
+            'seed': seed,
+            'metadata': [md.to_dict() for md in metadata]
+        }))
 
-    return mixtures, journals
+    in_channel_list = metadata[0].channels
+    all_categories = set([
+        c for c_l in mix_category_list for c in c_l['category']
+    ])
+
+    # build list of mixture index
+    # mix_index_list = [
+    #   [        # for mixture 1
+    #     [0, 1] # for output channel 1
+    #     [2]    # for output channel 2
+    #   ],
+    #            # ... for more mixtures
+    #]
+    mix_index_list = []
+    stack = [[]]
+    while stack:
+        index_list = stack.pop()
+        next_channel_index = len(index_list)
+        next_category_list = mix_category_list[next_channel_index]
+
+        # filter index
+        candidate_channel_indices = []
+        for i in range(len(in_channel_list)):
+            if any(i in i_l for i_l in index_list):
+                continue # no index duplication
+            if all(c != 'other'
+                   and in_channel_list[i].category != c
+                   or c == 'other'
+                   and in_channel_list[i].category in all_categories
+                   for c in next_category_list['category']
+            ):
+                continue # filter only valid category
+            candidate_channel_indices.append(i)
+        if not candidate_channel_indices:
+            continue # no candidate: dead end
+
+        # add index list
+        min_channel = next_category_list.get('min_channel') or 1
+        max_channel = next_category_list.get('max_channel') or\
+            len(candidate_channel_indices)
+        for n in range(max_channel, min_channel-1, -1):
+            for i_l in list(combinations(candidate_channel_indices, n))[::-1]:
+                if next_channel_index < len(mix_category_list) - 1:
+                    stack.append(index_list + [i_l])
+                else:
+                    mix_index_list.append(index_list + [i_l])
+
+    # evaluate activations
+    _mix_index_list = []
+    for out_index_list in mix_index_list:
+        has_activation = True
+        for in_index_list in out_index_list:
+            out_wave = sum(data[i]['wave'] for i in in_index_list)
+            activation = [(0, out_wave.shape[-1], [])]
+            merge_activation(activation, out_wave, 'tag', top_db=30)
+            if all(not tags for _, _, tags in activation):
+                has_activation = False
+                break
+        if has_activation:
+            _mix_index_list.append(out_index_list)
+    mix_index_list = _mix_index_list
+
+    # no mix index
+    if not mix_index_list:
+        return sample_i, None, None
+
+    random_ = random.Random(seed)
+    random_.shuffle(mix_index_list)
+    if mix_per_parent is not None and mix_per_parent > len(mix_index_list):
+        _mix_index_list = []
+        while len(_mix_index_list) < mix_per_parent:
+            _mix_index_list.extend(mix_index_list)
+        mix_index_list = _mix_index_list
+    mix_index_list = mix_index_list[:mix_per_parent]
+
+    random_ = random.Random(seed)
+    random_.shuffle(mix_index_list)
+    mix_index_list = mix_index_list[:mix_per_parent]
+    node_list = [MixNode(mix_index) for mix_index in mix_index_list]
+    journal_list = MixJournal(
+        created_at=datetime.now(),
+        seed=seed,
+        mix_list=node_list,
+    )
+
+    return sample_i, node_list, journal_list
 

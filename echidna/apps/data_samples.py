@@ -14,8 +14,7 @@ def attach_parser(parser):
                 'items': {'type': 'string'}
             },
             'sample_size': {'type': 'integer'},
-            'source_per_category': {'type': 'integer'},
-            'source_by_category': {'type': 'object'},
+            'category_map': {'type': 'object'},
             'sample_rate': {'type': 'integer'},
             'duration': {'type': 'number'},
             'target_db': {'type': 'number'},
@@ -25,7 +24,18 @@ def attach_parser(parser):
             'journal_path': {'type': 'string'},
             'log_path': {'type': 'string'},
             'log_level': {'type': 'string'},
-            'jobs': {'type': 'integer'},
+            'jobs': {
+                'Or': [
+                    {'type': 'integer'},
+                    {'type': 'null'},
+                ]
+            },
+            'device': {
+                'Or': [
+                    {'type': 'string'},
+                    {'type': 'null'},
+                ]
+            },
         },
         'additionalProperties': False,
     }
@@ -41,8 +51,7 @@ def attach_parser(parser):
 
     group = parser.add_argument_group(title='sample parameters')
     group.add_argument('--sample-size')
-    group.add_argument('--source-per-category')
-    group.add_argument('--source-by-category', action=LoadJSONAction)
+    group.add_argument('--category-map', action=LoadJSONAction)
     group.add_argument('--sample-rate')
     group.add_argument('--duration')
     group.add_argument('--target-db', type=float)
@@ -57,14 +66,14 @@ def attach_parser(parser):
     group.add_argument('--log-path')
     group.add_argument('--log-level')
     group.add_argument('--jobs')
+    group.add_argument('--device')
 
 def main(args):
     spec = SampleSpec(
         datasources=args.datasources,
         fold=args.fold,
         sample_size=args.sample_size,
-        source_per_category=args.source_per_category,
-        source_by_category=args.source_by_category,
+        category_map=args.category_map,
         sample_rate=args.sample_rate,
         duration=args.duration,
         target_db=args.target_db,
@@ -75,6 +84,7 @@ def main(args):
         log_path=args.log_path,
         log_level=args.log_level,
         jobs=args.jobs,
+        device=args.device,
     )
     spec.save_samples()
 

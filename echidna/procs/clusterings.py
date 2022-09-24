@@ -4,7 +4,7 @@ import math
 import itertools
 import json
 import logging
-import sklearn
+import sklearn.cluster
 import torch
 import torchaudio
 from datetime import datetime

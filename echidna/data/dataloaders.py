@@ -46,20 +46,20 @@ def build_dataloader(dataset : Dataset,
     )
     return loader
 
-def collate_fn(l : tp.List[tp.Tuple[tp.Dict[str, torch.Tensor], tp.Dict]]):
+def collate_fn(l : tp.List[tp.Tuple[
+        tp.List[tp.Dict[str, torch.Tensor]],
+        tp.List[object],
+]]):
     data_tuple, metadata_tuple = zip(*l)
     collate_data = {
-        'waves': torch.stack([d['waves'] for d in data_tuple], dim=0),
+        'waves': torch.stack([
+            torch.stack([c['wave'] for c in data], dim=0)
+            for data in data_tuple
+        ], dim=0),
         'sheets': None
     }
-    collate_metadata = {
-        'index': [d['index'] for d in metadata_tuple],
-        'sample': [d['sample'] for d in metadata_tuple],
-        'augmentation': [d['augmentation'] for d in metadata_tuple],
-        'mixture': [d['mixture'] for d in metadata_tuple],
-    }
 
-    return collate_data, collate_metadata
+    return collate_data, metadata_tuple
 
 def _seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2**32

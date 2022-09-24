@@ -1,13 +1,14 @@
 
+import os
 import unittest
 import pathlib
 import tempfile
 import json
 
+from echidna.data.datanodes import DataNode
 from echidna.data.mixtures import (
-    Mixture, MixturesJournal, MixtureSpec, CategoryMix
+    MixNode, MixSetSpec, MixSetJournal
 )
-from echidna.data.samples import SampleSpec
 
 from .utils import prepare_datasources
 
@@ -23,125 +24,61 @@ class TestMixtures(unittest.TestCase):
     def tearDown(self):
         self.tmpdir.cleanup()
 
-    def test_category_mix_include_other(self):
+    def test_category_mix(self):
         mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_1'
-        spec = MixtureSpec(
-            algorithm=CategoryMix(
-                mix_category_list=[['ct001'], ['ct002', 'ct003']],
-                include_other=True,
-                collapse_zero=False,
-            ),
+        spec = MixSetSpec(
+            input_metadata_path=self.sample_dir/'d1'/'metadata.json',
+            output_metadata_path=mix_dir/'d1'/'metadata.json',
+            mix_category_list=[
+                {
+                    'category': ['ct001'],
+                    'min_channel': 1,
+                    'max_channel': 3,
+                },
+                {
+                    'category': ['ct002', 'other'],
+                    'min_channel': 1,
+                    'max_channel': 3,
+                },
+            ],
+            mix_per_parent=None,
             seed=self.seed,
-            mix_per_sample=2,
-            sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
-            mixture_metadata_path=mix_dir/'d1'/'metadata.json',
-            journal_path=mix_dir/'d1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_mixture()
-
-        # load metadata
-        with open(spec.mixture_metadata_path, 'r') as fp:
-            mixtures = Mixture.from_list(json.load(fp))
-
-        self.assertEqual(len(mixtures), 2)
-        for m in mixtures:
-            self.assertEqual(m.sample_index, 0)
-            self.assertEqual(m.mixture_indices,
-                             [
-                                 [[0], [1], []],
-                                 [[0], [2], []],
-                                 [[0], [1, 2], []],
-                             ])
-
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = MixturesJournal.from_dict(json.load(fp))
-
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-
-    def test_category_mix_exclude_other(self):
-        mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_2'
-        spec = MixtureSpec(
-            algorithm=CategoryMix(
-                mix_category_list=[['ct001'], ['ct002', 'ct003']],
-                include_other=False,
-            ),
-            seed=self.seed,
-            mix_per_sample=2,
-            sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
-            mixture_metadata_path=mix_dir/'d1'/'metadata.json',
             journal_path=mix_dir/'d1'/'journal.json',
             log_path=mix_dir/'d1'/'log.txt',
-            log_level='DEBUG',
+            log_level='INFO',
             jobs=None
         )
         spec.save_mixture()
 
         # load metadata
-        with open(spec.mixture_metadata_path, 'r') as fp:
-            mixtures = Mixture.from_list(json.load(fp))
+        with open(spec.output_metadata_path, 'r') as fp:
+            rootnode = DataNode.from_dict(
+                json.load(fp),
+                context={
+                    'rel_path': os.path.dirname(spec.input_metadata_path)
+                }
+            )
 
-        self.assertEqual(len(mixtures), 2)
-        for m in mixtures:
-            self.assertEqual(m.sample_index, 0)
-            self.assertEqual(m.mixture_indices,
-                             [
-                                 [[0], [1]],
-                                 [[0], [2]],
-                                 [[0], [1, 2]],
-                             ])
+        self.assertEqual(len(rootnode), 3)
 
-        # load journal
-        with open(spec.journal_path, 'r') as fp:
-            journal = MixturesJournal.from_dict(json.load(fp))
+        true_mix_index = set([
+            ((0,), (1,)),
+            ((0,), (2,)),
+            ((0,), (1, 2)),
+        ])
+        test_mix_index = set([
+            tuple(tuple(mi) for mi in m.mix_index)
+            for m in rootnode.list_leaf_node()
+        ])
+        self.assertEqual(test_mix_index, true_mix_index)
 
-        self.assertEqual(journal.metadata_path, 'metadata.json')
-        self.assertEqual(journal.spec.to_dict(), spec.to_dict())
-
-        # load log
-        with open(spec.log_path, 'r') as fp:
-            for l in fp:
-                event_dict = json.loads(l[l.index(' ')+1:])
-                self.assertIn(event_dict['type'],
-                              {'start_mixing', 'made_mixture',
-                               'save_mixtures', 'save_mixtures_journal',
-                               'finish_mixing'})
-
-    def test_category_mix_collapse_zero(self):
-        mix_dir = pathlib.Path(self.tmpdir.name) / 'mixtures_3'
-        spec = MixtureSpec(
-            algorithm=CategoryMix(
-                mix_category_list=[['ct001'], ['ct002', 'ct003']],
-                include_other=True,
-                collapse_zero=True,
-            ),
-            seed=self.seed,
-            mix_per_sample=2,
-            sample_metadata_path=self.sample_dir/'d1'/'metadata.json',
-            mixture_metadata_path=mix_dir/'d1'/'metadata.json',
-            journal_path=mix_dir/'d1'/'journal.json',
-            log_path=None,
-            log_level=None,
-            jobs=None
-        )
-        spec.save_mixture()
-
-        # load metadata
-        with open(spec.mixture_metadata_path, 'r') as fp:
-            mixtures = Mixture.from_list(json.load(fp))
-
-        self.assertEqual(len(mixtures), 2)
-        for m in mixtures:
-            self.assertEqual(m.sample_index, 0)
-            self.assertEqual(m.mixture_indices, [])
+        # load data
+        for data, metadata in rootnode:
+            self.assertEqual(len(data), 2)
 
         # load journal
         with open(spec.journal_path, 'r') as fp:
-            journal = MixturesJournal.from_dict(json.load(fp))
+            journal = MixSetJournal.from_dict(json.load(fp))
 
         self.assertEqual(journal.metadata_path, 'metadata.json')
         self.assertEqual(journal.spec.to_dict(), spec.to_dict())

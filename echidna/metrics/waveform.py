@@ -69,8 +69,9 @@ def source_to_distortion_ratio(s_pred : torch.Tensor,
     epsilon = max(torch.finfo(s_true.dtype).eps,
                   torch.finfo(s_pred.dtype).eps)
 
-    scale = torch.sum(s_pred * s_true, dim=-1) \
-        / torch.sum((s_true ** 2), dim=-1).clamp(min=epsilon)
+    if scale_invariant or scale_dependent:
+        scale = torch.sum(s_pred * s_true, dim=-1) \
+            / torch.sum((s_true ** 2), dim=-1).clamp(min=epsilon)
 
     if scale_invariant:
         s_true = s_true * scale.unsqueeze(-1)
