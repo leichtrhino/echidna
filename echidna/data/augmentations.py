@@ -666,6 +666,9 @@ def _make_param_set(data,
         scale_amounts = [
             random.uniform(*scale_range) for _ in range(scale_points)
         ]
+        if random.random() < 0.5 \
+           and len(scale_amounts) > 1 and scale_amounts[0] != 1:
+            scale_amounts = [-s for s in scale_amounts]
         scale_fractions = [
             random.random() for _ in range(scale_points-1)
         ]
