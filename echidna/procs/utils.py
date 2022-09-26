@@ -119,7 +119,10 @@ def process_batch(spec,
                 'model_class': model_class,
                 'model_epoch': model_epoch,
                 'step': step,
-                'metadata': [[_m.to_dict() for _m in m] for m in metadata],
+                'metadata': [
+                    [_m.to_dict() for _m in m]
+                    for m in metadata[sample_i:sample_i_end]
+                ],
             }
             if type(spec) == trainings.TrainingSpec:
                 event_dict['training_epoch'] = epoch
