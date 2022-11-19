@@ -1,6 +1,7 @@
 
 import typing as tp
 import os
+import math
 import logging
 import json
 import random
@@ -625,6 +626,10 @@ def _make_param_set(data,
     assert len(time_stretch_range) == 2
     assert len(pitch_shift_range) == 2
 
+    log_scale_range = tuple(math.log2(s) for s in scale_range)
+    log_time_stretch_range = tuple(math.log2(s) for s in time_stretch_range)
+    log_pitch_shift_range = tuple(math.log2(s) for s in pitch_shift_range)
+
     random.seed(seed)
     torch.manual_seed(seed)
 
@@ -634,7 +639,7 @@ def _make_param_set(data,
     for track in set(
             c.track for c in source_metadata.channels if c.track is not None):
         track_param[track] = {
-            'time_stretch_rate': random.uniform(*time_stretch_range),
+            'time_stretch_rate': 2**random.uniform(*log_time_stretch_range),
         }
         track_activation[track] = [(0, None, [])]
 
@@ -659,12 +664,12 @@ def _make_param_set(data,
         # build transform
         time_stretch_rate = track_param.get(
             track,
-            {'time_stretch_rate' : random.uniform(*time_stretch_range)}
+            {'time_stretch_rate' : 2**random.uniform(*log_time_stretch_range)}
         )['time_stretch_rate']
-        pitch_shift_rate = random.uniform(*pitch_shift_range)
+        pitch_shift_rate = 2**random.uniform(*log_pitch_shift_range)
         scale_points = random.randint(*scale_point_range)
         scale_amounts = [
-            random.uniform(*scale_range) for _ in range(scale_points)
+            2**random.uniform(*log_scale_range) for _ in range(scale_points)
         ]
         if random.random() < 0.5 \
            and len(scale_amounts) > 1 and scale_amounts[0] != 1:
