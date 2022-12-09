@@ -240,9 +240,8 @@ def _separate(spec : SeparationSpec):
             + in_sample_len - (expand_left + out_sample_len) - x.shape[-1]
 
         padded_x = torch.cat((
-            torch.zeros(*x.shape[:-1], expand_left),
             x,
-            torch.zeros(*x.shape[:-1], expand_right)
+            torch.zeros(*x.shape[:-1], expand_left+expand_right)
         ), dim=-1)
         sample = split_into_windows(padded_x, in_sample_len, sample_hop_len)
     else:
@@ -252,9 +251,8 @@ def _separate(spec : SeparationSpec):
             expand_left = (in_sample_len - orig_length) // 2
             expand_right = in_sample_len - (expand_left + orig_length)
             sample = torch.cat((
-                torch.zeros(*sample.shape[:-1], expand_left),
                 sample,
-                torch.zeros(*sample.shape[:-1], expand_right)
+                torch.zeros(*sample.shape[:-1], expand_left+expand_right),
             ), dim=-1)
 
     if logger:
@@ -275,11 +273,6 @@ def _separate(spec : SeparationSpec):
             batch_end_i = min(batch_i + (spec.batch_size or 1),
                               channel.shape[0])
             batch = channel[batch_i:batch_end_i]
-
-            in_l = batch.shape[-1]
-            out_l = model.forward_wave_length(batch.shape[-1])
-            el = (in_l - out_l) // 2
-            er = in_l - out_l - el
 
             # infer source waveform for an input channel and a window
             with torch.no_grad():
@@ -320,7 +313,7 @@ def _separate(spec : SeparationSpec):
 
     s_hats = torch.stack(out_tensors)
     left = (s_hats.shape[-1] - orig_length) // 2
-    s_hats = s_hats[..., left:left+orig_length]
+    s_hats = s_hats[..., :orig_length]
 
     if logger:
         logger.info(json.dumps({

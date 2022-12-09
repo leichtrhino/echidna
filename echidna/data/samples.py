@@ -702,8 +702,12 @@ def _save_single_sample(args):
     # choose activation
     track_activation = dict()
     for k, a in track_activations.items():
+        full_categories = set([
+            ds[0].category for ds in datasources if ds[0].track == k])
         weights = [
-            (end-start)*(10**(len(tags)-1)) if len(tags) else 0
+            0 if len(set([target_categories[i] for i in tags])) \
+            < len(full_categories)
+            else (end-start)*(10**(len(tags)-1))
             for start, end, tags in a
         ]
         if len(weights) == 0 or sum(weights) <= 0:
@@ -739,7 +743,12 @@ def _save_single_sample(args):
     crop_sheets = []
     crop_datasources = []
     crop_offsets = []
-    for ds, w, s, a in zip(datasources, waves, sheets, source_activation):
+    crop_target_categories = []
+    for ds, w, s, a, t_c in zip(datasources,
+                                waves,
+                                sheets,
+                                source_activation,
+                                target_categories):
         if a is None:
             continue
         start, end, _ = a
@@ -758,6 +767,7 @@ def _save_single_sample(args):
         crop_sheets.append(s)
         crop_datasources.append(ds)
         crop_offsets.append(offset)
+        crop_target_categories.append(t_c)
 
     # save
     dirname = os.path.dirname(data_path_prefix)
@@ -779,7 +789,7 @@ def _save_single_sample(args):
                 str(data_path_prefix)+f'.{c_i:02d}.pth',
                 os.path.dirname(metadata_path)
             ),
-            category=target_categories[c_i],
+            category=crop_target_categories[c_i],
             track=dss[0].track,
             fold=dss[0].fold,
             sample_rate=sample_rate,
