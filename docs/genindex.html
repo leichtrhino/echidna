@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +11,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
   </head><body>
@@ -46,6 +48,7 @@
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -63,9 +66,23 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.apps.html#echidna.apps.data_augmentations.attach_parser">attach_parser() (in module echidna.apps.data_augmentations)</a>
+      <li><a href="echidna.data.html#echidna.data.datanodes.add_datanode_cls">add_datanode_cls() (in module echidna.data.datanodes)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.add_metric_cls">add_metric_cls() (in module echidna.data.difficulties)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty.additional_args">additional_args() (echidna.data.difficulties.EntropyDifficulty class method)</a>
 
       <ul>
+        <li><a href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty.additional_args">(echidna.data.difficulties.FrequencyDifficulty class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec.additional_args">(echidna.data.difficulties.MetricSpec class method)</a>
+</li>
+      </ul></li>
+      <li><a href="echidna.apps.html#echidna.apps.cluster.attach_parser">attach_parser() (in module echidna.apps.cluster)</a>
+
+      <ul>
+        <li><a href="echidna.apps.html#echidna.apps.data_augmentations.attach_parser">(in module echidna.apps.data_augmentations)</a>
+</li>
         <li><a href="echidna.apps.html#echidna.apps.data_mixtures.attach_parser">(in module echidna.apps.data_mixtures)</a>
 </li>
         <li><a href="echidna.apps.html#echidna.apps.data_samples.attach_parser">(in module echidna.apps.data_samples)</a>
@@ -79,27 +96,13 @@
         <li><a href="echidna.apps.html#echidna.apps.validate.attach_parser">(in module echidna.apps.validate)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.data.html#echidna.data.datasets.augment">augment() (in module echidna.data.datasets)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.data.html#echidna.data.augmentations.Augmentation">Augmentation (class in echidna.data.augmentations)</a>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNode">AugmentationNode (class in echidna.data.augmentations)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationAlgorithm.augmentation_params">augmentation_params() (echidna.data.augmentations.AugmentationAlgorithm method)</a>
-
-      <ul>
-        <li><a href="echidna.data.html#echidna.data.augmentations.EntropyAugmentation.augmentation_params">(echidna.data.augmentations.EntropyAugmentation method)</a>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNodeJournal">AugmentationNodeJournal (class in echidna.data.augmentations)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.FrequencyAugmentation.augmentation_params">(echidna.data.augmentations.FrequencyAugmentation method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.RandomAugmentation.augmentation_params">(echidna.data.augmentations.RandomAugmentation method)</a>
-</li>
-      </ul></li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationAlgorithm">AugmentationAlgorithm (class in echidna.data.augmentations)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationJournal">AugmentationJournal (class in echidna.data.augmentations)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationsJournal">AugmentationsJournal (class in echidna.data.augmentations)</a>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSetJournal">AugmentationSetJournal (class in echidna.data.augmentations)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSpec">AugmentationSpec (class in echidna.data.augmentations)</a>
 </li>
@@ -109,17 +112,17 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.balance_by_remove">balance_by_remove() (echidna.data.datanodes.DataNode method)</a>
+</li>
       <li><a href="echidna.models.html#echidna.models.nest.BaselineChimeraNet">BaselineChimeraNet() (in module echidna.models.nest)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder">BaselineDecoder (class in echidna.models.core.baseline)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.nest.BaselineEncDecModel">BaselineEncDecModel() (in module echidna.models.nest)</a>
 </li>
-      <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder">BaselineEncoder (class in echidna.models.core.baseline)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.data.html#echidna.data.datasets.BasicDataset">BasicDataset (class in echidna.data.datasets)</a>
+      <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder">BaselineEncoder (class in echidna.models.core.baseline)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.BottleneckBlock">BottleneckBlock (class in echidna.models.core.demucs)</a>
 </li>
@@ -135,7 +138,19 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.data.html#echidna.data.samples.Datasource.category">category (echidna.data.samples.Datasource attribute)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.CategoryMix">CategoryMix (class in echidna.data.mixtures)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.category_map">category_map (echidna.data.samples.SampleSpec attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.Channel">Channel (class in echidna.data.samples)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.channel">channel (echidna.data.samples.ChannelJournal attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.channel_journals">channel_journals (echidna.data.samples.SampleJournal attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation">ChannelAugmentation (class in echidna.data.augmentations)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentationJournal">ChannelAugmentationJournal (class in echidna.data.augmentations)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal">ChannelJournal (class in echidna.data.samples)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint">Checkpoint (class in echidna.models.checkpoints)</a>
 </li>
@@ -143,17 +158,23 @@
 </li>
       <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet">ChimeraNet (class in echidna.models.multidomain.chimera)</a>
 </li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.cleanup_index">cleanup_index() (echidna.data.datanodes.DataNode method)</a>
+</li>
+      <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec.cluster">cluster() (echidna.procs.clusterings.ClusteringSpec method)</a>
+</li>
+      <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringJournal">ClusteringJournal (class in echidna.procs.clusterings)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec">ClusteringSpec (class in echidna.procs.clusterings)</a>
+</li>
       <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.CodebookMask">CodebookMask (class in echidna.models.core.commonlayers)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.dataloaders.collate_fn">collate_fn() (in module echidna.data.dataloaders)</a>
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.components">components (echidna.metrics.composite.CompositeLoss attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.data.html#echidna.data.transforms.Compose">Compose (class in echidna.data.transforms)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.datasets.CompositeDataset">CompositeDataset (class in echidna.data.datasets)</a>
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss">CompositeLoss (class in echidna.metrics.composite)</a>
 </li>
@@ -161,12 +182,20 @@
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvBlock">ConvBlock (class in echidna.models.core.convtasnet)</a>
 </li>
+      <li><a href="echidna.models.html#echidna.models.nest.ConvTasNetChimeraNet">ConvTasNetChimeraNet() (in module echidna.models.nest)</a>
+</li>
       <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder">ConvTasNetDecoder (class in echidna.models.core.convtasnet)</a>
+</li>
+      <li><a href="echidna.models.html#echidna.models.nest.ConvTasNetEncDecModel">ConvTasNetEncDecModel() (in module echidna.models.nest)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder">ConvTasNetEncoder (class in echidna.models.core.convtasnet)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.created_at">created_at (echidna.data.samples.SampleJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.created_at">created_at (echidna.data.samples.ChannelJournal attribute)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.created_at">(echidna.data.samples.SampleJournal attribute)</a>
 </li>
+      </ul></li>
       <li><a href="echidna.data.html#echidna.data.transforms.Crop">Crop (class in echidna.data.transforms)</a>
 </li>
   </ul></td>
@@ -175,13 +204,17 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.data_dir">data_dir (echidna.data.samples.SampleSpec attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode">DataNode (class in echidna.data.datanodes)</a>
+</li>
       <li><a href="echidna.data.html#echidna.data.datasets.Dataset">Dataset (class in echidna.data.datasets)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.samples.Datasource">Datasource (class in echidna.data.samples)</a>
 </li>
       <li><a href="echidna.apps.html#echidna.apps.utils.DatasourceAction">DatasourceAction (class in echidna.apps.utils)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.datasources">datasources (echidna.data.samples.SampleJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.datasources">datasources (echidna.data.samples.ChannelJournal attribute)</a>
 
       <ul>
         <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.datasources">(echidna.data.samples.SampleSpec attribute)</a>
@@ -195,7 +228,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.metrics.html#echidna.metrics.deepclustering.DeepLDALoss">DeepLDALoss (class in echidna.metrics.deepclustering)</a>
 </li>
+      <li><a href="echidna.models.html#echidna.models.nest.DemucsChimeraNet">DemucsChimeraNet() (in module echidna.models.nest)</a>
+</li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder">DemucsDecoder (class in echidna.models.core.demucs)</a>
+</li>
+      <li><a href="echidna.models.html#echidna.models.nest.DemucsEncDecModel">DemucsEncDecModel() (in module echidna.models.nest)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder">DemucsEncoder (class in echidna.models.core.demucs)</a>
 </li>
@@ -229,6 +266,13 @@
 
       <ul>
         <li><a href="echidna.apps.html#module-echidna.apps">module</a>
+</li>
+      </ul></li>
+      <li>
+    echidna.apps.cluster
+
+      <ul>
+        <li><a href="echidna.apps.html#module-echidna.apps.cluster">module</a>
 </li>
       </ul></li>
       <li>
@@ -309,10 +353,24 @@
 </li>
       </ul></li>
       <li>
+    echidna.data.datanodes
+
+      <ul>
+        <li><a href="echidna.data.html#module-echidna.data.datanodes">module</a>
+</li>
+      </ul></li>
+      <li>
     echidna.data.datasets
 
       <ul>
         <li><a href="echidna.data.html#module-echidna.data.datasets">module</a>
+</li>
+      </ul></li>
+      <li>
+    echidna.data.difficulties
+
+      <ul>
+        <li><a href="echidna.data.html#module-echidna.data.difficulties">module</a>
 </li>
       </ul></li>
       <li>
@@ -507,6 +565,13 @@
 </li>
       </ul></li>
       <li>
+    echidna.procs.clusterings
+
+      <ul>
+        <li><a href="echidna.procs.html#module-echidna.procs.clusterings">module</a>
+</li>
+      </ul></li>
+      <li>
     echidna.procs.separations
 
       <ul>
@@ -541,13 +606,15 @@
         <li><a href="echidna.procs.html#module-echidna.procs.validations">module</a>
 </li>
       </ul></li>
-      <li><a href="echidna.procs.html#echidna.procs.separations.EmbdSeparationSpec">EmbdSeparationSpec (class in echidna.procs.separations)</a>
-</li>
       <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead">EmbeddingHead (class in echidna.models.multidomain.chimera)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.EmptyNode">EmptyNode (class in echidna.data.datanodes)</a>
 </li>
       <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel">EncDecModel (class in echidna.models.multidomain.encdec)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.EntropyAugmentation">EntropyAugmentation (class in echidna.data.augmentations)</a>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.ensure_index_init">ensure_index_init() (echidna.data.datanodes.DataNode method)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty">EntropyDifficulty (class in echidna.data.difficulties)</a>
 </li>
       <li><a href="echidna.procs.html#echidna.procs.trainings.EpochJournal">EpochJournal (class in echidna.procs.trainings)</a>
 </li>
@@ -558,10 +625,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.data.html#echidna.data.samples.Datasource.fold">fold (echidna.data.samples.Datasource attribute)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.transforms.Crop.forward">forward() (echidna.data.transforms.Crop method)</a>
 
       <ul>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.fold">(echidna.data.samples.SampleSpec attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="echidna.data.html#echidna.data.transforms.Compose.forward">forward() (echidna.data.transforms.Compose method)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.transforms.Crop.forward">(echidna.data.transforms.Crop method)</a>
+</li>
         <li><a href="echidna.data.html#echidna.data.transforms.MultiPointScale.forward">(echidna.data.transforms.MultiPointScale method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.transforms.PitchShift.forward">(echidna.data.transforms.PitchShift method)</a>
@@ -632,16 +705,12 @@
       <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_dim">forward_embd_dim() (echidna.models.multidomain.chimera.ChimeraNet method)</a>
 
       <ul>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward_embd_dim">(echidna.models.multidomain.chimera.EmbeddingHead method)</a>
-</li>
         <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_embd_dim">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
       </ul></li>
       <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_feature">forward_embd_feature() (echidna.models.multidomain.chimera.ChimeraNet method)</a>
 
       <ul>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward_embd_feature">(echidna.models.multidomain.chimera.EmbeddingHead method)</a>
-</li>
         <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_embd_feature">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
       </ul></li>
@@ -651,12 +720,24 @@
         <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_embd_length">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.forward_feature_size">forward_feature_size() (echidna.models.core.baseline.BaselineEncoder method)</a>
+      <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_dim">forward_feature_dim() (echidna.models.multidomain.chimera.EmbeddingHead method)</a>
+</li>
+      <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.forward_feature_size">forward_feature_size() (echidna.models.core.baseline.BaselineDecoder method)</a>
 
       <ul>
+        <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.forward_feature_size">(echidna.models.core.baseline.BaselineEncoder method)</a>
+</li>
+        <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.forward_feature_size">(echidna.models.core.convtasnet.ConvTasNetDecoder method)</a>
+</li>
+        <li><a href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.forward_feature_size">(echidna.models.core.demucs.DemucsDecoder method)</a>
+</li>
         <li><a href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.forward_feature_size">(echidna.models.core.demucs.DemucsEncoder method)</a>
 </li>
+        <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.forward_feature_size">(echidna.models.core.waveunet.WaveUNetDecoder method)</a>
+</li>
         <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.forward_feature_size">(echidna.models.core.waveunet.WaveUNetEncoder method)</a>
+</li>
+        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_size">(echidna.models.multidomain.chimera.EmbeddingHead method)</a>
 </li>
       </ul></li>
       <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.forward_length">forward_length() (echidna.models.core.baseline.BaselineDecoder method)</a>
@@ -694,8 +775,6 @@
 </li>
         <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.forward_length">(echidna.models.core.waveunet.WaveUNetEncoder method)</a>
 </li>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_length">(echidna.models.multidomain.chimera.ChimeraNet method)</a>
-</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -723,40 +802,58 @@
         <li><a href="echidna.metrics.html#echidna.metrics.waveform.NegativeSISDRLoss.forward_no_reduction">(echidna.metrics.waveform.NegativeSISDRLoss method)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_wave_length">forward_wave_length() (echidna.models.multidomain.encdec.EncDecModel method)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.FrequencyAugmentation">FrequencyAugmentation (class in echidna.data.augmentations)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.Augmentation.from_dict">from_dict() (echidna.data.augmentations.Augmentation class method)</a>
+      <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_channel">forward_wave_channel() (echidna.models.multidomain.chimera.ChimeraNet method)</a>
 
       <ul>
-        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationAlgorithm.from_dict">(echidna.data.augmentations.AugmentationAlgorithm class method)</a>
+        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_wave_channel">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationJournal.from_dict">(echidna.data.augmentations.AugmentationJournal class method)</a>
+      </ul></li>
+      <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_length">forward_wave_length() (echidna.models.multidomain.chimera.ChimeraNet method)</a>
+
+      <ul>
+        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_wave_length">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationsJournal.from_dict">(echidna.data.augmentations.AugmentationsJournal class method)</a>
+      </ul></li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty">FrequencyDifficulty (class in echidna.data.difficulties)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNodeJournal.from_dict">from_dict() (echidna.data.augmentations.AugmentationNodeJournal class method)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSetJournal.from_dict">(echidna.data.augmentations.AugmentationSetJournal class method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSpec.from_dict">(echidna.data.augmentations.AugmentationSpec class method)</a>
 </li>
+        <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation.from_dict">(echidna.data.augmentations.ChannelAugmentation class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentationJournal.from_dict">(echidna.data.augmentations.ChannelAugmentationJournal class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.augmentations.SampleAugmentationJournal.from_dict">(echidna.data.augmentations.SampleAugmentationJournal class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.from_dict">(echidna.data.datanodes.DataNode class method)</a>
+</li>
         <li><a href="echidna.data.html#echidna.data.datasets.Dataset.from_dict">(echidna.data.datasets.Dataset class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixAlgorithm.from_dict">(echidna.data.mixtures.MixAlgorithm class method)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricJournal.from_dict">(echidna.data.difficulties.MetricJournal class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.Mixture.from_dict">(echidna.data.mixtures.Mixture class method)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSetJournal.from_dict">(echidna.data.difficulties.MetricSetJournal class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixtureJournal.from_dict">(echidna.data.mixtures.MixtureJournal class method)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec.from_dict">(echidna.data.difficulties.MetricSpec class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixturesJournal.from_dict">(echidna.data.mixtures.MixturesJournal class method)</a>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixJournal.from_dict">(echidna.data.mixtures.MixJournal class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixtureSpec.from_dict">(echidna.data.mixtures.MixtureSpec class method)</a>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixSetJournal.from_dict">(echidna.data.mixtures.MixSetJournal class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixSetSpec.from_dict">(echidna.data.mixtures.MixSetSpec class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.Channel.from_dict">(echidna.data.samples.Channel class method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.from_dict">(echidna.data.samples.ChannelJournal class method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.samples.Datasource.from_dict">(echidna.data.samples.Datasource class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.samples.Sample.from_dict">(echidna.data.samples.Sample class method)</a>
-</li>
         <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.from_dict">(echidna.data.samples.SampleJournal class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.from_dict">(echidna.data.samples.SamplesJournal class method)</a>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.from_dict">(echidna.data.samples.SampleSetJournal class method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.from_dict">(echidna.data.samples.SampleSpec class method)</a>
 </li>
@@ -765,6 +862,14 @@
         <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.from_dict">(echidna.models.checkpoints.Checkpoint class method)</a>
 </li>
         <li><a href="echidna.models.html#echidna.models.models.Model.from_dict">(echidna.models.models.Model class method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringJournal.from_dict">(echidna.procs.clusterings.ClusteringJournal class method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec.from_dict">(echidna.procs.clusterings.ClusteringSpec class method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.separations.SeparationJournal.from_dict">(echidna.procs.separations.SeparationJournal class method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.separations.SeparationSpec.from_dict">(echidna.procs.separations.SeparationSpec class method)</a>
 </li>
         <li><a href="echidna.procs.html#echidna.procs.trainings.EpochJournal.from_dict">(echidna.procs.trainings.EpochJournal class method)</a>
 </li>
@@ -777,18 +882,16 @@
         <li><a href="echidna.procs.html#echidna.procs.validations.ValidationSpec.from_dict">(echidna.procs.validations.ValidationSpec class method)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.EntropyAugmentation.from_dict_args">from_dict_args() (echidna.data.augmentations.EntropyAugmentation class method)</a>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNode.from_dict_args">from_dict_args() (echidna.data.augmentations.AugmentationNode class method)</a>
 
       <ul>
-        <li><a href="echidna.data.html#echidna.data.augmentations.FrequencyAugmentation.from_dict_args">(echidna.data.augmentations.FrequencyAugmentation class method)</a>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.from_dict_args">(echidna.data.datanodes.DataNode method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.RandomAugmentation.from_dict_args">(echidna.data.augmentations.RandomAugmentation class method)</a>
+        <li><a href="echidna.data.html#echidna.data.datanodes.EmptyNode.from_dict_args">(echidna.data.datanodes.EmptyNode class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.datasets.BasicDataset.from_dict_args">(echidna.data.datasets.BasicDataset class method)</a>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixNode.from_dict_args">(echidna.data.mixtures.MixNode class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.datasets.CompositeDataset.from_dict_args">(echidna.data.datasets.CompositeDataset class method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.CategoryMix.from_dict_args">(echidna.data.mixtures.CategoryMix class method)</a>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleNode.from_dict_args">(echidna.data.samples.SampleNode class method)</a>
 </li>
         <li><a href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.from_dict_args">(echidna.metrics.composite.CompositeLoss class method)</a>
 </li>
@@ -807,14 +910,8 @@
         <li><a href="echidna.models.html#echidna.models.models.SavedModel.from_dict_args">(echidna.models.models.SavedModel class method)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.Augmentation.from_list">from_list() (echidna.data.augmentations.Augmentation class method)</a>
-
-      <ul>
-        <li><a href="echidna.data.html#echidna.data.mixtures.Mixture.from_list">(echidna.data.mixtures.Mixture class method)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.Channel.from_list">from_list() (echidna.data.samples.Channel class method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.samples.Sample.from_list">(echidna.data.samples.Sample class method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -822,8 +919,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.models.html#echidna.models.utils.generate_dft_matrix">generate_dft_matrix() (in module echidna.models.utils)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.get_augmentation_algorithm">get_augmentation_algorithm() (in module echidna.data.augmentations)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.models.CheckpointModel.get_class">get_class() (echidna.models.models.CheckpointModel method)</a>
 
@@ -835,7 +930,9 @@
         <li><a href="echidna.models.html#echidna.models.models.SavedModel.get_class">(echidna.models.models.SavedModel method)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.data.html#echidna.data.datasets.get_dataset_type">get_dataset_type() (in module echidna.data.datasets)</a>
+      <li><a href="echidna.data.html#echidna.data.datanodes.get_datanode_cls">get_datanode_cls() (in module echidna.data.datanodes)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.get_datanode_name">get_datanode_name() (in module echidna.data.datanodes)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_epoch">get_epoch() (echidna.models.checkpoints.Checkpoint method)</a>
 
@@ -861,7 +958,11 @@
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.loss.get_loss_name">get_loss_name() (in module echidna.metrics.loss)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.get_mix_algorithm">get_mix_algorithm() (in module echidna.data.mixtures)</a>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.get_metric">get_metric() (echidna.data.datanodes.DataNode method)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.get_metric_cls">get_metric_cls() (in module echidna.data.difficulties)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.get_metric_name">get_metric_name() (in module echidna.data.difficulties)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_model">get_model() (echidna.models.checkpoints.Checkpoint method)</a>
 
@@ -879,6 +980,8 @@
       </ul></li>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_model_hyperparameters">get_model_hyperparameters() (echidna.models.checkpoints.Checkpoint method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_optimizer_class">get_optimizer_class() (echidna.models.checkpoints.Checkpoint method)</a>
 
       <ul>
@@ -889,8 +992,6 @@
         <li><a href="echidna.models.html#echidna.models.checkpoints.get_optimizer_class">(in module echidna.models.checkpoints)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_optimizer_hyperparameters">get_optimizer_hyperparameters() (echidna.models.checkpoints.Checkpoint method)</a>
 
       <ul>
@@ -917,6 +1018,8 @@
         <li><a href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_hyperparameters">(echidna.models.checkpoints.SavedCheckpoint method)</a>
 </li>
       </ul></li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.get_single_chain">get_single_chain() (echidna.data.datanodes.DataNode method)</a>
+</li>
       <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_torch_model">get_torch_model() (echidna.models.checkpoints.Checkpoint method)</a>
 
       <ul>
@@ -955,14 +1058,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.data.html#echidna.data.samples.Datasource.id">id (echidna.data.samples.Datasource attribute)</a>
 </li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.index_not_initialized">index_not_initialized() (echidna.data.datanodes.DataNode method)</a>
+</li>
       <li><a href="echidna.models.html#echidna.models.utils.init_conv_weight">init_conv_weight() (in module echidna.models.utils)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.init_index">init_index() (echidna.data.datanodes.DataNode method)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.utils.init_lstm_weight">init_lstm_weight() (in module echidna.models.utils)</a>
 </li>
-      <li><a href="echidna.models.html#echidna.models.utils.init_module">init_module() (in module echidna.models.utils)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.models.html#echidna.models.utils.init_module">init_module() (in module echidna.models.utils)</a>
+</li>
       <li><a href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint">InitialCheckpoint (class in echidna.models.checkpoints)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.models.InitialModel">InitialModel (class in echidna.models.models)</a>
@@ -970,6 +1077,18 @@
       <li><a href="echidna.models.core.html#echidna.models.core.waveunet.Interpolation">Interpolation (class in echidna.models.core.waveunet)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.ISTFTLayer">ISTFTLayer (class in echidna.models.core.commonlayers)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.jobs">jobs (echidna.data.samples.SampleSpec attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.journal_path">journal_path (echidna.data.samples.SampleSpec attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -983,13 +1102,21 @@
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.L2SpectrogramLoss">L2SpectrogramLoss (class in echidna.metrics.spectrogram)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.metrics.html#echidna.metrics.waveform.L2WaveformLoss">L2WaveformLoss (class in echidna.metrics.waveform)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.length">length (echidna.data.samples.SampleJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.length">length (echidna.data.samples.ChannelJournal attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.list_leaf_node">list_leaf_node() (echidna.data.datanodes.DataNode method)</a>
+</li>
+      <li><a href="echidna.apps.html#echidna.apps.utils.LoadJSONAction">LoadJSONAction (class in echidna.apps.utils)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.LocalAttention">LocalAttention (class in echidna.models.core.demucs)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.log_level">log_level (echidna.data.samples.SampleSpec attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.log_path">log_path (echidna.data.samples.SampleSpec attribute)</a>
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.loss.Loss">Loss (class in echidna.metrics.loss)</a>
 </li>
@@ -999,9 +1126,11 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.apps.html#echidna.apps.data_augmentations.main">main() (in module echidna.apps.data_augmentations)</a>
+      <li><a href="echidna.apps.html#echidna.apps.cluster.main">main() (in module echidna.apps.cluster)</a>
 
       <ul>
+        <li><a href="echidna.apps.html#echidna.apps.data_augmentations.main">(in module echidna.apps.data_augmentations)</a>
+</li>
         <li><a href="echidna.apps.html#echidna.apps.data_mixtures.main">(in module echidna.apps.data_mixtures)</a>
 </li>
         <li><a href="echidna.apps.html#echidna.apps.data_samples.main">(in module echidna.apps.data_samples)</a>
@@ -1019,29 +1148,45 @@
 </li>
       <li><a href="echidna.apps.html#echidna.apps.utils.make_structure_action">make_structure_action() (in module echidna.apps.utils)</a>
 </li>
+      <li><a href="echidna.procs.html#echidna.procs.clusterings.mask_from_embedding">mask_from_embedding() (in module echidna.procs.clusterings)</a>
+</li>
       <li><a href="echidna.models.html#echidna.models.utils.match_length">match_length() (in module echidna.models.utils)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.utils.merge_activation">merge_activation() (in module echidna.data.utils)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.metadata_path">metadata_path (echidna.data.samples.SamplesJournal attribute)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.datasets.mix">mix() (in module echidna.data.datasets)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.CategoryMix.mix_index">mix_index() (echidna.data.mixtures.CategoryMix method)</a>
+      <li><a href="echidna.procs.html#echidna.procs.clusterings.merge_windows">merge_windows() (in module echidna.procs.clusterings)</a>
 
       <ul>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixAlgorithm.mix_index">(echidna.data.mixtures.MixAlgorithm method)</a>
+        <li><a href="echidna.procs.html#echidna.procs.separations.merge_windows">(in module echidna.procs.separations)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.MixAlgorithm">MixAlgorithm (class in echidna.data.mixtures)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.metadata_path">metadata_path (echidna.data.samples.SampleSetJournal attribute)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.metadata_path">(echidna.data.samples.SampleSpec attribute)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.Mixture">Mixture (class in echidna.data.mixtures)</a>
+      </ul></li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty.metric_args">metric_args() (echidna.data.difficulties.EntropyDifficulty method)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty.metric_args">(echidna.data.difficulties.FrequencyDifficulty method)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.MixtureJournal">MixtureJournal (class in echidna.data.mixtures)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec.metric_args">(echidna.data.difficulties.MetricSpec method)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.MixturesJournal">MixturesJournal (class in echidna.data.mixtures)</a>
+      </ul></li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.MetricJournal">MetricJournal (class in echidna.data.difficulties)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.MixtureSpec">MixtureSpec (class in echidna.data.mixtures)</a>
+      <li><a href="echidna.data.html#echidna.data.difficulties.MetricSetJournal">MetricSetJournal (class in echidna.data.difficulties)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec">MetricSpec (class in echidna.data.difficulties)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.mixtures.MixJournal">MixJournal (class in echidna.data.mixtures)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.mixtures.MixNode">MixNode (class in echidna.data.mixtures)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.mixtures.MixSetJournal">MixSetJournal (class in echidna.data.mixtures)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.mixtures.MixSetSpec">MixSetSpec (class in echidna.data.mixtures)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.models.Model">Model (class in echidna.models.models)</a>
 </li>
@@ -1052,6 +1197,8 @@
         <li><a href="echidna.html#module-echidna">echidna</a>
 </li>
         <li><a href="echidna.apps.html#module-echidna.apps">echidna.apps</a>
+</li>
+        <li><a href="echidna.apps.html#module-echidna.apps.cluster">echidna.apps.cluster</a>
 </li>
         <li><a href="echidna.apps.html#module-echidna.apps.data_augmentations">echidna.apps.data_augmentations</a>
 </li>
@@ -1075,7 +1222,11 @@
 </li>
         <li><a href="echidna.data.html#module-echidna.data.dataloaders">echidna.data.dataloaders</a>
 </li>
+        <li><a href="echidna.data.html#module-echidna.data.datanodes">echidna.data.datanodes</a>
+</li>
         <li><a href="echidna.data.html#module-echidna.data.datasets">echidna.data.datasets</a>
+</li>
+        <li><a href="echidna.data.html#module-echidna.data.difficulties">echidna.data.difficulties</a>
 </li>
         <li><a href="echidna.data.html#module-echidna.data.mixtures">echidna.data.mixtures</a>
 </li>
@@ -1131,6 +1282,8 @@
 </li>
         <li><a href="echidna.procs.html#module-echidna.procs">echidna.procs</a>
 </li>
+        <li><a href="echidna.procs.html#module-echidna.procs.clusterings">echidna.procs.clusterings</a>
+</li>
         <li><a href="echidna.procs.html#module-echidna.procs.separations">echidna.procs.separations</a>
 </li>
         <li><a href="echidna.procs.html#module-echidna.procs.trainings">echidna.procs.trainings</a>
@@ -1168,7 +1321,7 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.offsets">offsets (echidna.data.samples.SampleJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.offset">offset (echidna.data.samples.ChannelJournal attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1198,32 +1351,64 @@
         <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.parameter_list">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.data.html#echidna.data.transforms.PitchShift">PitchShift (class in echidna.data.transforms)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.process">process() (echidna.data.datanodes.DataNode method)</a>
 </li>
       <li><a href="echidna.procs.html#echidna.procs.utils.process_batch">process_batch() (in module echidna.procs.utils)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.process_finish">process_finish (echidna.data.samples.SamplesJournal attribute)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.process_finish">process_finish (echidna.data.samples.SampleSetJournal attribute)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.process_start">process_start (echidna.data.samples.SamplesJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNode.process_partial">process_partial() (echidna.data.augmentations.AugmentationNode method)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation.process_partial">(echidna.data.augmentations.ChannelAugmentation method)</a>
 </li>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.process_partial">(echidna.data.datanodes.DataNode method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixNode.process_partial">(echidna.data.mixtures.MixNode method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleNode.process_partial">(echidna.data.samples.SampleNode method)</a>
+</li>
+      </ul></li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.process_single_chain">process_single_chain() (echidna.data.datanodes.DataNode class method)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.process_start">process_start (echidna.data.samples.SampleSetJournal attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.push_metric">push_metric() (echidna.data.datanodes.DataNode method)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec.put_metrics">put_metrics() (echidna.data.difficulties.MetricSpec method)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty.put_single_metric">put_single_metric() (echidna.data.difficulties.EntropyDifficulty method)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty.put_single_metric">(echidna.data.difficulties.FrequencyDifficulty method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec.put_single_metric">(echidna.data.difficulties.MetricSpec method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.data.html#echidna.data.augmentations.RandomAugmentation">RandomAugmentation (class in echidna.data.augmentations)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.register_augmentation_algorithm">register_augmentation_algorithm() (in module echidna.data.augmentations)</a>
-</li>
       <li><a href="echidna.metrics.html#echidna.metrics.loss.register_loss_class">register_loss_class() (in module echidna.metrics.loss)</a>
-</li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.register_mix_algorithm">register_mix_algorithm() (in module echidna.data.mixtures)</a>
 </li>
       <li><a href="echidna.models.html#echidna.models.models.register_model_class">register_model_class() (in module echidna.models.models)</a>
 </li>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNode.require_channel_index_partial">require_channel_index_partial() (echidna.data.augmentations.AugmentationNode method)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.require_channel_index_partial">(echidna.data.datanodes.DataNode method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixNode.require_channel_index_partial">(echidna.data.mixtures.MixNode method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleNode.require_channel_index_partial">(echidna.data.samples.SampleNode method)</a>
+</li>
+      </ul></li>
       <li><a href="echidna.data.html#echidna.data.transforms.Resample">Resample (class in echidna.data.transforms)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.RestrictedBiLSTM">RestrictedBiLSTM (class in echidna.models.core.demucs)</a>
@@ -1263,38 +1448,42 @@
 </li>
         <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.reverse_length">(echidna.models.core.waveunet.WaveUNetEncoder method)</a>
 </li>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.reverse_length">(echidna.models.multidomain.chimera.ChimeraNet method)</a>
-</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.reverse_wave_length">reverse_wave_length() (echidna.models.multidomain.encdec.EncDecModel method)</a>
+      <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.reverse_wave_length">reverse_wave_length() (echidna.models.multidomain.chimera.ChimeraNet method)</a>
+
+      <ul>
+        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.reverse_wave_length">(echidna.models.multidomain.encdec.EncDecModel method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.data.html#echidna.data.samples.Sample">Sample (class in echidna.data.samples)</a>
-</li>
       <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.sample">sample (echidna.data.samples.SampleJournal attribute)</a>
+</li>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.sample_journals">sample_journals (echidna.data.samples.SampleSetJournal attribute)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.sample_rate">sample_rate (echidna.data.samples.SampleSpec attribute)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.sample_size">sample_size (echidna.data.samples.SampleSpec attribute)</a>
 </li>
+      <li><a href="echidna.data.html#echidna.data.augmentations.SampleAugmentationJournal">SampleAugmentationJournal (class in echidna.data.augmentations)</a>
+</li>
       <li><a href="echidna.data.html#echidna.data.samples.SampleJournal">SampleJournal (class in echidna.data.samples)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.samples">samples (echidna.data.samples.SamplesJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleNode">SampleNode (class in echidna.data.samples)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal">SamplesJournal (class in echidna.data.samples)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal">SampleSetJournal (class in echidna.data.samples)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.samples.SampleSpec">SampleSpec (class in echidna.data.samples)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSpec.save_augmentation">save_augmentation() (echidna.data.augmentations.AugmentationSpec method)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.mixtures.MixtureSpec.save_mixture">save_mixture() (echidna.data.mixtures.MixtureSpec method)</a>
+      <li><a href="echidna.data.html#echidna.data.mixtures.MixSetSpec.save_mixture">save_mixture() (echidna.data.mixtures.MixSetSpec method)</a>
 </li>
       <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.save_samples">save_samples() (echidna.data.samples.SampleSpec method)</a>
 </li>
@@ -1306,16 +1495,18 @@
 </li>
       <li><a href="echidna.models.html#echidna.models.models.SavedModel">SavedModel (class in echidna.models.models)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.seed">seed (echidna.data.samples.SampleJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.seed">seed (echidna.data.samples.ChannelJournal attribute)</a>
 
       <ul>
-        <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.seed">(echidna.data.samples.SamplesJournal attribute)</a>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.seed">(echidna.data.samples.SampleJournal attribute)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.seed">(echidna.data.samples.SampleSetJournal attribute)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.seed">(echidna.data.samples.SampleSpec attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.procs.html#echidna.procs.separations.SeparationSpec.separate">separate() (echidna.procs.separations.SeparationSpec method)</a>
 </li>
       <li><a href="echidna.procs.html#echidna.procs.separations.SeparationJournal">SeparationJournal (class in echidna.procs.separations)</a>
@@ -1326,26 +1517,44 @@
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.SigmoidMask">SigmoidMask (class in echidna.models.core.commonlayers)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.source_per_category">source_per_category (echidna.data.samples.SampleSpec attribute)</a>
-</li>
       <li><a href="echidna.metrics.html#echidna.metrics.waveform.source_to_distortion_ratio">source_to_distortion_ratio() (in module echidna.metrics.waveform)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.spec">spec (echidna.data.samples.SamplesJournal attribute)</a>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.spec">spec (echidna.data.samples.SampleSetJournal attribute)</a>
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramConvergenceLoss">SpectrogramConvergenceLoss (class in echidna.metrics.spectrogram)</a>
 </li>
       <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss">SpectrogramLoss (class in echidna.metrics.spectrogram)</a>
 </li>
+      <li><a href="echidna.procs.html#echidna.procs.clusterings.split_into_windows">split_into_windows() (in module echidna.procs.clusterings)</a>
+
+      <ul>
+        <li><a href="echidna.procs.html#echidna.procs.separations.split_into_windows">(in module echidna.procs.separations)</a>
+</li>
+      </ul></li>
       <li><a href="echidna.procs.html#echidna.procs.utils.StepJournal">StepJournal (class in echidna.procs.utils)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.STFTLayer">STFTLayer (class in echidna.models.core.commonlayers)</a>
 </li>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNode.super_type">super_type (echidna.data.augmentations.AugmentationNode property)</a>
+
+      <ul>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.super_type">(echidna.data.datanodes.DataNode property)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.datanodes.EmptyNode.super_type">(echidna.data.datanodes.EmptyNode property)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixNode.super_type">(echidna.data.mixtures.MixNode property)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleNode.super_type">(echidna.data.samples.SampleNode property)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.target_db">target_db (echidna.data.samples.SampleSpec attribute)</a>
+</li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.TDecoderBlock">TDecoderBlock() (in module echidna.models.core.demucs)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.demucs.TEncoderBlock">TEncoderBlock() (in module echidna.models.core.demucs)</a>
@@ -1354,36 +1563,44 @@
 </li>
       <li><a href="echidna.data.html#echidna.data.transforms.TimeStretchAndPitchShift">TimeStretchAndPitchShift (class in echidna.data.transforms)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.Augmentation.to_dict">to_dict() (echidna.data.augmentations.Augmentation method)</a>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNodeJournal.to_dict">to_dict() (echidna.data.augmentations.AugmentationNodeJournal method)</a>
 
       <ul>
-        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationAlgorithm.to_dict">(echidna.data.augmentations.AugmentationAlgorithm method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationJournal.to_dict">(echidna.data.augmentations.AugmentationJournal method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationsJournal.to_dict">(echidna.data.augmentations.AugmentationsJournal method)</a>
+        <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSetJournal.to_dict">(echidna.data.augmentations.AugmentationSetJournal method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationSpec.to_dict">(echidna.data.augmentations.AugmentationSpec method)</a>
 </li>
+        <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation.to_dict">(echidna.data.augmentations.ChannelAugmentation method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.augmentations.ChannelAugmentationJournal.to_dict">(echidna.data.augmentations.ChannelAugmentationJournal method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.augmentations.SampleAugmentationJournal.to_dict">(echidna.data.augmentations.SampleAugmentationJournal method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.to_dict">(echidna.data.datanodes.DataNode method)</a>
+</li>
         <li><a href="echidna.data.html#echidna.data.datasets.Dataset.to_dict">(echidna.data.datasets.Dataset method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixAlgorithm.to_dict">(echidna.data.mixtures.MixAlgorithm method)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricJournal.to_dict">(echidna.data.difficulties.MetricJournal method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.Mixture.to_dict">(echidna.data.mixtures.Mixture method)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSetJournal.to_dict">(echidna.data.difficulties.MetricSetJournal method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixtureJournal.to_dict">(echidna.data.mixtures.MixtureJournal method)</a>
+        <li><a href="echidna.data.html#echidna.data.difficulties.MetricSpec.to_dict">(echidna.data.difficulties.MetricSpec method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixturesJournal.to_dict">(echidna.data.mixtures.MixturesJournal method)</a>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixJournal.to_dict">(echidna.data.mixtures.MixJournal method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixtureSpec.to_dict">(echidna.data.mixtures.MixtureSpec method)</a>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixSetJournal.to_dict">(echidna.data.mixtures.MixSetJournal method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixSetSpec.to_dict">(echidna.data.mixtures.MixSetSpec method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.Channel.to_dict">(echidna.data.samples.Channel method)</a>
+</li>
+        <li><a href="echidna.data.html#echidna.data.samples.ChannelJournal.to_dict">(echidna.data.samples.ChannelJournal method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.samples.Datasource.to_dict">(echidna.data.samples.Datasource method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.samples.Sample.to_dict">(echidna.data.samples.Sample method)</a>
-</li>
         <li><a href="echidna.data.html#echidna.data.samples.SampleJournal.to_dict">(echidna.data.samples.SampleJournal method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.samples.SamplesJournal.to_dict">(echidna.data.samples.SamplesJournal method)</a>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleSetJournal.to_dict">(echidna.data.samples.SampleSetJournal method)</a>
 </li>
         <li><a href="echidna.data.html#echidna.data.samples.SampleSpec.to_dict">(echidna.data.samples.SampleSpec method)</a>
 </li>
@@ -1392,6 +1609,14 @@
         <li><a href="echidna.models.html#echidna.models.checkpoints.Checkpoint.to_dict">(echidna.models.checkpoints.Checkpoint method)</a>
 </li>
         <li><a href="echidna.models.html#echidna.models.models.Model.to_dict">(echidna.models.models.Model method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringJournal.to_dict">(echidna.procs.clusterings.ClusteringJournal method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec.to_dict">(echidna.procs.clusterings.ClusteringSpec method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.separations.SeparationJournal.to_dict">(echidna.procs.separations.SeparationJournal method)</a>
+</li>
+        <li><a href="echidna.procs.html#echidna.procs.separations.SeparationSpec.to_dict">(echidna.procs.separations.SeparationSpec method)</a>
 </li>
         <li><a href="echidna.procs.html#echidna.procs.trainings.EpochJournal.to_dict">(echidna.procs.trainings.EpochJournal method)</a>
 </li>
@@ -1404,24 +1629,18 @@
         <li><a href="echidna.procs.html#echidna.procs.validations.ValidationSpec.to_dict">(echidna.procs.validations.ValidationSpec method)</a>
 </li>
       </ul></li>
-      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationAlgorithm.to_dict_args">to_dict_args() (echidna.data.augmentations.AugmentationAlgorithm method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="echidna.data.html#echidna.data.augmentations.AugmentationNode.to_dict_args">to_dict_args() (echidna.data.augmentations.AugmentationNode method)</a>
 
       <ul>
-        <li><a href="echidna.data.html#echidna.data.augmentations.EntropyAugmentation.to_dict_args">(echidna.data.augmentations.EntropyAugmentation method)</a>
+        <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.to_dict_args">(echidna.data.datanodes.DataNode method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.FrequencyAugmentation.to_dict_args">(echidna.data.augmentations.FrequencyAugmentation method)</a>
+        <li><a href="echidna.data.html#echidna.data.datanodes.EmptyNode.to_dict_args">(echidna.data.datanodes.EmptyNode method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.augmentations.RandomAugmentation.to_dict_args">(echidna.data.augmentations.RandomAugmentation method)</a>
+        <li><a href="echidna.data.html#echidna.data.mixtures.MixNode.to_dict_args">(echidna.data.mixtures.MixNode method)</a>
 </li>
-        <li><a href="echidna.data.html#echidna.data.datasets.BasicDataset.to_dict_args">(echidna.data.datasets.BasicDataset method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.datasets.CompositeDataset.to_dict_args">(echidna.data.datasets.CompositeDataset method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.datasets.Dataset.to_dict_args">(echidna.data.datasets.Dataset method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.CategoryMix.to_dict_args">(echidna.data.mixtures.CategoryMix method)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.mixtures.MixAlgorithm.to_dict_args">(echidna.data.mixtures.MixAlgorithm method)</a>
+        <li><a href="echidna.data.html#echidna.data.samples.SampleNode.to_dict_args">(echidna.data.samples.SampleNode method)</a>
 </li>
         <li><a href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.to_dict_args">(echidna.metrics.composite.CompositeLoss method)</a>
 </li>
@@ -1444,110 +1663,16 @@
         <li><a href="echidna.models.html#echidna.models.models.SavedModel.to_dict_args">(echidna.models.models.SavedModel method)</a>
 </li>
       </ul></li>
+      <li><a href="echidna.data.html#echidna.data.datanodes.DataNode.to_dict_nochildren">to_dict_nochildren() (echidna.data.datanodes.DataNode method)</a>
+</li>
       <li><a href="echidna.data.html#echidna.data.samples.Datasource.track">track (echidna.data.samples.Datasource attribute)</a>
 </li>
       <li><a href="echidna.procs.html#echidna.procs.trainings.TrainingSpec.train">train() (echidna.procs.trainings.TrainingSpec method)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableISTFTLayer">TrainableISTFTLayer (class in echidna.models.core.commonlayers)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableSTFTLayer">TrainableSTFTLayer (class in echidna.models.core.commonlayers)</a>
 </li>
-      <li><a href="echidna.data.html#echidna.data.transforms.Crop.training">training (echidna.data.transforms.Crop attribute)</a>
-
-      <ul>
-        <li><a href="echidna.data.html#echidna.data.transforms.MultiPointScale.training">(echidna.data.transforms.MultiPointScale attribute)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.transforms.PitchShift.training">(echidna.data.transforms.PitchShift attribute)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.transforms.Resample.training">(echidna.data.transforms.Resample attribute)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.transforms.TimeStretch.training">(echidna.data.transforms.TimeStretch attribute)</a>
-</li>
-        <li><a href="echidna.data.html#echidna.data.transforms.TimeStretchAndPitchShift.training">(echidna.data.transforms.TimeStretchAndPitchShift attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.training">(echidna.metrics.composite.CompositeLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.deepclustering.DeepClusteringLoss.training">(echidna.metrics.deepclustering.DeepClusteringLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.deepclustering.DeepLDALoss.training">(echidna.metrics.deepclustering.DeepLDALoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.deepclustering.GraphLaplacianLoss.training">(echidna.metrics.deepclustering.GraphLaplacianLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.deepclustering.WhitenedKMeansLoss.training">(echidna.metrics.deepclustering.WhitenedKMeansLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.loss.Loss.training">(echidna.metrics.loss.Loss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.L1SpectrogramLoss.training">(echidna.metrics.spectrogram.L1SpectrogramLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.L2SpectrogramLoss.training">(echidna.metrics.spectrogram.L2SpectrogramLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramConvergenceLoss.training">(echidna.metrics.spectrogram.SpectrogramConvergenceLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss.training">(echidna.metrics.spectrogram.SpectrogramLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.waveform.L1WaveformLoss.training">(echidna.metrics.waveform.L1WaveformLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.waveform.L2WaveformLoss.training">(echidna.metrics.waveform.L2WaveformLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.waveform.NegativeSDRLoss.training">(echidna.metrics.waveform.NegativeSDRLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.waveform.NegativeSDSDRLoss.training">(echidna.metrics.waveform.NegativeSDSDRLoss attribute)</a>
-</li>
-        <li><a href="echidna.metrics.html#echidna.metrics.waveform.NegativeSISDRLoss.training">(echidna.metrics.waveform.NegativeSISDRLoss attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.training">(echidna.models.core.baseline.BaselineDecoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.training">(echidna.models.core.baseline.BaselineEncoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.CodebookMask.training">(echidna.models.core.commonlayers.CodebookMask attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.ISTFTLayer.training">(echidna.models.core.commonlayers.ISTFTLayer attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.SigmoidMask.training">(echidna.models.core.commonlayers.SigmoidMask attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.STFTLayer.training">(echidna.models.core.commonlayers.STFTLayer attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableISTFTLayer.training">(echidna.models.core.commonlayers.TrainableISTFTLayer attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableSTFTLayer.training">(echidna.models.core.commonlayers.TrainableSTFTLayer attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvBlock.training">(echidna.models.core.convtasnet.ConvBlock attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.training">(echidna.models.core.convtasnet.ConvTasNetDecoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder.training">(echidna.models.core.convtasnet.ConvTasNetEncoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.demucs.BottleneckBlock.training">(echidna.models.core.demucs.BottleneckBlock attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.demucs.CompressedResidualBlock.training">(echidna.models.core.demucs.CompressedResidualBlock attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.training">(echidna.models.core.demucs.DemucsDecoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.training">(echidna.models.core.demucs.DemucsEncoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.demucs.LocalAttention.training">(echidna.models.core.demucs.LocalAttention attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.demucs.RestrictedBiLSTM.training">(echidna.models.core.demucs.RestrictedBiLSTM attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.waveunet.DownsamplingBlock.training">(echidna.models.core.waveunet.DownsamplingBlock attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.waveunet.Interpolation.training">(echidna.models.core.waveunet.Interpolation attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.waveunet.UpsamplingBlock.training">(echidna.models.core.waveunet.UpsamplingBlock attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.training">(echidna.models.core.waveunet.WaveUNetDecoder attribute)</a>
-</li>
-        <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.training">(echidna.models.core.waveunet.WaveUNetEncoder attribute)</a>
-</li>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.training">(echidna.models.multidomain.chimera.ChimeraNet attribute)</a>
-</li>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.training">(echidna.models.multidomain.chimera.EmbeddingHead attribute)</a>
-</li>
-        <li><a href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.training">(echidna.models.multidomain.encdec.EncDecModel attribute)</a>
-</li>
-      </ul></li>
       <li><a href="echidna.procs.html#echidna.procs.trainings.TrainingSpec">TrainingSpec (class in echidna.procs.trainings)</a>
 </li>
       <li><a href="echidna.procs.html#echidna.procs.transcriptions.TranscriptionSpec.transcribe">transcribe() (echidna.procs.transcriptions.TranscriptionSpec method)</a>
@@ -1586,11 +1711,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="echidna.data.html#echidna.data.samples.Datasource.wave_path">wave_path (echidna.data.samples.Datasource attribute)</a>
 </li>
-      <li><a href="echidna.procs.html#echidna.procs.separations.WaveSeparationSpec">WaveSeparationSpec (class in echidna.procs.separations)</a>
+      <li><a href="echidna.models.html#echidna.models.nest.WaveUNetChimeraNet">WaveUNetChimeraNet() (in module echidna.models.nest)</a>
+</li>
+      <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder">WaveUNetDecoder (class in echidna.models.core.waveunet)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder">WaveUNetDecoder (class in echidna.models.core.waveunet)</a>
+      <li><a href="echidna.models.html#echidna.models.nest.WaveUNetEncDecModel">WaveUNetEncDecModel() (in module echidna.models.nest)</a>
 </li>
       <li><a href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder">WaveUNetEncoder (class in echidna.models.core.waveunet)</a>
 </li>
@@ -1628,7 +1755,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1648,7 +1775,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, LeichtRhino.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

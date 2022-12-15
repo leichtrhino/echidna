@@ -20,10 +20,26 @@ echidna.data.dataloaders module
    :undoc-members:
    :show-inheritance:
 
+echidna.data.datanodes module
+-----------------------------
+
+.. automodule:: echidna.data.datanodes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 echidna.data.datasets module
 ----------------------------
 
 .. automodule:: echidna.data.datasets
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+echidna.data.difficulties module
+--------------------------------
+
+.. automodule:: echidna.data.difficulties
    :members:
    :undoc-members:
    :show-inheritance:

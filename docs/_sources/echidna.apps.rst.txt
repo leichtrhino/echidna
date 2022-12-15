@@ -4,6 +4,14 @@ echidna.apps package
 Submodules
 ----------
 
+echidna.apps.cluster module
+---------------------------
+
+.. automodule:: echidna.apps.cluster
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 echidna.apps.data\_augmentations module
 ---------------------------------------
 

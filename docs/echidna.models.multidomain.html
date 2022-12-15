@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>echidna.models.multidomain package &#8212; echidna  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="echidna.procs package" href="echidna.procs.html" />
@@ -46,23 +48,26 @@
           <div class="body" role="main">
             
   <section id="echidna-models-multidomain-package">
-<h1>echidna.models.multidomain package<a class="headerlink" href="#echidna-models-multidomain-package" title="Permalink to this headline">¶</a></h1>
+<h1>echidna.models.multidomain package<a class="headerlink" href="#echidna-models-multidomain-package" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-echidna.models.multidomain.cerberus">
-<span id="echidna-models-multidomain-cerberus-module"></span><h2>echidna.models.multidomain.cerberus module<a class="headerlink" href="#module-echidna.models.multidomain.cerberus" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-multidomain-cerberus-module"></span><h2>echidna.models.multidomain.cerberus module<a class="headerlink" href="#module-echidna.models.multidomain.cerberus" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-echidna.models.multidomain.chimera">
-<span id="echidna-models-multidomain-chimera-module"></span><h2>echidna.models.multidomain.chimera module<a class="headerlink" href="#module-echidna.models.multidomain.chimera" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-multidomain-chimera-module"></span><h2>echidna.models.multidomain.chimera module<a class="headerlink" href="#module-echidna.models.multidomain.chimera" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.multidomain.chimera.</span></span><span class="sig-name descname"><span class="pre">ChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.multidomain.chimera.</span></span><span class="sig-name descname"><span class="pre">ChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>x : torch.Tensor</p>
+<dd><section id="parameter">
+<h3>Parameter<a class="headerlink" href="#parameter" title="Permalink to this heading">¶</a></h3>
+<p>x : torch.Tensor</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -81,9 +86,17 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.forward_length">
-<span class="sig-name descname"><span class="pre">forward_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.forward_wave_channel">
+<span class="sig-name descname"><span class="pre">forward_wave_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_channel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.forward_wave_length">
+<span class="sig-name descname"><span class="pre">forward_wave_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_length" title="Permalink to this definition">¶</a></dt>
+<dd><section id="id1">
+<h3>Parameter<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -92,56 +105,55 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.reverse_length">
-<span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.reverse_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_out : int</p>
+<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.reverse_wave_length">
+<span class="sig-name descname"><span class="pre">reverse_wave_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.reverse_wave_length" title="Permalink to this definition">¶</a></dt>
+<dd><section id="id2">
+<h3>Parameter<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<p>l_out : int</p>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.ChimeraNet.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.multidomain.chimera.ChimeraNet.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.multidomain.chimera.</span></span><span class="sig-name descname"><span class="pre">EmbeddingHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embd_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embd_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>x : torch.Tensor</p>
+<dd><section id="id3">
+<h3>Parameter<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<p>x : torch.Tensor</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead.forward_embd_dim">
-<span class="sig-name descname"><span class="pre">forward_embd_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward_embd_dim" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_dim">
+<span class="sig-name descname"><span class="pre">forward_feature_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_dim" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead.forward_embd_feature">
-<span class="sig-name descname"><span class="pre">forward_embd_feature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward_embd_feature" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead.training" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_size">
+<span class="sig-name descname"><span class="pre">forward_feature_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_size" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-echidna.models.multidomain.encdec">
-<span id="echidna-models-multidomain-encdec-module"></span><h2>echidna.models.multidomain.encdec module<a class="headerlink" href="#module-echidna.models.multidomain.encdec" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-multidomain-encdec-module"></span><h2>echidna.models.multidomain.encdec module<a class="headerlink" href="#module-echidna.models.multidomain.encdec" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.multidomain.encdec.EncDecModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.multidomain.encdec.</span></span><span class="sig-name descname"><span class="pre">EncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.multidomain.encdec.</span></span><span class="sig-name descname"><span class="pre">EncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.multidomain.encdec.EncDecModel.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>x : torch.Tensor</p>
+<dd><section id="id4">
+<h3>Parameter<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<p>x : torch.Tensor</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -160,9 +172,17 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.multidomain.encdec.EncDecModel.forward_wave_channel">
+<span class="sig-name descname"><span class="pre">forward_wave_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel.forward_wave_channel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.multidomain.encdec.EncDecModel.forward_wave_length">
 <span class="sig-name descname"><span class="pre">forward_wave_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel.forward_wave_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dd><section id="id5">
+<h3>Parameter<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -173,19 +193,17 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.multidomain.encdec.EncDecModel.reverse_wave_length">
 <span class="sig-name descname"><span class="pre">reverse_wave_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel.reverse_wave_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_out : int</p>
+<dd><section id="id6">
+<h3>Parameter<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<p>l_out : int</p>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.multidomain.encdec.EncDecModel.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.multidomain.encdec.EncDecModel.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-echidna.models.multidomain">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models.multidomain" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models.multidomain" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -202,8 +220,40 @@
 <li><a class="reference internal" href="#">echidna.models.multidomain package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-echidna.models.multidomain.cerberus">echidna.models.multidomain.cerberus module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.multidomain.chimera">echidna.models.multidomain.chimera module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.multidomain.encdec">echidna.models.multidomain.encdec module</a></li>
+<li><a class="reference internal" href="#module-echidna.models.multidomain.chimera">echidna.models.multidomain.chimera module</a><ul>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet"><code class="docutils literal notranslate"><span class="pre">ChimeraNet</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.forward"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_dim"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_embd_dim()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_feature"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_embd_feature()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_length"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_embd_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_channel"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_wave_channel()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_length"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_wave_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.parameter_list"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.ChimeraNet.reverse_wave_length"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.reverse_wave_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.EmbeddingHead"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_dim"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead.forward_feature_dim()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead.forward_feature_size()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.multidomain.encdec">echidna.models.multidomain.encdec module</a><ul>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel"><code class="docutils literal notranslate"><span class="pre">EncDecModel</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.forward"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.forward_embd_dim"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_embd_dim()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.forward_embd_feature"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_embd_feature()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.forward_embd_length"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_embd_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.forward_wave_channel"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_wave_channel()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.forward_wave_length"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_wave_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.parameter_list"><code class="docutils literal notranslate"><span class="pre">EncDecModel.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.multidomain.encdec.EncDecModel.reverse_wave_length"><code class="docutils literal notranslate"><span class="pre">EncDecModel.reverse_wave_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-echidna.models.multidomain">Module contents</a></li>
 </ul>
 </li>
@@ -236,7 +286,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -264,7 +314,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, LeichtRhino.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

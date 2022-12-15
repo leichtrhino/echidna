@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>echidna.models package &#8212; echidna  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="echidna.models.core package" href="echidna.models.core.html" />
@@ -45,26 +47,210 @@
           <div class="body" role="main">
             
   <section id="echidna-models-package">
-<h1>echidna.models package<a class="headerlink" href="#echidna-models-package" title="Permalink to this headline">¶</a></h1>
+<h1>echidna.models package<a class="headerlink" href="#echidna-models-package" title="Permalink to this heading">¶</a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="echidna.models.core.html">echidna.models.core package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.baseline">echidna.models.core.baseline module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.commonlayers">echidna.models.core.commonlayers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.convtasnet">echidna.models.core.convtasnet module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.demucs">echidna.models.core.demucs module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.waveunet">echidna.models.core.waveunet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.baseline">echidna.models.core.baseline module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.forward"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.forward"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.baseline.BaselineEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.commonlayers">echidna.models.core.commonlayers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.CodebookMask"><code class="docutils literal notranslate"><span class="pre">CodebookMask</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.CodebookMask.forward"><code class="docutils literal notranslate"><span class="pre">CodebookMask.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.ISTFTLayer"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.ISTFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.ISTFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.ISTFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.STFTLayer"><code class="docutils literal notranslate"><span class="pre">STFTLayer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.STFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">STFTLayer.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.STFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">STFTLayer.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.STFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">STFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.SigmoidMask"><code class="docutils literal notranslate"><span class="pre">SigmoidMask</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.SigmoidMask.forward"><code class="docutils literal notranslate"><span class="pre">SigmoidMask.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableISTFTLayer"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableISTFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableISTFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableISTFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableSTFTLayer"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableSTFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableSTFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.commonlayers.TrainableSTFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.convtasnet">echidna.models.core.convtasnet module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvBlock"><code class="docutils literal notranslate"><span class="pre">ConvBlock</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvBlock.forward"><code class="docutils literal notranslate"><span class="pre">ConvBlock.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">ConvBlock.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">ConvBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.forward"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder.forward"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder.forward_channel"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.forward_channel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.convtasnet.ConvTasNetEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.demucs">echidna.models.core.demucs module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.BottleneckBlock"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.BottleneckBlock.forward"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.BottleneckBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.BottleneckBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.CompressedResidualBlock"><code class="docutils literal notranslate"><span class="pre">CompressedResidualBlock</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.CompressedResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">CompressedResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.forward"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.forward"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.DemucsEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.LocalAttention"><code class="docutils literal notranslate"><span class="pre">LocalAttention</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.LocalAttention.forward"><code class="docutils literal notranslate"><span class="pre">LocalAttention.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.RestrictedBiLSTM"><code class="docutils literal notranslate"><span class="pre">RestrictedBiLSTM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.RestrictedBiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">RestrictedBiLSTM.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.TDecoderBlock"><code class="docutils literal notranslate"><span class="pre">TDecoderBlock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.TEncoderBlock"><code class="docutils literal notranslate"><span class="pre">TEncoderBlock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.ZDecoderBlock"><code class="docutils literal notranslate"><span class="pre">ZDecoderBlock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.demucs.ZEncoderBlock"><code class="docutils literal notranslate"><span class="pre">ZEncoderBlock()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core.waveunet">echidna.models.core.waveunet module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.DownsamplingBlock"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.DownsamplingBlock.forward"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.DownsamplingBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.DownsamplingBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.Interpolation"><code class="docutils literal notranslate"><span class="pre">Interpolation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.Interpolation.forward"><code class="docutils literal notranslate"><span class="pre">Interpolation.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.Interpolation.forward_length"><code class="docutils literal notranslate"><span class="pre">Interpolation.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.Interpolation.reverse_length"><code class="docutils literal notranslate"><span class="pre">Interpolation.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.UpsamplingBlock"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.UpsamplingBlock.forward"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.UpsamplingBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.UpsamplingBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.forward"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.forward"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.forward_feature_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.forward_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.core.html#echidna.models.core.waveunet.WaveUNetEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.core.html#module-echidna.models.core">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="echidna.models.multidomain.html">echidna.models.multidomain package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.cerberus">echidna.models.multidomain.cerberus module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.chimera">echidna.models.multidomain.chimera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.encdec">echidna.models.multidomain.encdec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.chimera">echidna.models.multidomain.chimera module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet"><code class="docutils literal notranslate"><span class="pre">ChimeraNet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_dim"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_embd_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_feature"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_embd_feature()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_embd_length"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_embd_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_channel"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_wave_channel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.forward_wave_length"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.forward_wave_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.parameter_list"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.ChimeraNet.reverse_wave_length"><code class="docutils literal notranslate"><span class="pre">ChimeraNet.reverse_wave_length()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_dim"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead.forward_feature_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.chimera.EmbeddingHead.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">EmbeddingHead.forward_feature_size()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain.encdec">echidna.models.multidomain.encdec module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel"><code class="docutils literal notranslate"><span class="pre">EncDecModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_embd_dim"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_embd_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_embd_feature"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_embd_feature()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_embd_length"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_embd_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_wave_channel"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_wave_channel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.forward_wave_length"><code class="docutils literal notranslate"><span class="pre">EncDecModel.forward_wave_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.parameter_list"><code class="docutils literal notranslate"><span class="pre">EncDecModel.parameter_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.multidomain.html#echidna.models.multidomain.encdec.EncDecModel.reverse_wave_length"><code class="docutils literal notranslate"><span class="pre">EncDecModel.reverse_wave_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.multidomain.html#module-echidna.models.multidomain">Module contents</a></li>
 </ul>
 </li>
@@ -72,10 +258,10 @@
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-echidna.models.checkpoints">
-<span id="echidna-models-checkpoints-module"></span><h2>echidna.models.checkpoints module<a class="headerlink" href="#module-echidna.models.checkpoints" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-checkpoints-module"></span><h2>echidna.models.checkpoints module<a class="headerlink" href="#module-echidna.models.checkpoints" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.checkpoints.Checkpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">Checkpoint</span></span><a class="headerlink" href="#echidna.models.checkpoints.Checkpoint" title="Permalink to this definition">¶</a></dt>
@@ -161,7 +347,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">InitialCheckpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.checkpoints.Checkpoint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.checkpoints.InitialCheckpoint.from_dict_args">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.InitialCheckpoint.from_dict_args" title="Permalink to this definition">¶</a></dt>
@@ -212,7 +398,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.checkpoints.</span></span><span class="sig-name descname"><span class="pre">SavedCheckpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.checkpoints.Checkpoint</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.checkpoints.SavedCheckpoint.from_dict_args">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.checkpoints.SavedCheckpoint.from_dict_args" title="Permalink to this definition">¶</a></dt>
@@ -272,11 +458,11 @@
 
 </section>
 <section id="module-echidna.models.models">
-<span id="echidna-models-models-module"></span><h2>echidna.models.models module<a class="headerlink" href="#module-echidna.models.models" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-models-module"></span><h2>echidna.models.models module<a class="headerlink" href="#module-echidna.models.models" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.models.CheckpointModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">CheckpointModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.CheckpointModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.models.Model</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.from_dict_args">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.CheckpointModel.from_dict_args" title="Permalink to this definition">¶</a></dt>
@@ -302,7 +488,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.models.CheckpointModel.get_torch_model">
-<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#echidna.models.models.CheckpointModel.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Module</span></span></span><a class="headerlink" href="#echidna.models.models.CheckpointModel.get_torch_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>get parameters of its model</p>
 </dd></dl>
 
@@ -316,7 +502,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.models.InitialModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">InitialModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">klass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.InitialModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.models.Model</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.models.InitialModel.from_dict_args">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.InitialModel.from_dict_args" title="Permalink to this definition">¶</a></dt>
@@ -376,7 +562,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.models.Model.get_torch_model">
-<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#echidna.models.models.Model.get_torch_model" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_torch_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Module</span></span></span><a class="headerlink" href="#echidna.models.models.Model.get_torch_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>get parameters of its model</p>
 </dd></dl>
 
@@ -401,7 +587,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.models.SavedModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.models.</span></span><span class="sig-name descname"><span class="pre">SavedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.models.models.Model</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#echidna.models.models.Model" title="echidna.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.models.SavedModel.from_dict_args">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.models.SavedModel.from_dict_args" title="Permalink to this definition">¶</a></dt>
@@ -450,7 +636,7 @@
 
 </section>
 <section id="module-echidna.models.nest">
-<span id="echidna-models-nest-module"></span><h2>echidna.models.nest module<a class="headerlink" href="#module-echidna.models.nest" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-nest-module"></span><h2>echidna.models.nest module<a class="headerlink" href="#module-echidna.models.nest" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="echidna.models.nest.BaselineChimeraNet">
 <span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">BaselineChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.BaselineChimeraNet" title="Permalink to this definition">¶</a></dt>
@@ -461,9 +647,39 @@
 <span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">BaselineEncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.BaselineEncDecModel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.ConvTasNetChimeraNet">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">ConvTasNetChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.ConvTasNetChimeraNet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.ConvTasNetEncDecModel">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">ConvTasNetEncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.ConvTasNetEncDecModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.DemucsChimeraNet">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">DemucsChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.DemucsChimeraNet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.DemucsEncDecModel">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">DemucsEncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.DemucsEncDecModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.WaveUNetChimeraNet">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">WaveUNetChimeraNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.WaveUNetChimeraNet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.models.nest.WaveUNetEncDecModel">
+<span class="sig-prename descclassname"><span class="pre">echidna.models.nest.</span></span><span class="sig-name descname"><span class="pre">WaveUNetEncDecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.nest.WaveUNetEncDecModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-echidna.models.utils">
-<span id="echidna-models-utils-module"></span><h2>echidna.models.utils module<a class="headerlink" href="#module-echidna.models.utils" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-utils-module"></span><h2>echidna.models.utils module<a class="headerlink" href="#module-echidna.models.utils" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="echidna.models.utils.generate_dft_matrix">
 <span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">generate_dft_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.utils.generate_dft_matrix" title="Permalink to this definition">¶</a></dt>
@@ -471,27 +687,27 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="echidna.models.utils.init_conv_weight">
-<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_conv_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.nn.modules.conv.Conv1d</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#echidna.models.utils.init_conv_weight" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_conv_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Conv1d</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#echidna.models.utils.init_conv_weight" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="echidna.models.utils.init_lstm_weight">
-<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_lstm_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lstm_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.nn.modules.rnn.LSTM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.utils.init_lstm_weight" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_lstm_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lstm_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LSTM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.utils.init_lstm_weight" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="echidna.models.utils.init_module">
-<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#echidna.models.utils.init_module" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">init_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Module</span></span></span><a class="headerlink" href="#echidna.models.utils.init_module" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="echidna.models.utils.match_length">
-<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">match_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.utils.match_length" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">echidna.models.utils.</span></span><span class="sig-name descname"><span class="pre">match_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.utils.match_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="module-echidna.models">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -508,10 +724,114 @@
 <li><a class="reference internal" href="#">echidna.models package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-echidna.models.checkpoints">echidna.models.checkpoints module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.models">echidna.models.models module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.nest">echidna.models.nest module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.utils">echidna.models.utils module</a></li>
+<li><a class="reference internal" href="#module-echidna.models.checkpoints">echidna.models.checkpoints module</a><ul>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint"><code class="docutils literal notranslate"><span class="pre">Checkpoint</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.from_dict"><code class="docutils literal notranslate"><span class="pre">Checkpoint.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_epoch"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_epoch()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_model"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_model_class"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_model_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_model_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_model_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_optimizer_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_optimizer_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_optimizer_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_scheduler_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_scheduler_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_scheduler_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_torch_model"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_torch_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_torch_optimizer"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_torch_optimizer()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.get_torch_scheduler"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_torch_scheduler()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.save_torch_checkpoint"><code class="docutils literal notranslate"><span class="pre">Checkpoint.save_torch_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.to_dict"><code class="docutils literal notranslate"><span class="pre">Checkpoint.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.Checkpoint.to_dict_args"><code class="docutils literal notranslate"><span class="pre">Checkpoint.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.from_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.from_dict_args()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_model"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_optimizer_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_optimizer_hyperparameters"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_optimizer_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_scheduler_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_scheduler_hyperparameters"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_scheduler_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_torch_optimizer"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_torch_optimizer()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.get_torch_scheduler"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_torch_scheduler()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.InitialCheckpoint.to_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.from_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.from_dict_args()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_model"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_optimizer_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_optimizer_hyperparameters"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_optimizer_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_scheduler_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_hyperparameters"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_scheduler_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_torch_optimizer"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_torch_optimizer()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.get_torch_scheduler"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_torch_scheduler()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.SavedCheckpoint.to_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">get_optimizer_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.checkpoints.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">get_scheduler_class()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.models">echidna.models.models module</a><ul>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel"><code class="docutils literal notranslate"><span class="pre">CheckpointModel</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel.from_dict_args"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.from_dict_args()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel.get_class"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel.get_epoch"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_epoch()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel.get_torch_model"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_torch_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.CheckpointModel.to_dict_args"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.models.InitialModel"><code class="docutils literal notranslate"><span class="pre">InitialModel</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.models.InitialModel.from_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialModel.from_dict_args()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.InitialModel.get_class"><code class="docutils literal notranslate"><span class="pre">InitialModel.get_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.InitialModel.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">InitialModel.get_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.InitialModel.get_torch_model"><code class="docutils literal notranslate"><span class="pre">InitialModel.get_torch_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.InitialModel.to_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialModel.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.models.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.models.Model.from_dict"><code class="docutils literal notranslate"><span class="pre">Model.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.get_class"><code class="docutils literal notranslate"><span class="pre">Model.get_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.get_epoch"><code class="docutils literal notranslate"><span class="pre">Model.get_epoch()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Model.get_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.get_torch_model"><code class="docutils literal notranslate"><span class="pre">Model.get_torch_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.save_torch_model"><code class="docutils literal notranslate"><span class="pre">Model.save_torch_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.to_dict"><code class="docutils literal notranslate"><span class="pre">Model.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.Model.to_dict_args"><code class="docutils literal notranslate"><span class="pre">Model.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel"><code class="docutils literal notranslate"><span class="pre">SavedModel</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel.from_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedModel.from_dict_args()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel.get_class"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel.get_epoch"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_epoch()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_hyperparameters()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel.get_torch_model"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_torch_model()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.SavedModel.to_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedModel.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.models.get_model_class"><code class="docutils literal notranslate"><span class="pre">get_model_class()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.models.register_model_class"><code class="docutils literal notranslate"><span class="pre">register_model_class()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.nest">echidna.models.nest module</a><ul>
+<li><a class="reference internal" href="#echidna.models.nest.BaselineChimeraNet"><code class="docutils literal notranslate"><span class="pre">BaselineChimeraNet()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.BaselineEncDecModel"><code class="docutils literal notranslate"><span class="pre">BaselineEncDecModel()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.ConvTasNetChimeraNet"><code class="docutils literal notranslate"><span class="pre">ConvTasNetChimeraNet()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.ConvTasNetEncDecModel"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncDecModel()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.DemucsChimeraNet"><code class="docutils literal notranslate"><span class="pre">DemucsChimeraNet()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.DemucsEncDecModel"><code class="docutils literal notranslate"><span class="pre">DemucsEncDecModel()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.WaveUNetChimeraNet"><code class="docutils literal notranslate"><span class="pre">WaveUNetChimeraNet()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.nest.WaveUNetEncDecModel"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncDecModel()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.utils">echidna.models.utils module</a><ul>
+<li><a class="reference internal" href="#echidna.models.utils.generate_dft_matrix"><code class="docutils literal notranslate"><span class="pre">generate_dft_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.utils.init_conv_weight"><code class="docutils literal notranslate"><span class="pre">init_conv_weight()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.utils.init_lstm_weight"><code class="docutils literal notranslate"><span class="pre">init_lstm_weight()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.utils.init_module"><code class="docutils literal notranslate"><span class="pre">init_module()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.utils.match_length"><code class="docutils literal notranslate"><span class="pre">match_length()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-echidna.models">Module contents</a></li>
 </ul>
 </li>
@@ -544,7 +864,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -571,7 +891,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, LeichtRhino.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>echidna package &#8212; echidna  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="echidna.apps package" href="echidna.apps.html" />
@@ -44,43 +46,422 @@
           <div class="body" role="main">
             
   <section id="echidna-package">
-<h1>echidna package<a class="headerlink" href="#echidna-package" title="Permalink to this headline">¶</a></h1>
+<h1>echidna package<a class="headerlink" href="#echidna-package" title="Permalink to this heading">¶</a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="echidna.apps.html">echidna.apps package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.data_augmentations">echidna.apps.data_augmentations module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.data_mixtures">echidna.apps.data_mixtures module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.data_samples">echidna.apps.data_samples module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.separate">echidna.apps.separate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.train">echidna.apps.train module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.transcribe">echidna.apps.transcribe module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.utils">echidna.apps.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.validate">echidna.apps.validate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.cluster">echidna.apps.cluster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.cluster.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.cluster.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.data_augmentations">echidna.apps.data_augmentations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.data_augmentations.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.data_augmentations.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.data_mixtures">echidna.apps.data_mixtures module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.data_mixtures.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.data_mixtures.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.data_samples">echidna.apps.data_samples module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.data_samples.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.data_samples.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.separate">echidna.apps.separate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.separate.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.separate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.train">echidna.apps.train module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.train.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.train.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.transcribe">echidna.apps.transcribe module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.transcribe.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.transcribe.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.utils">echidna.apps.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.utils.DatasourceAction"><code class="docutils literal notranslate"><span class="pre">DatasourceAction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.utils.LoadJSONAction"><code class="docutils literal notranslate"><span class="pre">LoadJSONAction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.utils.make_config_action"><code class="docutils literal notranslate"><span class="pre">make_config_action()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.utils.make_structure_action"><code class="docutils literal notranslate"><span class="pre">make_structure_action()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps.validate">echidna.apps.validate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.validate.attach_parser"><code class="docutils literal notranslate"><span class="pre">attach_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.apps.html#echidna.apps.validate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.apps.html#module-echidna.apps">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="echidna.data.html">echidna.data package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="echidna.data.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.augmentations">echidna.data.augmentations module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.dataloaders">echidna.data.dataloaders module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.datasets">echidna.data.datasets module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.mixtures">echidna.data.mixtures module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.samples">echidna.data.samples module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.transforms">echidna.data.transforms module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.utils">echidna.data.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.augmentations">echidna.data.augmentations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNode"><code class="docutils literal notranslate"><span class="pre">AugmentationNode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNode.from_dict_args"><code class="docutils literal notranslate"><span class="pre">AugmentationNode.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNode.process_partial"><code class="docutils literal notranslate"><span class="pre">AugmentationNode.process_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNode.require_channel_index_partial"><code class="docutils literal notranslate"><span class="pre">AugmentationNode.require_channel_index_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNode.super_type"><code class="docutils literal notranslate"><span class="pre">AugmentationNode.super_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNode.to_dict_args"><code class="docutils literal notranslate"><span class="pre">AugmentationNode.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNodeJournal"><code class="docutils literal notranslate"><span class="pre">AugmentationNodeJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNodeJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">AugmentationNodeJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationNodeJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">AugmentationNodeJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSetJournal"><code class="docutils literal notranslate"><span class="pre">AugmentationSetJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSetJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">AugmentationSetJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSetJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">AugmentationSetJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSpec"><code class="docutils literal notranslate"><span class="pre">AugmentationSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">AugmentationSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSpec.save_augmentation"><code class="docutils literal notranslate"><span class="pre">AugmentationSpec.save_augmentation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.AugmentationSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">AugmentationSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation.from_dict"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentation.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation.process_partial"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentation.process_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentation.to_dict"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentation.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentationJournal"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentationJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentationJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentationJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.ChannelAugmentationJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">ChannelAugmentationJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.SampleAugmentationJournal"><code class="docutils literal notranslate"><span class="pre">SampleAugmentationJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.SampleAugmentationJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">SampleAugmentationJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.augmentations.SampleAugmentationJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">SampleAugmentationJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.dataloaders">echidna.data.dataloaders module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.dataloaders.build_dataloader"><code class="docutils literal notranslate"><span class="pre">build_dataloader()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.dataloaders.collate_fn"><code class="docutils literal notranslate"><span class="pre">collate_fn()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.datanodes">echidna.data.datanodes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode"><code class="docutils literal notranslate"><span class="pre">DataNode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.balance_by_remove"><code class="docutils literal notranslate"><span class="pre">DataNode.balance_by_remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.cleanup_index"><code class="docutils literal notranslate"><span class="pre">DataNode.cleanup_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.ensure_index_init"><code class="docutils literal notranslate"><span class="pre">DataNode.ensure_index_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.from_dict"><code class="docutils literal notranslate"><span class="pre">DataNode.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.from_dict_args"><code class="docutils literal notranslate"><span class="pre">DataNode.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.get_metric"><code class="docutils literal notranslate"><span class="pre">DataNode.get_metric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.get_single_chain"><code class="docutils literal notranslate"><span class="pre">DataNode.get_single_chain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.index_not_initialized"><code class="docutils literal notranslate"><span class="pre">DataNode.index_not_initialized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.init_index"><code class="docutils literal notranslate"><span class="pre">DataNode.init_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.list_leaf_node"><code class="docutils literal notranslate"><span class="pre">DataNode.list_leaf_node()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.process"><code class="docutils literal notranslate"><span class="pre">DataNode.process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.process_partial"><code class="docutils literal notranslate"><span class="pre">DataNode.process_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.process_single_chain"><code class="docutils literal notranslate"><span class="pre">DataNode.process_single_chain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.push_metric"><code class="docutils literal notranslate"><span class="pre">DataNode.push_metric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.require_channel_index_partial"><code class="docutils literal notranslate"><span class="pre">DataNode.require_channel_index_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.super_type"><code class="docutils literal notranslate"><span class="pre">DataNode.super_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.to_dict"><code class="docutils literal notranslate"><span class="pre">DataNode.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.to_dict_args"><code class="docutils literal notranslate"><span class="pre">DataNode.to_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.DataNode.to_dict_nochildren"><code class="docutils literal notranslate"><span class="pre">DataNode.to_dict_nochildren()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.EmptyNode"><code class="docutils literal notranslate"><span class="pre">EmptyNode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.EmptyNode.from_dict_args"><code class="docutils literal notranslate"><span class="pre">EmptyNode.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.EmptyNode.super_type"><code class="docutils literal notranslate"><span class="pre">EmptyNode.super_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.EmptyNode.to_dict_args"><code class="docutils literal notranslate"><span class="pre">EmptyNode.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.add_datanode_cls"><code class="docutils literal notranslate"><span class="pre">add_datanode_cls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.get_datanode_cls"><code class="docutils literal notranslate"><span class="pre">get_datanode_cls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.datanodes.get_datanode_name"><code class="docutils literal notranslate"><span class="pre">get_datanode_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.datasets">echidna.data.datasets module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset.from_dict"><code class="docutils literal notranslate"><span class="pre">Dataset.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset.to_dict"><code class="docutils literal notranslate"><span class="pre">Dataset.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.difficulties">echidna.data.difficulties module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty"><code class="docutils literal notranslate"><span class="pre">EntropyDifficulty</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty.additional_args"><code class="docutils literal notranslate"><span class="pre">EntropyDifficulty.additional_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty.metric_args"><code class="docutils literal notranslate"><span class="pre">EntropyDifficulty.metric_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.EntropyDifficulty.put_single_metric"><code class="docutils literal notranslate"><span class="pre">EntropyDifficulty.put_single_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty"><code class="docutils literal notranslate"><span class="pre">FrequencyDifficulty</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty.additional_args"><code class="docutils literal notranslate"><span class="pre">FrequencyDifficulty.additional_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty.metric_args"><code class="docutils literal notranslate"><span class="pre">FrequencyDifficulty.metric_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.FrequencyDifficulty.put_single_metric"><code class="docutils literal notranslate"><span class="pre">FrequencyDifficulty.put_single_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricJournal"><code class="docutils literal notranslate"><span class="pre">MetricJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSetJournal"><code class="docutils literal notranslate"><span class="pre">MetricSetJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSetJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricSetJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSetJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricSetJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec"><code class="docutils literal notranslate"><span class="pre">MetricSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec.additional_args"><code class="docutils literal notranslate"><span class="pre">MetricSpec.additional_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">MetricSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec.metric_args"><code class="docutils literal notranslate"><span class="pre">MetricSpec.metric_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec.put_metrics"><code class="docutils literal notranslate"><span class="pre">MetricSpec.put_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec.put_single_metric"><code class="docutils literal notranslate"><span class="pre">MetricSpec.put_single_metric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.MetricSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">MetricSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.add_metric_cls"><code class="docutils literal notranslate"><span class="pre">add_metric_cls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.get_metric_cls"><code class="docutils literal notranslate"><span class="pre">get_metric_cls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.difficulties.get_metric_name"><code class="docutils literal notranslate"><span class="pre">get_metric_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.mixtures">echidna.data.mixtures module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixJournal"><code class="docutils literal notranslate"><span class="pre">MixJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">MixJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">MixJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixNode"><code class="docutils literal notranslate"><span class="pre">MixNode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixNode.from_dict_args"><code class="docutils literal notranslate"><span class="pre">MixNode.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixNode.process_partial"><code class="docutils literal notranslate"><span class="pre">MixNode.process_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixNode.require_channel_index_partial"><code class="docutils literal notranslate"><span class="pre">MixNode.require_channel_index_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixNode.super_type"><code class="docutils literal notranslate"><span class="pre">MixNode.super_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixNode.to_dict_args"><code class="docutils literal notranslate"><span class="pre">MixNode.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetJournal"><code class="docutils literal notranslate"><span class="pre">MixSetJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">MixSetJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">MixSetJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetSpec"><code class="docutils literal notranslate"><span class="pre">MixSetSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">MixSetSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetSpec.save_mixture"><code class="docutils literal notranslate"><span class="pre">MixSetSpec.save_mixture()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.mixtures.MixSetSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">MixSetSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.samples">echidna.data.samples module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Channel"><code class="docutils literal notranslate"><span class="pre">Channel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Channel.from_dict"><code class="docutils literal notranslate"><span class="pre">Channel.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Channel.from_list"><code class="docutils literal notranslate"><span class="pre">Channel.from_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Channel.to_dict"><code class="docutils literal notranslate"><span class="pre">Channel.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal"><code class="docutils literal notranslate"><span class="pre">ChannelJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.created_at"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.seed"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.datasources"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.datasources</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.length"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.offset"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.offset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.channel"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.channel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.ChannelJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">ChannelJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource"><code class="docutils literal notranslate"><span class="pre">Datasource</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.id"><code class="docutils literal notranslate"><span class="pre">Datasource.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.wave_path"><code class="docutils literal notranslate"><span class="pre">Datasource.wave_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.sheet_path"><code class="docutils literal notranslate"><span class="pre">Datasource.sheet_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.category"><code class="docutils literal notranslate"><span class="pre">Datasource.category</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.track"><code class="docutils literal notranslate"><span class="pre">Datasource.track</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.fold"><code class="docutils literal notranslate"><span class="pre">Datasource.fold</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.from_dict"><code class="docutils literal notranslate"><span class="pre">Datasource.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.Datasource.to_dict"><code class="docutils literal notranslate"><span class="pre">Datasource.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal"><code class="docutils literal notranslate"><span class="pre">SampleJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal.created_at"><code class="docutils literal notranslate"><span class="pre">SampleJournal.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal.seed"><code class="docutils literal notranslate"><span class="pre">SampleJournal.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal.channel_journals"><code class="docutils literal notranslate"><span class="pre">SampleJournal.channel_journals</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal.sample"><code class="docutils literal notranslate"><span class="pre">SampleJournal.sample</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">SampleJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">SampleJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleNode"><code class="docutils literal notranslate"><span class="pre">SampleNode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleNode.from_dict_args"><code class="docutils literal notranslate"><span class="pre">SampleNode.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleNode.process_partial"><code class="docutils literal notranslate"><span class="pre">SampleNode.process_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleNode.require_channel_index_partial"><code class="docutils literal notranslate"><span class="pre">SampleNode.require_channel_index_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleNode.super_type"><code class="docutils literal notranslate"><span class="pre">SampleNode.super_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleNode.to_dict_args"><code class="docutils literal notranslate"><span class="pre">SampleNode.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.process_start"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.process_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.process_finish"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.process_finish</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.metadata_path"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.metadata_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.spec"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.spec</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.seed"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.sample_journals"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.sample_journals</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSetJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">SampleSetJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec"><code class="docutils literal notranslate"><span class="pre">SampleSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.datasources"><code class="docutils literal notranslate"><span class="pre">SampleSpec.datasources</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.fold"><code class="docutils literal notranslate"><span class="pre">SampleSpec.fold</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.sample_size"><code class="docutils literal notranslate"><span class="pre">SampleSpec.sample_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.category_map"><code class="docutils literal notranslate"><span class="pre">SampleSpec.category_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.sample_rate"><code class="docutils literal notranslate"><span class="pre">SampleSpec.sample_rate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.duration"><code class="docutils literal notranslate"><span class="pre">SampleSpec.duration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.target_db"><code class="docutils literal notranslate"><span class="pre">SampleSpec.target_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.seed"><code class="docutils literal notranslate"><span class="pre">SampleSpec.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.metadata_path"><code class="docutils literal notranslate"><span class="pre">SampleSpec.metadata_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.data_dir"><code class="docutils literal notranslate"><span class="pre">SampleSpec.data_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.journal_path"><code class="docutils literal notranslate"><span class="pre">SampleSpec.journal_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.log_path"><code class="docutils literal notranslate"><span class="pre">SampleSpec.log_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.log_level"><code class="docutils literal notranslate"><span class="pre">SampleSpec.log_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.jobs"><code class="docutils literal notranslate"><span class="pre">SampleSpec.jobs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">SampleSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.save_samples"><code class="docutils literal notranslate"><span class="pre">SampleSpec.save_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.samples.SampleSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">SampleSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.transforms">echidna.data.transforms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.Compose"><code class="docutils literal notranslate"><span class="pre">Compose</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.Compose.forward"><code class="docutils literal notranslate"><span class="pre">Compose.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.Crop"><code class="docutils literal notranslate"><span class="pre">Crop</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.Crop.forward"><code class="docutils literal notranslate"><span class="pre">Crop.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.MultiPointScale"><code class="docutils literal notranslate"><span class="pre">MultiPointScale</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.MultiPointScale.forward"><code class="docutils literal notranslate"><span class="pre">MultiPointScale.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.PitchShift"><code class="docutils literal notranslate"><span class="pre">PitchShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.PitchShift.forward"><code class="docutils literal notranslate"><span class="pre">PitchShift.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.Resample"><code class="docutils literal notranslate"><span class="pre">Resample</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.Resample.forward"><code class="docutils literal notranslate"><span class="pre">Resample.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.TimeStretch"><code class="docutils literal notranslate"><span class="pre">TimeStretch</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.TimeStretch.forward"><code class="docutils literal notranslate"><span class="pre">TimeStretch.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.TimeStretchAndPitchShift"><code class="docutils literal notranslate"><span class="pre">TimeStretchAndPitchShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.TimeStretchAndPitchShift.forward"><code class="docutils literal notranslate"><span class="pre">TimeStretchAndPitchShift.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.transforms.build_transform"><code class="docutils literal notranslate"><span class="pre">build_transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data.utils">echidna.data.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.data.html#echidna.data.utils.merge_activation"><code class="docutils literal notranslate"><span class="pre">merge_activation()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.data.html#module-echidna.data">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="echidna.metrics.html">echidna.metrics package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.composite">echidna.metrics.composite module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.deepclustering">echidna.metrics.deepclustering module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.loss">echidna.metrics.loss module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.spectrogram">echidna.metrics.spectrogram module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.waveform">echidna.metrics.waveform module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.composite">echidna.metrics.composite module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss"><code class="docutils literal notranslate"><span class="pre">CompositeLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.components"><code class="docutils literal notranslate"><span class="pre">CompositeLoss.components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.domains"><code class="docutils literal notranslate"><span class="pre">CompositeLoss.domains</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.forward"><code class="docutils literal notranslate"><span class="pre">CompositeLoss.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">CompositeLoss.forward_no_reduction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.from_dict_args"><code class="docutils literal notranslate"><span class="pre">CompositeLoss.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.composite.CompositeLoss.to_dict_args"><code class="docutils literal notranslate"><span class="pre">CompositeLoss.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.deepclustering">echidna.metrics.deepclustering module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.deepclustering.DeepClusteringLoss"><code class="docutils literal notranslate"><span class="pre">DeepClusteringLoss</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.deepclustering.DeepLDALoss"><code class="docutils literal notranslate"><span class="pre">DeepLDALoss</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.deepclustering.GraphLaplacianLoss"><code class="docutils literal notranslate"><span class="pre">GraphLaplacianLoss</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.deepclustering.WhitenedKMeansLoss"><code class="docutils literal notranslate"><span class="pre">WhitenedKMeansLoss</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.deepclustering.deep_clustering_loss"><code class="docutils literal notranslate"><span class="pre">deep_clustering_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.loss">echidna.metrics.loss module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss"><code class="docutils literal notranslate"><span class="pre">Loss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.domains"><code class="docutils literal notranslate"><span class="pre">Loss.domains</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.forward"><code class="docutils literal notranslate"><span class="pre">Loss.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">Loss.forward_no_reduction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.from_dict"><code class="docutils literal notranslate"><span class="pre">Loss.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.from_dict_args"><code class="docutils literal notranslate"><span class="pre">Loss.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.to_dict"><code class="docutils literal notranslate"><span class="pre">Loss.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss.to_dict_args"><code class="docutils literal notranslate"><span class="pre">Loss.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.get_loss_class"><code class="docutils literal notranslate"><span class="pre">get_loss_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.get_loss_name"><code class="docutils literal notranslate"><span class="pre">get_loss_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.register_loss_class"><code class="docutils literal notranslate"><span class="pre">register_loss_class()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.spectrogram">echidna.metrics.spectrogram module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.L1SpectrogramLoss"><code class="docutils literal notranslate"><span class="pre">L1SpectrogramLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.L1SpectrogramLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">L1SpectrogramLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.L2SpectrogramLoss"><code class="docutils literal notranslate"><span class="pre">L2SpectrogramLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.L2SpectrogramLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">L2SpectrogramLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramConvergenceLoss"><code class="docutils literal notranslate"><span class="pre">SpectrogramConvergenceLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramConvergenceLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">SpectrogramConvergenceLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss"><code class="docutils literal notranslate"><span class="pre">SpectrogramLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss.domains"><code class="docutils literal notranslate"><span class="pre">SpectrogramLoss.domains</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">SpectrogramLoss.forward_no_reduction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss.from_dict_args"><code class="docutils literal notranslate"><span class="pre">SpectrogramLoss.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.SpectrogramLoss.to_dict_args"><code class="docutils literal notranslate"><span class="pre">SpectrogramLoss.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.spectrogram.multiscale_spectrogram_loss"><code class="docutils literal notranslate"><span class="pre">multiscale_spectrogram_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics.waveform">echidna.metrics.waveform module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.L1WaveformLoss"><code class="docutils literal notranslate"><span class="pre">L1WaveformLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.L1WaveformLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">L1WaveformLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.L2WaveformLoss"><code class="docutils literal notranslate"><span class="pre">L2WaveformLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.L2WaveformLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">L2WaveformLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.NegativeSDRLoss"><code class="docutils literal notranslate"><span class="pre">NegativeSDRLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.NegativeSDRLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">NegativeSDRLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.NegativeSDSDRLoss"><code class="docutils literal notranslate"><span class="pre">NegativeSDSDRLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.NegativeSDSDRLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">NegativeSDSDRLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.NegativeSISDRLoss"><code class="docutils literal notranslate"><span class="pre">NegativeSISDRLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.NegativeSISDRLoss.forward_no_reduction"><code class="docutils literal notranslate"><span class="pre">NegativeSISDRLoss.forward_no_reduction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.waveform.source_to_distortion_ratio"><code class="docutils literal notranslate"><span class="pre">source_to_distortion_ratio()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.metrics.html#module-echidna.metrics">Module contents</a></li>
 </ul>
 </li>
@@ -107,20 +488,197 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.checkpoints">echidna.models.checkpoints module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.models">echidna.models.models module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.nest">echidna.models.nest module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.utils">echidna.models.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.checkpoints">echidna.models.checkpoints module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint"><code class="docutils literal notranslate"><span class="pre">Checkpoint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.from_dict"><code class="docutils literal notranslate"><span class="pre">Checkpoint.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_epoch"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_epoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_model"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_model_class"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_model_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_model_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_model_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_optimizer_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_optimizer_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_optimizer_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_scheduler_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_scheduler_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_scheduler_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_torch_model"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_torch_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_torch_optimizer"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_torch_optimizer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.get_torch_scheduler"><code class="docutils literal notranslate"><span class="pre">Checkpoint.get_torch_scheduler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.save_torch_checkpoint"><code class="docutils literal notranslate"><span class="pre">Checkpoint.save_torch_checkpoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.to_dict"><code class="docutils literal notranslate"><span class="pre">Checkpoint.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint.to_dict_args"><code class="docutils literal notranslate"><span class="pre">Checkpoint.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.from_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_model"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_optimizer_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_optimizer_hyperparameters"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_optimizer_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_scheduler_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_scheduler_hyperparameters"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_scheduler_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_torch_optimizer"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_torch_optimizer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.get_torch_scheduler"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.get_torch_scheduler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.InitialCheckpoint.to_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialCheckpoint.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.from_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_model"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_optimizer_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_optimizer_hyperparameters"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_optimizer_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_scheduler_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_scheduler_hyperparameters"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_scheduler_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_torch_optimizer"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_torch_optimizer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.get_torch_scheduler"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.get_torch_scheduler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.SavedCheckpoint.to_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedCheckpoint.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.get_optimizer_class"><code class="docutils literal notranslate"><span class="pre">get_optimizer_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.get_scheduler_class"><code class="docutils literal notranslate"><span class="pre">get_scheduler_class()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.models">echidna.models.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel"><code class="docutils literal notranslate"><span class="pre">CheckpointModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel.from_dict_args"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel.get_class"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel.get_epoch"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_epoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel.get_torch_model"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.get_torch_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.CheckpointModel.to_dict_args"><code class="docutils literal notranslate"><span class="pre">CheckpointModel.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.models.InitialModel"><code class="docutils literal notranslate"><span class="pre">InitialModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.InitialModel.from_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialModel.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.InitialModel.get_class"><code class="docutils literal notranslate"><span class="pre">InitialModel.get_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.InitialModel.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">InitialModel.get_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.InitialModel.get_torch_model"><code class="docutils literal notranslate"><span class="pre">InitialModel.get_torch_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.InitialModel.to_dict_args"><code class="docutils literal notranslate"><span class="pre">InitialModel.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.from_dict"><code class="docutils literal notranslate"><span class="pre">Model.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.get_class"><code class="docutils literal notranslate"><span class="pre">Model.get_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.get_epoch"><code class="docutils literal notranslate"><span class="pre">Model.get_epoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Model.get_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.get_torch_model"><code class="docutils literal notranslate"><span class="pre">Model.get_torch_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.save_torch_model"><code class="docutils literal notranslate"><span class="pre">Model.save_torch_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.to_dict"><code class="docutils literal notranslate"><span class="pre">Model.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model.to_dict_args"><code class="docutils literal notranslate"><span class="pre">Model.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel"><code class="docutils literal notranslate"><span class="pre">SavedModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel.from_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedModel.from_dict_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel.get_class"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel.get_epoch"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_epoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel.get_hyperparameters"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_hyperparameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel.get_torch_model"><code class="docutils literal notranslate"><span class="pre">SavedModel.get_torch_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.models.html#echidna.models.models.SavedModel.to_dict_args"><code class="docutils literal notranslate"><span class="pre">SavedModel.to_dict_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.models.get_model_class"><code class="docutils literal notranslate"><span class="pre">get_model_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.models.register_model_class"><code class="docutils literal notranslate"><span class="pre">register_model_class()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.nest">echidna.models.nest module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.BaselineChimeraNet"><code class="docutils literal notranslate"><span class="pre">BaselineChimeraNet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.BaselineEncDecModel"><code class="docutils literal notranslate"><span class="pre">BaselineEncDecModel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.ConvTasNetChimeraNet"><code class="docutils literal notranslate"><span class="pre">ConvTasNetChimeraNet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.ConvTasNetEncDecModel"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncDecModel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.DemucsChimeraNet"><code class="docutils literal notranslate"><span class="pre">DemucsChimeraNet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.DemucsEncDecModel"><code class="docutils literal notranslate"><span class="pre">DemucsEncDecModel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.WaveUNetChimeraNet"><code class="docutils literal notranslate"><span class="pre">WaveUNetChimeraNet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.nest.WaveUNetEncDecModel"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncDecModel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models.utils">echidna.models.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.utils.generate_dft_matrix"><code class="docutils literal notranslate"><span class="pre">generate_dft_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.utils.init_conv_weight"><code class="docutils literal notranslate"><span class="pre">init_conv_weight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.utils.init_lstm_weight"><code class="docutils literal notranslate"><span class="pre">init_lstm_weight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.utils.init_module"><code class="docutils literal notranslate"><span class="pre">init_module()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.models.html#echidna.models.utils.match_length"><code class="docutils literal notranslate"><span class="pre">match_length()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.models.html#module-echidna.models">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="echidna.procs.html">echidna.procs package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.separations">echidna.procs.separations module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.trainings">echidna.procs.trainings module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.transcriptions">echidna.procs.transcriptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.utils">echidna.procs.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.validations">echidna.procs.validations module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.clusterings">echidna.procs.clusterings module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringJournal"><code class="docutils literal notranslate"><span class="pre">ClusteringJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec.cluster"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec.cluster()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.ClusteringSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.mask_from_embedding"><code class="docutils literal notranslate"><span class="pre">mask_from_embedding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.merge_windows"><code class="docutils literal notranslate"><span class="pre">merge_windows()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.clusterings.split_into_windows"><code class="docutils literal notranslate"><span class="pre">split_into_windows()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.separations">echidna.procs.separations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationJournal"><code class="docutils literal notranslate"><span class="pre">SeparationJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">SeparationJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">SeparationJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationSpec"><code class="docutils literal notranslate"><span class="pre">SeparationSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">SeparationSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationSpec.separate"><code class="docutils literal notranslate"><span class="pre">SeparationSpec.separate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.SeparationSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">SeparationSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.merge_windows"><code class="docutils literal notranslate"><span class="pre">merge_windows()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.separations.split_into_windows"><code class="docutils literal notranslate"><span class="pre">split_into_windows()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.trainings">echidna.procs.trainings module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.EpochJournal"><code class="docutils literal notranslate"><span class="pre">EpochJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.EpochJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">EpochJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.EpochJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">EpochJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.TrainingSpec"><code class="docutils literal notranslate"><span class="pre">TrainingSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.TrainingSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">TrainingSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.TrainingSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">TrainingSpec.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.trainings.TrainingSpec.train"><code class="docutils literal notranslate"><span class="pre">TrainingSpec.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.transcriptions">echidna.procs.transcriptions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.transcriptions.TranscriptionJournal"><code class="docutils literal notranslate"><span class="pre">TranscriptionJournal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.transcriptions.TranscriptionSpec"><code class="docutils literal notranslate"><span class="pre">TranscriptionSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.transcriptions.TranscriptionSpec.transcribe"><code class="docutils literal notranslate"><span class="pre">TranscriptionSpec.transcribe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.utils">echidna.procs.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.utils.StepJournal"><code class="docutils literal notranslate"><span class="pre">StepJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.utils.StepJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">StepJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.utils.StepJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">StepJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.utils.process_batch"><code class="docutils literal notranslate"><span class="pre">process_batch()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs.validations">echidna.procs.validations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationJournal"><code class="docutils literal notranslate"><span class="pre">ValidationJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">ValidationJournal.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">ValidationJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationSpec"><code class="docutils literal notranslate"><span class="pre">ValidationSpec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">ValidationSpec.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">ValidationSpec.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="echidna.procs.html#echidna.procs.validations.ValidationSpec.validate"><code class="docutils literal notranslate"><span class="pre">ValidationSpec.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="echidna.procs.html#module-echidna.procs">Module contents</a></li>
 </ul>
 </li>
@@ -128,13 +686,13 @@
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-echidna.lineage">
-<span id="echidna-lineage-module"></span><h2>echidna.lineage module<a class="headerlink" href="#module-echidna.lineage" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-lineage-module"></span><h2>echidna.lineage module<a class="headerlink" href="#module-echidna.lineage" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-echidna">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -184,7 +742,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -210,7 +768,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, LeichtRhino.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

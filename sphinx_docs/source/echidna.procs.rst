@@ -4,6 +4,14 @@ echidna.procs package
 Submodules
 ----------
 
+echidna.procs.clusterings module
+--------------------------------
+
+.. automodule:: echidna.procs.clusterings
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 echidna.procs.separations module
 --------------------------------
 

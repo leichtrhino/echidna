@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>echidna.procs package &#8212; echidna  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="echidna.models.multidomain package" href="echidna.models.multidomain.html" /> 
@@ -41,47 +43,156 @@
           <div class="body" role="main">
             
   <section id="echidna-procs-package">
-<h1>echidna.procs package<a class="headerlink" href="#echidna-procs-package" title="Permalink to this headline">¶</a></h1>
+<h1>echidna.procs package<a class="headerlink" href="#echidna-procs-package" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-echidna.procs.separations">
-<span id="echidna-procs-separations-module"></span><h2>echidna.procs.separations module<a class="headerlink" href="#module-echidna.procs.separations" title="Permalink to this headline">¶</a></h2>
+<section id="module-echidna.procs.clusterings">
+<span id="echidna-procs-clusterings-module"></span><h2>echidna.procs.clusterings module<a class="headerlink" href="#module-echidna.procs.clusterings" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="echidna.procs.separations.EmbdSeparationSpec">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">EmbdSeparationSpec</span></span><a class="headerlink" href="#echidna.procs.separations.EmbdSeparationSpec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.procs.separations.SeparationSpec" title="echidna.procs.separations.SeparationSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.procs.separations.SeparationSpec</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="echidna.procs.separations.SeparationJournal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">SeparationJournal</span></span><a class="headerlink" href="#echidna.procs.separations.SeparationJournal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="echidna.procs.separations.SeparationSpec">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">SeparationSpec</span></span><a class="headerlink" href="#echidna.procs.separations.SeparationSpec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringJournal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.clusterings.</span></span><span class="sig-name descname"><span class="pre">ClusteringJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#echidna.procs.clusterings.ClusteringSpec" title="echidna.procs.clusterings.ClusteringSpec"><span class="pre">ClusteringSpec</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringJournal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="echidna.procs.separations.SeparationSpec.separate">
-<span class="sig-name descname"><span class="pre">separate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationSpec.separate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringJournal.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringJournal.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringJournal.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringJournal.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="echidna.procs.separations.WaveSeparationSpec">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">WaveSeparationSpec</span></span><a class="headerlink" href="#echidna.procs.separations.WaveSeparationSpec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#echidna.procs.separations.SeparationSpec" title="echidna.procs.separations.SeparationSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">echidna.procs.separations.SeparationSpec</span></code></a></p>
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringSpec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.clusterings.</span></span><span class="sig-name descname"><span class="pre">ClusteringSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model" title="echidna.models.models.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">journal_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringSpec.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringSpec.cluster" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringSpec.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringSpec.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.ClusteringSpec.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.ClusteringSpec.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.mask_from_embedding">
+<span class="sig-prename descclassname"><span class="pre">echidna.procs.clusterings.</span></span><span class="sig-name descname"><span class="pre">mask_from_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.mask_from_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>embedding: torch.Tensor with shape (N, F, T, D)
+returns: torch.Tensor with shape (N, C, F, T)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.merge_windows">
+<span class="sig-prename descclassname"><span class="pre">echidna.procs.clusterings.</span></span><span class="sig-name descname"><span class="pre">merge_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation_invariant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.merge_windows" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>torch.Tensor shape with</em><em> (</em><em>window_num</em><em>, </em><em>channel_num</em><em>, </em><em>window_len</em><em>)</em>) – </p></li>
+<li><p><strong>(</strong><strong>window_num</strong> (<em>or</em>) – </p></li>
+<li><p><strong>channel_num</strong> – </p></li>
+<li><p><strong>feature_num</strong> – </p></li>
+<li><p><strong>window_len</strong><strong>)</strong> – </p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – </p></li>
+<li><p><strong>agg_fn</strong> (<em>str</em>) – ‘mean’ or ‘mode’ or ‘median’</p></li>
+<li><p><strong>permutation_invariant</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>torch.Tensor shape with (channel_num, *, output_length)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.procs.clusterings.split_into_windows">
+<span class="sig-prename descclassname"><span class="pre">echidna.procs.clusterings.</span></span><span class="sig-name descname"><span class="pre">split_into_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.clusterings.split_into_windows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-echidna.procs.separations">
+<span id="echidna-procs-separations-module"></span><h2>echidna.procs.separations module<a class="headerlink" href="#module-echidna.procs.separations" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationJournal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">SeparationJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#echidna.procs.separations.SeparationSpec" title="echidna.procs.separations.SeparationSpec"><span class="pre">SeparationSpec</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationJournal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationJournal.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationJournal.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationJournal.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationJournal.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationSpec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">SeparationSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model" title="echidna.models.models.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">journal_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation_invariant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationSpec.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationSpec.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationSpec.separate">
+<span class="sig-name descname"><span class="pre">separate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationSpec.separate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.procs.separations.SeparationSpec.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.SeparationSpec.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.procs.separations.merge_windows">
+<span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">merge_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation_invariant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.merge_windows" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>torch.Tensor shape with</em><em> (</em><em>window_num</em><em>, </em><em>channel_num</em><em>, </em><em>window_len</em><em>)</em>) – </p></li>
+<li><p><strong>(</strong><strong>window_num</strong> (<em>or</em>) – </p></li>
+<li><p><strong>channel_num</strong> – </p></li>
+<li><p><strong>feature_num</strong> – </p></li>
+<li><p><strong>window_len</strong><strong>)</strong> – </p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – </p></li>
+<li><p><strong>agg_fn</strong> (<em>str</em>) – ‘mean’ or ‘mode’ or ‘median’</p></li>
+<li><p><strong>permutation_invariant</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>torch.Tensor shape with (channel_num, *, output_length)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="echidna.procs.separations.split_into_windows">
+<span class="sig-prename descclassname"><span class="pre">echidna.procs.separations.</span></span><span class="sig-name descname"><span class="pre">split_into_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.separations.split_into_windows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-echidna.procs.trainings">
-<span id="echidna-procs-trainings-module"></span><h2>echidna.procs.trainings module<a class="headerlink" href="#module-echidna.procs.trainings" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-procs-trainings-module"></span><h2>echidna.procs.trainings module<a class="headerlink" href="#module-echidna.procs.trainings" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.procs.trainings.EpochJournal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.trainings.</span></span><span class="sig-name descname"><span class="pre">EpochJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_step_journals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_step_journals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#echidna.procs.trainings.TrainingSpec" title="echidna.procs.trainings.TrainingSpec"><span class="pre">echidna.procs.trainings.TrainingSpec</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.trainings.EpochJournal" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.trainings.</span></span><span class="sig-name descname"><span class="pre">EpochJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_step_journals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_step_journals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#echidna.procs.trainings.TrainingSpec" title="echidna.procs.trainings.TrainingSpec"><span class="pre">TrainingSpec</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.trainings.EpochJournal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.procs.trainings.EpochJournal.from_dict">
@@ -97,7 +208,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.procs.trainings.TrainingSpec">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.trainings.</span></span><span class="sig-name descname"><span class="pre">TrainingSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><span class="pre">echidna.models.checkpoints.Checkpoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset" title="echidna.data.datasets.Dataset"><span class="pre">echidna.data.datasets.Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_sample_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset" title="echidna.data.datasets.Dataset"><span class="pre">echidna.data.datasets.Dataset</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_sample_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">journal_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss" title="echidna.metrics.loss.Loss"><span class="pre">echidna.metrics.loss.Loss</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_grad_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.trainings.TrainingSpec" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.trainings.</span></span><span class="sig-name descname"><span class="pre">TrainingSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.models.html#echidna.models.checkpoints.Checkpoint" title="echidna.models.checkpoints.Checkpoint"><span class="pre">Checkpoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset" title="echidna.data.datasets.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_sample_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset" title="echidna.data.datasets.Dataset"><span class="pre">Dataset</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_sample_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">journal_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss" title="echidna.metrics.loss.Loss"><span class="pre">Loss</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_grad_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.trainings.TrainingSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.procs.trainings.TrainingSpec.from_dict">
@@ -118,7 +229,7 @@
 
 </section>
 <section id="module-echidna.procs.transcriptions">
-<span id="echidna-procs-transcriptions-module"></span><h2>echidna.procs.transcriptions module<a class="headerlink" href="#module-echidna.procs.transcriptions" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-procs-transcriptions-module"></span><h2>echidna.procs.transcriptions module<a class="headerlink" href="#module-echidna.procs.transcriptions" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.procs.transcriptions.TranscriptionJournal">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.transcriptions.</span></span><span class="sig-name descname"><span class="pre">TranscriptionJournal</span></span><a class="headerlink" href="#echidna.procs.transcriptions.TranscriptionJournal" title="Permalink to this definition">¶</a></dt>
@@ -138,10 +249,10 @@
 
 </section>
 <section id="module-echidna.procs.utils">
-<span id="echidna-procs-utils-module"></span><h2>echidna.procs.utils module<a class="headerlink" href="#module-echidna.procs.utils" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-procs-utils-module"></span><h2>echidna.procs.utils module<a class="headerlink" href="#module-echidna.procs.utils" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.procs.utils.StepJournal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.utils.</span></span><span class="sig-name descname"><span class="pre">StepJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_losses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.utils.StepJournal" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.utils.</span></span><span class="sig-name descname"><span class="pre">StepJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_losses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.utils.StepJournal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.procs.utils.StepJournal.from_dict">
@@ -162,10 +273,10 @@
 
 </section>
 <section id="module-echidna.procs.validations">
-<span id="echidna-procs-validations-module"></span><h2>echidna.procs.validations module<a class="headerlink" href="#module-echidna.procs.validations" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-procs-validations-module"></span><h2>echidna.procs.validations module<a class="headerlink" href="#module-echidna.procs.validations" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.procs.validations.ValidationJournal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.validations.</span></span><span class="sig-name descname"><span class="pre">ValidationJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_step_journals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#echidna.procs.validations.ValidationSpec" title="echidna.procs.validations.ValidationSpec"><span class="pre">echidna.procs.validations.ValidationSpec</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.validations.ValidationJournal" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.validations.</span></span><span class="sig-name descname"><span class="pre">ValidationJournal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_step_journals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#echidna.procs.validations.ValidationSpec" title="echidna.procs.validations.ValidationSpec"><span class="pre">ValidationSpec</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.validations.ValidationJournal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.procs.validations.ValidationJournal.from_dict">
@@ -181,7 +292,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.procs.validations.ValidationSpec">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.validations.</span></span><span class="sig-name descname"><span class="pre">ValidationSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model" title="echidna.models.models.Model"><span class="pre">echidna.models.models.Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset" title="echidna.data.datasets.Dataset"><span class="pre">echidna.data.datasets.Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_sample_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">journal_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss" title="echidna.metrics.loss.Loss"><span class="pre">echidna.metrics.loss.Loss</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.validations.ValidationSpec" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.procs.validations.</span></span><span class="sig-name descname"><span class="pre">ValidationSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.models.html#echidna.models.models.Model" title="echidna.models.models.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.data.html#echidna.data.datasets.Dataset" title="echidna.data.datasets.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_sample_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">journal_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="echidna.metrics.html#echidna.metrics.loss.Loss" title="echidna.metrics.loss.Loss"><span class="pre">Loss</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.procs.validations.ValidationSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.procs.validations.ValidationSpec.from_dict">
@@ -202,7 +313,7 @@
 
 </section>
 <section id="module-echidna.procs">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.procs" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.procs" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -218,11 +329,84 @@
     <ul>
 <li><a class="reference internal" href="#">echidna.procs package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-echidna.procs.separations">echidna.procs.separations module</a></li>
-<li><a class="reference internal" href="#module-echidna.procs.trainings">echidna.procs.trainings module</a></li>
-<li><a class="reference internal" href="#module-echidna.procs.transcriptions">echidna.procs.transcriptions module</a></li>
-<li><a class="reference internal" href="#module-echidna.procs.utils">echidna.procs.utils module</a></li>
-<li><a class="reference internal" href="#module-echidna.procs.validations">echidna.procs.validations module</a></li>
+<li><a class="reference internal" href="#module-echidna.procs.clusterings">echidna.procs.clusterings module</a><ul>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringJournal"><code class="docutils literal notranslate"><span class="pre">ClusteringJournal</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringJournal.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringSpec"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringSpec.cluster"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec.cluster()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.ClusteringSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.mask_from_embedding"><code class="docutils literal notranslate"><span class="pre">mask_from_embedding()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.merge_windows"><code class="docutils literal notranslate"><span class="pre">merge_windows()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.clusterings.split_into_windows"><code class="docutils literal notranslate"><span class="pre">split_into_windows()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.procs.separations">echidna.procs.separations module</a><ul>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationJournal"><code class="docutils literal notranslate"><span class="pre">SeparationJournal</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">SeparationJournal.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">SeparationJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationSpec"><code class="docutils literal notranslate"><span class="pre">SeparationSpec</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">SeparationSpec.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationSpec.separate"><code class="docutils literal notranslate"><span class="pre">SeparationSpec.separate()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.separations.SeparationSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">SeparationSpec.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.separations.merge_windows"><code class="docutils literal notranslate"><span class="pre">merge_windows()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.separations.split_into_windows"><code class="docutils literal notranslate"><span class="pre">split_into_windows()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.procs.trainings">echidna.procs.trainings module</a><ul>
+<li><a class="reference internal" href="#echidna.procs.trainings.EpochJournal"><code class="docutils literal notranslate"><span class="pre">EpochJournal</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.trainings.EpochJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">EpochJournal.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.trainings.EpochJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">EpochJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.trainings.TrainingSpec"><code class="docutils literal notranslate"><span class="pre">TrainingSpec</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.trainings.TrainingSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">TrainingSpec.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.trainings.TrainingSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">TrainingSpec.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.trainings.TrainingSpec.train"><code class="docutils literal notranslate"><span class="pre">TrainingSpec.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.procs.transcriptions">echidna.procs.transcriptions module</a><ul>
+<li><a class="reference internal" href="#echidna.procs.transcriptions.TranscriptionJournal"><code class="docutils literal notranslate"><span class="pre">TranscriptionJournal</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.transcriptions.TranscriptionSpec"><code class="docutils literal notranslate"><span class="pre">TranscriptionSpec</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.transcriptions.TranscriptionSpec.transcribe"><code class="docutils literal notranslate"><span class="pre">TranscriptionSpec.transcribe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.procs.utils">echidna.procs.utils module</a><ul>
+<li><a class="reference internal" href="#echidna.procs.utils.StepJournal"><code class="docutils literal notranslate"><span class="pre">StepJournal</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.utils.StepJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">StepJournal.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.utils.StepJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">StepJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.utils.process_batch"><code class="docutils literal notranslate"><span class="pre">process_batch()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.procs.validations">echidna.procs.validations module</a><ul>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationJournal"><code class="docutils literal notranslate"><span class="pre">ValidationJournal</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationJournal.from_dict"><code class="docutils literal notranslate"><span class="pre">ValidationJournal.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationJournal.to_dict"><code class="docutils literal notranslate"><span class="pre">ValidationJournal.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationSpec"><code class="docutils literal notranslate"><span class="pre">ValidationSpec</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationSpec.from_dict"><code class="docutils literal notranslate"><span class="pre">ValidationSpec.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationSpec.to_dict"><code class="docutils literal notranslate"><span class="pre">ValidationSpec.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.procs.validations.ValidationSpec.validate"><code class="docutils literal notranslate"><span class="pre">ValidationSpec.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-echidna.procs">Module contents</a></li>
 </ul>
 </li>
@@ -250,7 +434,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -274,7 +458,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, LeichtRhino.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

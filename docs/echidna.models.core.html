@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>echidna.models.core package &#8212; echidna  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="echidna.models.multidomain package" href="echidna.models.multidomain.html" />
@@ -46,19 +48,19 @@
           <div class="body" role="main">
             
   <section id="echidna-models-core-package">
-<h1>echidna.models.core package<a class="headerlink" href="#echidna-models-core-package" title="Permalink to this headline">¶</a></h1>
+<h1>echidna.models.core package<a class="headerlink" href="#echidna-models-core-package" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-echidna.models.core.baseline">
-<span id="echidna-models-core-baseline-module"></span><h2>echidna.models.core.baseline module<a class="headerlink" href="#module-echidna.models.core.baseline" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-core-baseline-module"></span><h2>echidna.models.core.baseline module<a class="headerlink" href="#module-echidna.models.core.baseline" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.baseline.</span></span><span class="sig-name descname"><span class="pre">BaselineDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lstm_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magbook_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phasebook_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.baseline.BaselineDecoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineDecoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lstm_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineDecoder.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lstm_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineDecoder.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -69,6 +71,11 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineDecoder.forward_feature_size">
+<span class="sig-name descname"><span class="pre">forward_feature_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineDecoder.forward_feature_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineDecoder.forward_length">
@@ -85,20 +92,15 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineDecoder.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineDecoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.baseline.BaselineDecoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.baseline.</span></span><span class="sig-name descname"><span class="pre">BaselineEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_lstm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lstm_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.baseline.BaselineEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineEncoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineEncoder.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineEncoder.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -130,23 +132,18 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.baseline.BaselineEncoder.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.baseline.BaselineEncoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.baseline.BaselineEncoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
 <section id="module-echidna.models.core.commonlayers">
-<span id="echidna-models-core-commonlayers-module"></span><h2>echidna.models.core.commonlayers module<a class="headerlink" href="#module-echidna.models.core.commonlayers" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-core-commonlayers-module"></span><h2>echidna.models.core.commonlayers module<a class="headerlink" href="#module-echidna.models.core.commonlayers" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.CodebookMask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.commonlayers.</span></span><span class="sig-name descname"><span class="pre">CodebookMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magbook_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phasebook_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requires_grad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.CodebookMask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.CodebookMask.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.CodebookMask.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.CodebookMask.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -158,17 +155,12 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.commonlayers.CodebookMask.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.commonlayers.CodebookMask.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.ISTFTLayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.commonlayers.</span></span><span class="sig-name descname"><span class="pre">ISTFTLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.ISTFTLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Not trainable stft layer</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.ISTFTLayer.forward">
@@ -187,17 +179,12 @@ output: (batch_size, n_channels, waveform_length)</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.commonlayers.ISTFTLayer.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.commonlayers.ISTFTLayer.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.commonlayers.ISTFTLayer.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.STFTLayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.commonlayers.</span></span><span class="sig-name descname"><span class="pre">STFTLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.STFTLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Not trainable stft layer</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.STFTLayer.forward">
@@ -216,20 +203,15 @@ output: (batch_size, n_channels, 2, (n_fft//2), time)</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.commonlayers.STFTLayer.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.commonlayers.STFTLayer.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.commonlayers.STFTLayer.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.SigmoidMask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.commonlayers.</span></span><span class="sig-name descname"><span class="pre">SigmoidMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.SigmoidMask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.SigmoidMask.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.SigmoidMask.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.SigmoidMask.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -241,17 +223,12 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.commonlayers.SigmoidMask.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.commonlayers.SigmoidMask.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.TrainableISTFTLayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.commonlayers.</span></span><span class="sig-name descname"><span class="pre">TrainableISTFTLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableISTFTLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.TrainableISTFTLayer.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableISTFTLayer.forward" title="Permalink to this definition">¶</a></dt>
@@ -269,17 +246,12 @@ output: (batch_size, n_channels, waveform_length)</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableISTFTLayer.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.commonlayers.TrainableISTFTLayer.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableISTFTLayer.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.TrainableSTFTLayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.commonlayers.</span></span><span class="sig-name descname"><span class="pre">TrainableSTFTLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableSTFTLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Trainable stft layer</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.commonlayers.TrainableSTFTLayer.forward">
@@ -298,20 +270,15 @@ output: (batch_size, n_channels, 2, n_fft//2, time)</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableSTFTLayer.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.commonlayers.TrainableSTFTLayer.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.commonlayers.TrainableSTFTLayer.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
 <section id="module-echidna.models.core.convtasnet">
-<span id="echidna-models-core-convtasnet-module"></span><h2>echidna.models.core.convtasnet module<a class="headerlink" href="#module-echidna.models.core.convtasnet" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-core-convtasnet-module"></span><h2>echidna.models.core.convtasnet module<a class="headerlink" href="#module-echidna.models.core.convtasnet" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvBlock">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.convtasnet.</span></span><span class="sig-name descname"><span class="pre">ConvBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipconnection_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvBlock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvBlock.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvBlock.forward" title="Permalink to this definition">¶</a></dt>
@@ -336,20 +303,15 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvBlock.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvBlock.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.convtasnet.ConvBlock.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.convtasnet.</span></span><span class="sig-name descname"><span class="pre">ConvTasNetDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipconnection_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magbook_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phasebook_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetDecoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetDecoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -360,6 +322,11 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetDecoder.forward_feature_size">
+<span class="sig-name descname"><span class="pre">forward_feature_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.forward_feature_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetDecoder.forward_length">
@@ -376,20 +343,15 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetDecoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.convtasnet.</span></span><span class="sig-name descname"><span class="pre">ConvTasNetEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottleneck_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipconnection_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetEncoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -421,20 +383,15 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.convtasnet.ConvTasNetEncoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
 <section id="module-echidna.models.core.demucs">
-<span id="echidna-models-core-demucs-module"></span><h2>echidna.models.core.demucs module<a class="headerlink" href="#module-echidna.models.core.demucs" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-core-demucs-module"></span><h2>echidna.models.core.demucs module<a class="headerlink" href="#module-echidna.models.core.demucs" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.BottleneckBlock">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.demucs.</span></span><span class="sig-name descname"><span class="pre">BottleneckBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_transposed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_dilation_multiply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_lstm_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_lstm_span</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_lstm_stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_attention_heads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_attention_penalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_init_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.BottleneckBlock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.BottleneckBlock.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.BottleneckBlock.forward" title="Permalink to this definition">¶</a></dt>
@@ -459,17 +416,12 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.BottleneckBlock.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.demucs.BottleneckBlock.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.demucs.BottleneckBlock.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.CompressedResidualBlock">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.demucs.</span></span><span class="sig-name descname"><span class="pre">CompressedResidualBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottleneck_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lstm_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lstm_span</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lstm_stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_attention_heads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_attention_penalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.CompressedResidualBlock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.CompressedResidualBlock.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.CompressedResidualBlock.forward" title="Permalink to this definition">¶</a></dt>
@@ -484,17 +436,12 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.demucs.CompressedResidualBlock.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.demucs.CompressedResidualBlock.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.demucs.</span></span><span class="sig-name descname"><span class="pre">DemucsDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mid_channels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupnorm_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupnorm_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainable_stft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsDecoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsDecoder.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_encs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_encs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsDecoder.forward" title="Permalink to this definition">¶</a></dt>
@@ -508,6 +455,11 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsDecoder.forward_feature_size">
+<span class="sig-name descname"><span class="pre">forward_feature_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsDecoder.forward_feature_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsDecoder.forward_length">
@@ -524,17 +476,12 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsDecoder.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsDecoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.demucs.DemucsDecoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.demucs.</span></span><span class="sig-name descname"><span class="pre">DemucsEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mid_channels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupnorm_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupnorm_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainable_stft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_channel_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_dilation_multiply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_lstm_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_lstm_span</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_lstm_stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_attention_heads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_attention_penalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_init_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsEncoder.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsEncoder.forward" title="Permalink to this definition">¶</a></dt>
@@ -569,17 +516,12 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.DemucsEncoder.reverse_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.demucs.DemucsEncoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.demucs.DemucsEncoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.LocalAttention">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.demucs.</span></span><span class="sig-name descname"><span class="pre">LocalAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embd_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_heads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_penalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.LocalAttention" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.LocalAttention.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.LocalAttention.forward" title="Permalink to this definition">¶</a></dt>
@@ -594,17 +536,12 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.demucs.LocalAttention.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.demucs.LocalAttention.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.RestrictedBiLSTM">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.demucs.</span></span><span class="sig-name descname"><span class="pre">RestrictedBiLSTM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.RestrictedBiLSTM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.demucs.RestrictedBiLSTM.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.demucs.RestrictedBiLSTM.forward" title="Permalink to this definition">¶</a></dt>
@@ -618,11 +555,6 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.demucs.RestrictedBiLSTM.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.demucs.RestrictedBiLSTM.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -648,23 +580,23 @@ registered hooks while the latter silently ignores them.</p>
 
 </section>
 <section id="module-echidna.models.core.waveunet">
-<span id="echidna-models-core-waveunet-module"></span><h2>echidna.models.core.waveunet module<a class="headerlink" href="#module-echidna.models.core.waveunet" title="Permalink to this headline">¶</a></h2>
+<span id="echidna-models-core-waveunet-module"></span><h2>echidna.models.core.waveunet module<a class="headerlink" href="#module-echidna.models.core.waveunet" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.DownsamplingBlock">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.waveunet.</span></span><span class="sig-name descname"><span class="pre">DownsamplingBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.waveunet.DownsamplingBlock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Performs convolution and downsampling</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.DownsamplingBlock.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.DownsamplingBlock.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.DownsamplingBlock.forward" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – the shape should be (N, C_in, L)</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>downsampled tensor of shape (N, C_out, ceil(L/downsample_rate))</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
 </dd>
 </dl>
@@ -673,57 +605,58 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.DownsamplingBlock.forward_length">
 <span class="sig-name descname"><span class="pre">forward_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.DownsamplingBlock.forward_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dd><section id="parameter">
+<h3>Parameter<a class="headerlink" href="#parameter" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>output length</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.DownsamplingBlock.reverse_length">
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.DownsamplingBlock.reverse_length" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><section id="id1">
+<h3>Parameter<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
 <dt>l_out<span class="classifier">int</span></dt><dd><p>desired output length</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>minimum input length that satisfies block output of l_out</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.waveunet.DownsamplingBlock.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.waveunet.DownsamplingBlock.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.Interpolation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.waveunet.</span></span><span class="sig-name descname"><span class="pre">Interpolation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upsample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nearest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.waveunet.Interpolation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Performs interpolation.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.Interpolation.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.Interpolation.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.Interpolation.forward" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – the shape must be (N, C, L)</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>interpolated tensor of shape (N, C, (L-1)*upsample_rate+1)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
 </dd>
 </dl>
@@ -732,134 +665,149 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.Interpolation.forward_length">
 <span class="sig-name descname"><span class="pre">forward_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.Interpolation.forward_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dd><section id="id2">
+<h3>Parameter<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>output length</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.Interpolation.reverse_length">
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.Interpolation.reverse_length" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><section id="id3">
+<h3>Parameter<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
 <dt>l_out<span class="classifier">int</span></dt><dd><p>desired output length</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>minimum input length that satisfies layer(l_in) &gt;= l_out</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.waveunet.Interpolation.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.waveunet.Interpolation.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.UpsamplingBlock">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.waveunet.</span></span><span class="sig-name descname"><span class="pre">UpsamplingBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nearest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.waveunet.UpsamplingBlock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Performs upsample</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.UpsamplingBlock.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.UpsamplingBlock.forward" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.UpsamplingBlock.forward" title="Permalink to this definition">¶</a></dt>
+<dd><section id="id4">
+<h3>Parameter<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
 <dt>x<span class="classifier">torch.Tensor</span></dt><dd><p>tensor of shape (N, C_in, L)</p>
 </dd>
 </dl>
 <p>residual : torch.Tensor</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tensor of shape (N, C_out, (L-1)*r+1-k+1)</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>torch.Tensor</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.UpsamplingBlock.forward_length">
 <span class="sig-name descname"><span class="pre">forward_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.UpsamplingBlock.forward_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dd><section id="id5">
+<h3>Parameter<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>output length</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.UpsamplingBlock.reverse_length">
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.UpsamplingBlock.reverse_length" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><section id="id6">
+<h3>Parameter<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
 <dt>l_out<span class="classifier">int</span></dt><dd><p>desired output length</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>minimum input length that satisfies output of l_out</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.waveunet.UpsamplingBlock.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.waveunet.UpsamplingBlock.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.waveunet.</span></span><span class="sig-name descname"><span class="pre">WaveUNetDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_channel_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_channel_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_residual_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_channel_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_residual_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Encoder module for wave u net</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetDecoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_residual</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsampling_residual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_residual</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform decoding</p>
+<section id="id7">
+<h3>Parameter<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>xesidual : torch.Tensor
 upsampling_residual : tp.List[torch.Tensor]
 decoder_residual : tp.List[torch.Tensor</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>torch.Tensor</strong> (<em>returns_each=False</em>)</p></li>
 <li><p><strong>List[torch.Tensor]</strong> (<em>returns_each=True</em>)</p></li>
 </ul>
-</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetDecoder.forward_feature_size">
+<span class="sig-name descname"><span class="pre">forward_feature_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward_feature_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetDecoder.forward_length">
 <span class="sig-name descname"><span class="pre">forward_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dd><section id="id8">
+<h3>Parameter<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -870,62 +818,68 @@ decoder_residual : tp.List[torch.Tensor</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetDecoder.reverse_length">
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder.reverse_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_out : int</p>
+<dd><section id="id9">
+<h3>Parameter<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<p>l_out : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetDecoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetDecoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">echidna.models.core.waveunet.</span></span><span class="sig-name descname"><span class="pre">WaveUNetEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_channel_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_channel_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Encoder module for wave u net</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetEncoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform encoding</p>
+<section id="id10">
+<h3>Parameter<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
 <p>x : torch.Tensor
 returns_each : bool</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><em>torch.Tensor</em></p></li>
 <li><p><em>List[torch.Tensor]</em></p></li>
 </ul>
-</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetEncoder.forward_feature_size">
 <span class="sig-name descname"><span class="pre">forward_feature_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward_feature_size" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dd><section id="id11">
+<h3>Parameter<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetEncoder.forward_length">
 <span class="sig-name descname"><span class="pre">forward_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_in : int</p>
+<dd><section id="id12">
+<h3>Parameter<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
+<p>l_in : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -936,24 +890,22 @@ returns_each : bool</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetEncoder.reverse_length">
 <span class="sig-name descname"><span class="pre">reverse_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder.reverse_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>l_out : int</p>
+<dd><section id="id13">
+<h3>Parameter<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<p>l_out : int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="echidna.models.core.waveunet.WaveUNetEncoder.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#echidna.models.core.waveunet.WaveUNetEncoder.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-echidna.models.core">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models.core" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-echidna.models.core" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -969,11 +921,163 @@ returns_each : bool</p>
     <ul>
 <li><a class="reference internal" href="#">echidna.models.core package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-echidna.models.core.baseline">echidna.models.core.baseline module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.core.commonlayers">echidna.models.core.commonlayers module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.core.convtasnet">echidna.models.core.convtasnet module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.core.demucs">echidna.models.core.demucs module</a></li>
-<li><a class="reference internal" href="#module-echidna.models.core.waveunet">echidna.models.core.waveunet module</a></li>
+<li><a class="reference internal" href="#module-echidna.models.core.baseline">echidna.models.core.baseline module</a><ul>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineDecoder"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineDecoder.forward"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">BaselineDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineEncoder"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineEncoder.forward"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineEncoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.baseline.BaselineEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">BaselineEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.core.commonlayers">echidna.models.core.commonlayers module</a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.CodebookMask"><code class="docutils literal notranslate"><span class="pre">CodebookMask</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.CodebookMask.forward"><code class="docutils literal notranslate"><span class="pre">CodebookMask.forward()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.ISTFTLayer"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.ISTFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.ISTFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.ISTFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">ISTFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.STFTLayer"><code class="docutils literal notranslate"><span class="pre">STFTLayer</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.STFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">STFTLayer.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.STFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">STFTLayer.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.STFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">STFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.SigmoidMask"><code class="docutils literal notranslate"><span class="pre">SigmoidMask</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.SigmoidMask.forward"><code class="docutils literal notranslate"><span class="pre">SigmoidMask.forward()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableISTFTLayer"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableISTFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableISTFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableISTFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">TrainableISTFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableSTFTLayer"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableSTFTLayer.forward"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableSTFTLayer.forward_length"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.commonlayers.TrainableSTFTLayer.reverse_length"><code class="docutils literal notranslate"><span class="pre">TrainableSTFTLayer.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.core.convtasnet">echidna.models.core.convtasnet module</a><ul>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvBlock"><code class="docutils literal notranslate"><span class="pre">ConvBlock</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvBlock.forward"><code class="docutils literal notranslate"><span class="pre">ConvBlock.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">ConvBlock.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">ConvBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetDecoder"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.forward"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetEncoder"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.forward"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.forward_channel"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.forward_channel()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.convtasnet.ConvTasNetEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">ConvTasNetEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.core.demucs">echidna.models.core.demucs module</a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.BottleneckBlock"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.BottleneckBlock.forward"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.BottleneckBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.BottleneckBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">BottleneckBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.CompressedResidualBlock"><code class="docutils literal notranslate"><span class="pre">CompressedResidualBlock</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.CompressedResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">CompressedResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsDecoder"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsDecoder.forward"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">DemucsDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsEncoder"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsEncoder.forward"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsEncoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.DemucsEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">DemucsEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.LocalAttention"><code class="docutils literal notranslate"><span class="pre">LocalAttention</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.LocalAttention.forward"><code class="docutils literal notranslate"><span class="pre">LocalAttention.forward()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.RestrictedBiLSTM"><code class="docutils literal notranslate"><span class="pre">RestrictedBiLSTM</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.demucs.RestrictedBiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">RestrictedBiLSTM.forward()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.TDecoderBlock"><code class="docutils literal notranslate"><span class="pre">TDecoderBlock()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.TEncoderBlock"><code class="docutils literal notranslate"><span class="pre">TEncoderBlock()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.ZDecoderBlock"><code class="docutils literal notranslate"><span class="pre">ZDecoderBlock()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.demucs.ZEncoderBlock"><code class="docutils literal notranslate"><span class="pre">ZEncoderBlock()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-echidna.models.core.waveunet">echidna.models.core.waveunet module</a><ul>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.DownsamplingBlock"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.DownsamplingBlock.forward"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.DownsamplingBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.DownsamplingBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">DownsamplingBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.Interpolation"><code class="docutils literal notranslate"><span class="pre">Interpolation</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.Interpolation.forward"><code class="docutils literal notranslate"><span class="pre">Interpolation.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.Interpolation.forward_length"><code class="docutils literal notranslate"><span class="pre">Interpolation.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.Interpolation.reverse_length"><code class="docutils literal notranslate"><span class="pre">Interpolation.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.UpsamplingBlock"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.UpsamplingBlock.forward"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.UpsamplingBlock.forward_length"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.UpsamplingBlock.reverse_length"><code class="docutils literal notranslate"><span class="pre">UpsamplingBlock.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetDecoder"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetDecoder.forward_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetDecoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetDecoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetDecoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetEncoder"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder</span></code></a><ul>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.forward()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward_feature_size"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.forward_feature_size()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetEncoder.forward_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.forward_length()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetEncoder.parameter_list"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.parameter_list()</span></code></a></li>
+<li><a class="reference internal" href="#echidna.models.core.waveunet.WaveUNetEncoder.reverse_length"><code class="docutils literal notranslate"><span class="pre">WaveUNetEncoder.reverse_length()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-echidna.models.core">Module contents</a></li>
 </ul>
 </li>
@@ -1006,7 +1110,7 @@ returns_each : bool</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1034,7 +1138,7 @@ returns_each : bool</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, LeichtRhino.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
